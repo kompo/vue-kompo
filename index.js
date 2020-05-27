@@ -118,12 +118,13 @@ const Kompo = {
 							var doc = new DOMParser().parseFromString(r.data, "text/html")
 
 							document.title = doc.title
+							document.getElementsByTagName('body')[0].innerHTML= doc.getElementsByTagName('body')[0].innerHTML
 
-							var vueElId = vnode.context.$el.id
+							var getMainVueAppRecursively = function (element){
+								return element.$parent ? getMainVueAppRecursively(element.$parent) : element.$options.el
+							}
 
-							document.getElementById(vueElId).innerHTML = doc.getElementById(vueElId).innerHTML
-
-							new Vue({el: '#'+vueElId})
+							new Vue({el: getMainVueAppRecursively(vnode.context)})
 
 							//Re-run scripts with the class .reloadable-script
 							//Kompo.events.$nextTick( () => { //nextTick not enough because of anonymous component in Panel {template: ...}
