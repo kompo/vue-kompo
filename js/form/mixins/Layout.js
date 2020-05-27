@@ -19,15 +19,10 @@ export default {
                 }, 
                 this.$_customLayoutAttributes
             )
-        },
-        $_noMargins(){ return this.$_data('noMargins') || this.component.noMargins }, //Form takes a property (more user-friendly)
+        }
     },
 
 	methods: {
-        $_vlMargins(component) {
-            return ''
-            //return (this.$_noMargins || ['Rows', 'Columns'].includes(component.component)) ? '' : 'vlMargins'
-        },
         $_attributes(component) { return this.$_defaultLayoutAttributes(component) },
         $_defaultLayoutAttributes(component) {
             return {

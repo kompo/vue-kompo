@@ -38,7 +38,6 @@ export default {
         colClasses(col){
             return this.$_classString([
                 this.colClass(col),
-                this.$_vlMargins(col)
             ])
         },
         colClass(col){

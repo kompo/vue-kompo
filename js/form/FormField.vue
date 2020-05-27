@@ -37,10 +37,12 @@ export default {
                 this.$_wrapperStyle ? {style: this.$_wrapperStyle} : {}
             )
         },
+        $_noMargins(){ return this.component.$_data('noMargins') }, 
         $_wrapperClass(){
             return [ 
                 this.component.class || '',
-                'vlFormField vlMargins',
+                'vlFormField',
+                this.$_noMargins ? '' : 'vlMargins',
                 this.component.$_state('focusedField') ? 'vlFocusedField' : '',
                 this.component.$_state('dirtyField') ? 'vlDirtyField' : '',
                 this.$_hasErrors ? 'vlHasErrors' : '',

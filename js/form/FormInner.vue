@@ -2,9 +2,7 @@
     <div>
         <form v-bind="formAttributes" class="vlForm">
             <template v-for="component in komponents">
-                <component 
-                    v-bind="$_attributes(component)"
-                    :class="$_vlMargins(component)" />
+                <component v-bind="$_attributes(component)"/>
             </template>
         </form>
         <vl-support-modal :kompoid="$_elKompoId" />
