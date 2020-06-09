@@ -1,7 +1,7 @@
 <template>
 
     <pre v-if="!$_displayNone" v-show="!$_hidden" v-bind="$_attributes"
-    ><code class="language-php" v-html="$_label" /></pre>
+    ><code :style="{tabSize: tabSize}" class="language-php" v-html="$_label" /></pre>
 
 </template>
 
@@ -9,6 +9,9 @@
 import Other from '../mixins/Other'
 
 export default {
-    mixins: [Other]
+    mixins: [Other],
+    computed: {
+        tabSize(){ return this.$_data('tabSize') || 4 }
+    }
 }
 </script>

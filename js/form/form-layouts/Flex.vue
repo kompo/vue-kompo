@@ -1,9 +1,13 @@
 <template>
-    <div v-bind="$_layoutWrapperAttributes" v-show="!$_hidden">
+    <component 
+        :is="tag"
+        :href="href"
+        v-bind="$_layoutWrapperAttributes" 
+        v-show="!$_hidden">
         <component v-for="(col,index) in komponents"
             :key="index"
             v-bind="$_attributes(col)" />
-    </div>
+    </component>
 </template>
 
 <script>
@@ -18,6 +22,14 @@ export default {
                 this.$_data('alignClass') 
             ]
         },
+
+        tag(){
+            return this.component.href ? 'a' : 'div'
+        },
+        href(){
+            return this.component.href
+        }
+
     }
 }
 </script>
