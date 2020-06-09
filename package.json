@@ -4,10 +4,13 @@
     "email": "contact@kompo.io",
     "url": "https://kompo.io"
   },
+  "version": "1.0.15",
   "bundleDependencies": false,
   "dependencies": {
     "vue": "^2.5.7",
-    "vue-flatpickr-component": "^8.1.5"
+    "vue-flatpickr-component": "^8.1.5",
+    "vue-masonry": "^0.11.7",
+    "vuedraggable": "^2.16.0"
   },
   "deprecated": false,
   "description": "Laravel Vue components for Rapid Application Development",
@@ -39,6 +42,5 @@
   "name": "vue-kompo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "1.0.14"
+  }
 }
