@@ -20,7 +20,7 @@
                 <i v-if="!$_readOnly" :class="appendIcon"/>
             </template>
         </vlTaggableInput>
-        <div v-if="filteredOptions.length" class="vlOptions">
+        <div v-if="filteredOptions.length" class="vlOptions" :key="optionsKey">
             <div v-for="(option,key) in filteredOptions" :key="key"
                 class="vlOption"
                 :class="{
@@ -55,7 +55,8 @@ export default {
             optionsMessage: '',
             filteredOptions: [],
             hoveredOption: 0,
-            updateForm: false
+            updateForm: false,
+            optionsKey: 0
         }
     },
     mounted(){
@@ -236,9 +237,10 @@ export default {
                 if(!_.isArray(response.data))
                     return
 
-                this.component.options = response.data
-                this.filteredOptions = response.data
+                this.$set(this.component, 'options', response.data)
+                this.$set(this, 'filteredOptions', response.data)
                 this.optionsMessage = this.noOptionsFound
+                this.optionsKey += 1
                 
             })
         }
