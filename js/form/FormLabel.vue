@@ -39,7 +39,7 @@ export default {
             return this.$_data('labelClass')
         },
         noLabel(){
-            return this.$_data('noLabel')
+            return this.$_data('noLabel') || !this.component.label
         },
         loading(){
             return this.component.$_state('loading')
