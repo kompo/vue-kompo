@@ -2,7 +2,9 @@
 
     <transition name="modal">
 
-        <div class="vlModalMask" ref="modal" 
+        <div 
+            class="vlModalMask" 
+            ref="modal" 
             tabindex="0"
             @keydown.left="previous"
             @keydown.right="next"
@@ -28,6 +30,7 @@
                 <div 
                     class="vlModalContainer" 
                     :id="'vlModalContainer'+name"
+                    ref="modalContainer"
                     :style="{'width': width}">
 
                     <!-- v-if necessary -->
@@ -65,8 +68,8 @@
         },
         methods:{
             outsideModal(e){
-                return !$(e.target).hasClass('vlModalContainer') 
-                    && !$(e.target).parents('#vlModalContainer'+this.name).length
+                return !e.target.classList.contains('vlModalContainer') 
+                    && !this.$refs.modalContainer.contains(e.target)
             },
             warnConfirmation(){ 
                 return !this.warnbeforeclose || (this.warnbeforeclose && confirm(this.warnbeforeclose))
@@ -87,17 +90,6 @@
 
                 e.stopPropagation() //so that parent modals don't close too
             },
-            close: function(e) {
-                if (!$(e.target).hasClass('vlModalContainer') 
-                    && !$(e.target).parents('#vlModalContainer'+this.name).length){
-
-                    if(!this.warnbeforeclose || (this.warnbeforeclose && confirm(this.warnbeforeclose))){    
-                        this.closeAction()
-                    }
-
-                    e.stopPropagation() //so that parent modals don't close too
-                }
-            },
             closeAction(){
                 this.opened = false
                 this.$emit('closed')
@@ -109,12 +101,11 @@
                 this.$emit('opened')
                 //applies zIndex to the vlModalClose higher if in another modal
                 this.$nextTick(()=> {
-                    var currentElem = $(this.$refs.modal), depth = 0
-                    while(currentElem.closest('.vlModalWrapper').length){
-                        depth += 1
-                        currentElem = currentElem.closest('.vlModalWrapper').eq(0).parent()
+                    var currentElem = this.$refs.modal
+                    while(currentElem.closest('.vlModalWrapper')){
+                        this.zIndex += 100
+                        currentElem = currentElem.closest('.vlModalWrapper').parentNode
                     }
-                    this.zIndex += depth*100
                 })
             },
             next(){

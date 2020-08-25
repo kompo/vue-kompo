@@ -1,4 +1,4 @@
-.vlJson, .vlListe{
+.vlJson, .vlListe, .vlListeSelect{
 	.vlInputGroup:not(:first-child){
 		.vlFormControl, .vlInputPrepend, .vlInputAppend{
 			border-top: 1px solid $form-control-placeholder-color;

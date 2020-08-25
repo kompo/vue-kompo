@@ -1,7 +1,7 @@
 <template>
     <a v-bind="attributes"
         class="vlImageRow" 
-        @click.stop="scrollTo('#'+$_prop('slug'))">
+        :href="'#'+$_prop('slug')">
 
         <div :class="$_prop('class')">
 
@@ -41,15 +41,6 @@ export default {
                 class: this.$_prop('col') || null
             }
         }
-    },
-    methods:{
-        scrollTo(id){
-            $('html, body').animate({scrollTop: $(id).offset().top}, 1000)
-        }
-    },
-    mounted(){
-        if(window.location.hash == '#'+this.$_prop('slug'))
-            this.scrollTo(window.location.hash)
     }
 }
 </script>

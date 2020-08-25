@@ -1,7 +1,5 @@
 <template>
     <component 
-        :is="tag"
-        :href="href"
         v-bind="$_layoutWrapperAttributes" 
         v-show="!$_hidden">
         <component v-for="(col,index) in komponents"
@@ -22,12 +20,18 @@ export default {
                 this.$_data('alignClass') 
             ]
         },
-
-        tag(){
-            return this.component.href ? 'a' : 'div'
+        $_customLayoutAttributes(){
+            return this.href ? {
+                is: 'a',
+                href: this.href
+            } : {
+                is: 'div'
+            }
         },
+
         href(){
-            return this.component.href
+            return (this.component.href && this.component.href != 'javascript:void(0)') ? 
+                this.component.href : ''
         }
 
     }

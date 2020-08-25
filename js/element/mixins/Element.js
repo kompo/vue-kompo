@@ -15,7 +15,8 @@ export default {
         return{
             component: {},
             state: {},
-            elementStore: {}
+            elementStore: {},
+            formInfo: {}
         }
     },
 	computed: {
@@ -75,13 +76,10 @@ export default {
         $_getErrors(errors) {},
         $_resetSort(exceptId) {},
         $_attachEvents(){
-            /*if(!this.$_hasInteractions) no cuz select does ajax without an interaction for ex.
-                return */
             if(!this.$_elKompoId)
                 return
 
             this.$_vlOn('vlDeliverFormInfo'+this.$_elKompoId, (formInfo) => { //for submit TODO: merge with below
-
                 this.formInfo = formInfo
             })
             this.$_vlOn('vlDeliverKompoInfo'+this.$_elKompoId, (kompoInfo) => { //for any axios request

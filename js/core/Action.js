@@ -71,7 +71,7 @@ export default class Action {
         this.vue.$kompo.vlRequestFormInfo(this.vue.kompoid, this.vue.$_elKompoId)
 
         if(!this.vue.formInfo.canSubmit){
-            setTimeout( () => { this.submitAction() }, 100)
+            setTimeout( () => { this.submitFormAction() }, 100)
             return
         }
 
@@ -97,7 +97,7 @@ export default class Action {
             if(error.response.status == 449){
                 if(confirm(error.response.data)){
                     this.warningConfirmed = true
-                    this.submitAction()
+                    this.submitFormAction()
                 }
             }else{
                 this.vue.$kompo.vlSubmitError(this.vue.kompoid, error)

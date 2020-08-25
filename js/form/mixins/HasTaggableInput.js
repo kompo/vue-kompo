@@ -24,13 +24,14 @@ export default {
         $_click(selection){
             if(this.$_readOnly)
                 return
-            
+
             var input = this.$refs.input.$el || this.$refs.input
             input.click()
             input.focus()
-            this.inputValue = selection ? 
-                    (_.isString(selection[this.labelKey]) ? selection[this.labelKey] : selection[this.labelKey].label ) : 
-                    ''
+            this.inputValue = ''
+            /*this.inputValue = selection ? 
+                    (_.isString(selection.label) ? selection.label : selection.label.label ) : 
+                    ''*/
         },
         $_remove(index) {
             if(this.$_readOnly)

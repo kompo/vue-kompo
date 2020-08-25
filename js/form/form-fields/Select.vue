@@ -204,7 +204,8 @@ export default {
             this.hoveredOption = key
         },
         selectHoveredOption(){
-            this.select(this.filteredOptions[this.hoveredOption])
+            if(this.filteredOptions[this.hoveredOption])
+                this.select(this.filteredOptions[this.hoveredOption])
         },
         loadOptionsByAjax(){
 

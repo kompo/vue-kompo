@@ -12,14 +12,14 @@
                 @click.stop="$emit('click')">
                 <div v-for="(selection, index) in selections" 
                     :key="index"
-                    class="vlCustomLabel">
+                    class="vlCustomLabel"
+                    @click.stop="$emit('click', selection)">
                     <i v-if="!readonly"
                         class="icon-times" 
                         @click.stop="$emit('remove', index)" />
                     <vlCustomLabel 
                         :vkompo="selection[labelKey]" 
-                        :kompoid="kompoid"
-                        @click.stop="$emit('click', selection)"/>
+                        :kompoid="kompoid"/>
                 </div>
             </div>
 
@@ -49,15 +49,15 @@ export default {
     },
     mounted(){
         this.setContentWidth()
-        $(window).resize(this.setContentWidth)
+        window.addEventListener('resize', this.setContentWidth)
     },
     beforeDestroy() {
-        $(window).unbind('resize', this.setContentWidth)
+        window.removeEventListener('resize', this.setContentWidth)
         this.$kompo.events.$off('vlTabChange')
     },
     created() {
         this.$kompo.events.$on('vlTabChange', () => {
-            this.$nextTick(()=> { this.setContentWidth() })
+            this.$nextTick(()=> { this.setContentWidth() }) //TODO: not on any tabchange... actually this contentwidth setting should be avoided in the first place
         })
     },
     methods: {
