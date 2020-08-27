@@ -7,7 +7,7 @@
 
             <vl-alert v-for="(alert, key) in alerts"
                 :message="alert.message"
-                :iconclass="alert.iconClass"
+                :icon="alert.icon"
                 :alertclass="alert.alertClass"
                 :key="key" />
 

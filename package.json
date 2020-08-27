@@ -4,7 +4,7 @@
     "email": "contact@kompo.io",
     "url": "https://kompo.io"
   },
-  "version": "1.0.16",
+  "version": "1.0.18",
   "bundleDependencies": false,
   "dependencies": {
     "vue": "^2.5.7",

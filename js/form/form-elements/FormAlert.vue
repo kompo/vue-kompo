@@ -15,7 +15,7 @@ export default {
         	return {
         		...this.$_defaultOtherAttributes,
     			message: this.$_pureLabel,
-    			iconclass: this.$_icon
+    			icon: this.$_icon
         	}
         }
     }

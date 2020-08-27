@@ -2,9 +2,7 @@
     <vl-form-field v-bind="$_wrapperAttributes" @labelclick="focus">
 
         <div class="vlInputGroup">
-            <div class="vlInputPrepend" @click.stop="focus">
-                <i :class="$_icon" />
-            </div>
+            <div class="vlInputPrepend" @click.stop="focus" v-html="$_icon" />
             <flat-pickr 
                 v-model="component.value"                                                    
                 class="vlFormControl"

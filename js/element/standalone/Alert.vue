@@ -1,6 +1,6 @@
 <template>
     <div v-if="open" class="vlAlert" :class="alertclass">
-        <i v-if="iconclass" :class="iconclass" />
+        <div v-if="icon" v-html="icon" />
         <div v-html="message"/>
         <div class="vlAlertClose" @click.stop="close()">
           <i class="icon-times vlCursorPointer"></i>
@@ -12,7 +12,7 @@
     export default {
         props: {
             message: {type: String, required: true},
-            iconclass: {type: String},
+            icon: {type: String},
             alertclass: {type: String},
             index: {type: Number}
         },

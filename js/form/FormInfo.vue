@@ -1,12 +1,12 @@
 <template>
 
-    <i 
+    <span
     	v-if="info" 
     	:title="info"
         data-toggle="tooltip" 
         data-html="true"
         :data-placement="placement" 
-        :class="infoIcon" />
+        v-html="infoIcon"/>
 
 </template>
 
@@ -22,7 +22,7 @@ export default {
             return this.component.$_data('infoPlacement') || 'top'
         },
         infoIcon(){
-            return this.component.$_data('infoIcon') || 'icon-question-circle'
+            return this.component.$_data('infoIcon') || '<i class="icon-question-circle"></i>'
         }
     }
 }

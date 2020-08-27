@@ -1,9 +1,9 @@
 export default class Alert {
-	constructor(message, iconClass, alertClass){
+	constructor(message, icon, alertClass){
 
         this.message = message
 
-        this.iconClass = iconClass
+        this.icon = icon
 
         this.alertClass = alertClass
 
@@ -11,13 +11,13 @@ export default class Alert {
     asObject(alert){ //lazy... TODO: refactor
         this.message = alert.message
 
-        this.iconClass = alert.iconClass
+        this.icon = alert.icon
 
         this.alertClass = alert.alertClass
         return this
     }
     asError(){
-        this.iconClass = 'icon-attention'
+        this.icon = '<i class="icon-attention"></i>'
         this.alertClass = 'vlAlertError'
         return this
     }
