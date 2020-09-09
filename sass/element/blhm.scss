@@ -4,7 +4,7 @@
 $btn-depth: 1px !default;
 $table-color: $primary !default;
 $modal-header-bg: mix($primary, white, 30%) !default;
-$model-header-h1-color: mix($primary, black, 50%) !default;
+$modal-header-h1-color: mix($primary, black, 50%) !default;
 
 
 /***** CSS ********/
@@ -33,7 +33,7 @@ a{
     margin-right: -1rem;
     padding: 1rem;
 	h1{
-        color: $model-header-h1-color;
+        color: $modal-header-h1-color;
 		font-size: 1.5rem;
 	}
 }
