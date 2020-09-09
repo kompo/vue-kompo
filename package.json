@@ -4,12 +4,11 @@
     "email": "contact@kompo.io",
     "url": "https://kompo.io"
   },
-  "version": "1.0.19",
+  "version": "1.0.20",
   "bundleDependencies": false,
   "dependencies": {
     "vue": "^2.5.7",
     "vue-template-compiler": "^2.6.10",
-    "bootstrap": "^4.4.1",
     "jquery": "^3.5.1",
     "vue-flatpickr-component": "^8.1.5",
     "vue-masonry": "^0.11.7",
