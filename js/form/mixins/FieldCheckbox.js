@@ -28,12 +28,14 @@ export default {
             this.$_togglesForm()
         },
         handleToggle(){
-            this.changed()
             this.component.value = !this.checked
+            this.changed()
         },
         changed(){
-            this.$_changeAction()
-            this.$_clearErrors()
+            setTimeout(() => { //when label is clicked somehow we need to wait before $_value is set...
+                this.$_changeAction()
+                this.$_clearErrors()
+            }, 50)
         },
         $_focusAction(){
             //do nothing
