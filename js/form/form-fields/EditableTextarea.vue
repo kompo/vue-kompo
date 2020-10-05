@@ -9,7 +9,7 @@
         
         <vl-form-field v-if="editing" v-bind="$_wrapperAttributes">
             <textarea
-                v-click-outside="saveAndClose"
+                v-click-out="saveAndClose"
                 v-model="component.value"
                 class="vlFormControl"
                 ref="content"

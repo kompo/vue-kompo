@@ -83,7 +83,7 @@ const Kompo = {
 	    	events : this.events
 	    }
 
-    	Vue.directive('click-outside', {
+    	Vue.directive('click-out', {
 			bind: function (el, binding, vnode) {
 				el.clickOutsideEvent = function (event) {
 					if (!(el == event.target || el.contains(event.target))) 
@@ -120,11 +120,20 @@ const Kompo = {
 							document.title = doc.title
 							document.getElementsByTagName('body')[0].innerHTML= doc.getElementsByTagName('body')[0].innerHTML
 
-							var getMainVueAppRecursively = function (element){
-								return element.$parent ? getMainVueAppRecursively(element.$parent) : element.$options.el
+							const getMainVueBootObject = function(vnode){
+								const getMainVueOptionsRecursively = function (element){
+									return element.$parent ? 
+										getMainVueOptionsRecursively(element.$parent) : 
+										element.$options
+								}
+								const mainOpts = getMainVueOptionsRecursively(vnode.context)
+								return Object.assign(
+									{el: mainOpts.el}, 
+									mainOpts.vuetify ? {vuetify: mainOpts.vuetify} : {}
+								)
 							}
-
-							new Vue({el: getMainVueAppRecursively(vnode.context)})
+							
+							new Vue(getMainVueBootObject(vnode))
 
 							//Re-run scripts with the class .reloadable-script
 							//Kompo.events.$nextTick( () => { //nextTick not enough because of anonymous component in Panel {template: ...}
@@ -156,3 +165,9 @@ const Kompo = {
 export default Kompo
 
 Vue.use(Kompo)
+/* TODO 
+if(window.Vue){
+	window.Vue.use(Kompo)
+}else{
+	Vue.use(Kompo)
+}*/

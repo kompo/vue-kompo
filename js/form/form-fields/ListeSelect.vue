@@ -1,6 +1,6 @@
 <template>
     <vl-form-field v-bind="$_wrapperAttributes" 
-                v-click-outside="closeOptions">
+                v-click-out="closeOptions">
         <draggable 
             v-model="component.value" 
             handle=".js-row-move">

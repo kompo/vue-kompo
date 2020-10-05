@@ -1,7 +1,7 @@
 <template>
     <vl-form-field v-bind="$_wrapperAttributes">
         <vlTaggableInput 
-            v-click-outside="blur"
+            v-click-out="blur"
             v-bind="$_taggableInputAttributes" 
             v-on="$_taggableInputEvents">
             <template v-slot:prepend v-if="prependIcon">
