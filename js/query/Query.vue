@@ -11,7 +11,7 @@
                         v-bind="paginationAttributes" />
 
                     <div v-if="isTableLayout" class="vlTableWrapper"><!-- TableWrapper useful for various CSS tricks, ex: border-radius -->
-                        <table class="w-full table vlTable">
+                        <table class="w-full table vlTable" :class="tableClass">
                             <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
                             <component v-bind="layoutAttributes" />
                         </table>
@@ -91,6 +91,7 @@ export default {
             }
         },
         queryUrl(){ return this.$_data('browseUrl') },
+        tableClass() { return this.component.tableClass },
         hasPagination() { return this.component.hasPagination },
         topPagination(){ return this.hasPagination && this.component.topPagination },
         bottomPagination(){ return this.hasPagination && this.component.bottomPagination },
