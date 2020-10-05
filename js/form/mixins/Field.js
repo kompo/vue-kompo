@@ -94,7 +94,7 @@ export default {
             
             this.$_runOwnInteractionsWithAction('change', 'emitFrom')
 
-            if(!this.$_pristine)
+            //if(!this.$_pristine) //removed, why was it here? It needs to run when value is null
                 this.$_runOwnInteractionsWithAction('change', 'axiosRequest')
             
             this.$_runOwnInteractionsWithAction('change', 'submitForm')
