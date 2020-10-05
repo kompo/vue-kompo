@@ -18,8 +18,8 @@ export default {
         submitOnInput(){ this.$_runOwnInteractionsWithAction('input', 'submitForm') },
         filterOnInput(){ this.$_runOwnInteractionsWithAction('input', 'browseQuery') },
 
-        $_interactionsOfType(type){
-            return _.filter(this.$_interactions, (i) => {
+        $_interactionsOfType(interactions, type){
+            return _.filter(interactions, (i) => {
                 return i.interactionType == type
             })
         },
@@ -46,6 +46,9 @@ export default {
                     if(interaction.interactionType == type && !actions.includes(interaction.action.actionType))
                         this.$_runAction(interaction.action) 
                 })
+        },
+        $_hasInteractionsOfType(parentAction, type){
+            return this.$_interactionsOfType(parentAction.interactions || [], type).length > 0
         },
         $_runInteractionsOfType(parentAction, type, response){
             if(parentAction.interactions && parentAction.interactions.length)

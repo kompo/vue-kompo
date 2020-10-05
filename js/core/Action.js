@@ -46,8 +46,11 @@ export default class Action {
 
             this.vue.$_state({ loading: false })
 
-        	this.vue.$_runInteractionsOfType(this, 'error', error)
-        	this.$_kAxios.$_handleAjaxError(error) 
+            if(this.vue.$_hasInteractionsOfType(this, 'error')){
+        	   this.vue.$_runInteractionsOfType(this, 'error', error)
+            }else{
+        	   this.$_kAxios.$_handleAjaxError(error) 
+            }
 
         })
     }
