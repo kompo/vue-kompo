@@ -14,7 +14,6 @@
             :style="{'z-index': zIndex - 2 }">
 
             <div class="vlModalClose" 
-                @click.stop="closeAction" 
                 :style="{'z-index': zIndex + 2 }">
               <i class="icon-times-circle"></i>
             </div>
@@ -68,6 +67,8 @@
         },
         methods:{
             outsideModal(e){
+                //Note for vlModalClose: I deleted @mouse.stop="closeAction"
+                //cuz clicking on the (X) is the same as clicking outside the modal.
                 return !e.target.classList.contains('vlModalContainer') 
                     && !this.$refs.modalContainer.contains(e.target)
             },
