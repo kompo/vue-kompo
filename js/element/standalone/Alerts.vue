@@ -1,5 +1,4 @@
 <template>
-
     <transition name="alert">
 
         <div class="vlAlertWrapper" v-if="alerts.length" 

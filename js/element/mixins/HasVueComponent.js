@@ -5,6 +5,9 @@ export default {
         },
         $_vueTag(element){
             return 'Vl' + this.$_vueComponent(element)
+        },
+        $_getKomposerTemplate(obj){
+        	return this.$_vueComponent(obj) == 'FormQuery' ? 'vl-query' : 'vl-form'
         }
     }
 }

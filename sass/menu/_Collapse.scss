@@ -7,6 +7,12 @@
         
         width: 100%;
         cursor: pointer;
+        >a{
+            display: flex;
+            white-space: nowrap;
+            flex-direction: row;
+            align-items: center;
+        }
 
         &.vl-toggler-closed .icon-down-dir{
             display: block;

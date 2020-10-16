@@ -19,10 +19,20 @@ export default {
                 }, 
                 this.$_customLayoutAttributes
             )
+        },
+        $_layoutHref(){
+            return (this.component.href && this.component.href != 'javascript:void(0)') ? 
+                this.component.href : ''
+        },
+        $_layoutHrefAttributes(){
+            return this.$_layoutHref ? { is: 'a', href: this.$_layoutHref } : { is: 'div' }
         }
     },
 
 	methods: {
+        $_clickAction(){
+            this.$_runOwnInteractions('click') //new experimental feature for Flex
+        },
         $_attributes(component) { return this.$_defaultLayoutAttributes(component) },
         $_defaultLayoutAttributes(component) {
             return {

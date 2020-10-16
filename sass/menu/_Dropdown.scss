@@ -11,33 +11,42 @@
 	.vl-nav-item{
 		align-items: flex-start;
 	}
-	.vl-dropdown-menu{
-        &.vl-menu-closed{
-            display: none;
-        }
-	}
+}
+.vl-dropdown-menu{
+    &.vl-menu-closed{
+        display: none;
+    }
 }
 @include media-breakpoint-up(lg) {
+
 	.vl-dropdown{
 		flex-direction: row;
 		align-items: center;
 		.vl-nav-item{
 			align-items: center;
 		}
-		.vl-dropdown-menu {
-			display: none;
-			position: absolute;
-			left: 0;
-			top: 100%;
-			background-color: white;
-			z-index: 100;
-			&.vl-dropdown-menu-right{
-				left: auto;
-				right: 0;
-			}
-		}
 		&:hover .vl-dropdown-menu{
-			display: block;
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+	.vl-dropdown-menu {
+		position: absolute;
+		left: 0;
+		top: 100%;
+		background-color: white;
+		z-index: 100;
+		transform: scale(0);
+		transition: all .2s ease-in-out;
+		opacity: 0;
+		transform-origin: top left;
+        &.vl-menu-closed{
+            display: block; //cancel mobile effect
+        }
+		&.vl-dropdown-menu-right{
+			left: auto;
+			right: 0;
+			transform-origin: top right;
 		}
 	}
 }

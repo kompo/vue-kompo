@@ -3,7 +3,7 @@
         v-if="!$_displayNone" v-show="!$_hidden"
         v-bind="$_attributes" 
         v-turbo-click="component.turbo"
-        @click="$_clickAction">
+        @click.stop="$_clickAction">
 
         <label v-if="!$slots.default" v-html="$_label" />
 

@@ -31,7 +31,9 @@ export default {
         $_rIcon() { return this.$_data('rIcon') },
         $_pureLabel() { return this.component.label },
         $_label() { 
-            return (this.$_icon || '') + this.$_pureLabel + (this.$_rIcon || '')
+            return (this.$_icon ? (this.$_icon + '&nbsp;') : '') + 
+                this.$_pureLabel + 
+                (this.$_rIcon ? ('&nbsp;' + this.$_rIcon) : '')
         },
 
         $_defaultElementAttributes() {

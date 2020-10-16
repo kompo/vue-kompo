@@ -49,7 +49,7 @@ export default {
                 return this.$emit('includeObj', response) //emit and stop
 
             if(!_.isString(response)){
-                this.partial = this.$_vueComponent(response) == 'FormQuery' ? 'vl-query' : 'vl-form'
+                this.partial = this.$_getKomposerTemplate(response)
                 this.component = response
                 this.panelKey += 1
             }else{

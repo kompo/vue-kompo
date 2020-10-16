@@ -52,6 +52,9 @@ const Kompo = {
 	    	vlFillPanel(panelId, response, included){
 	    		Kompo.events.$emit('vlFillPanel'+panelId, response, included)
 	    	},
+	    	vlFillSlidingPanel(response){
+	    		Kompo.events.$emit('vlFillSlidingPanel', response)
+	    	},
 	    	vlRequestFormInfo(kompoid, askerId){
 	    		Kompo.events.$emit('vlRequestFormInfo'+kompoid, askerId)
 	    	},

@@ -1,7 +1,9 @@
 <template>
     <component 
         v-bind="$_layoutWrapperAttributes" 
-        v-show="!$_hidden">
+        v-show="!$_hidden"
+        @click="$_clickAction"
+        v-turbo-click="component.turbo">
         <component v-for="(col,index) in komponents"
             :key="index"
             v-bind="$_attributes(col)" />
@@ -21,19 +23,8 @@ export default {
             ]
         },
         $_customLayoutAttributes(){
-            return this.href ? {
-                is: 'a',
-                href: this.href
-            } : {
-                is: 'div'
-            }
-        },
-
-        href(){
-            return (this.component.href && this.component.href != 'javascript:void(0)') ? 
-                this.component.href : ''
+            return this.$_layoutHrefAttributes
         }
-
     }
 }
 </script>

@@ -1,17 +1,25 @@
 <template>
-    <div v-bind="$_layoutWrapperAttributes" v-show="!$_hidden">
+    <component 
+    	v-bind="$_layoutWrapperAttributes" 
+    	v-show="!$_hidden"
+        v-turbo-click="component.turbo">
         <template v-for="(row,index) in komponents">
             <div>
                 <component v-bind="$_attributes(row)" />
             </div>
         </template>
-    </div>
+    </component>
 </template>
 
 <script>
 import Layout from '../mixins/Layout'
 
 export default {
-    mixins: [Layout]
+    mixins: [Layout],
+    computed:{
+        $_customLayoutAttributes(){
+            return this.$_layoutHrefAttributes
+        }
+    }
 }
 </script>

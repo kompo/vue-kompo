@@ -50,7 +50,12 @@
  * Display styles
  */
 .vlBtn, .vlLink{
-	label{cursor: pointer;}
+	label{
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
 	@if variable-exists(btn-border-radius){
 		border-radius: $btn-border-radius;
 	}

@@ -1,6 +1,6 @@
 
 /*** variables ****/
-
+$body-color: #434242 !default;
 $btn-depth: 1px !default;
 $table-color: $primary !default;
 $modal-header-bg: mix($primary, white, 30%) !default;
@@ -11,7 +11,7 @@ $modal-header-h1-color: mix($primary, black, 50%) !default;
 
 body, html {
     height: 100%;
-    color: #434242;
+    color: $body-color;
     @extend .mini-scroll;
 }
 
