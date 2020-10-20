@@ -156,10 +156,10 @@ const Kompo = {
 				}
 
 				if(binding.value !== false) //when v-turbo-click="false" don't bind
-					document.body.addEventListener('click', el.turboClickEvent)
+					el.addEventListener('click', el.turboClickEvent)
 			},
 			unbind: function (el) {
-				document.body.removeEventListener('click', el.turboClickEvent)
+				el.removeEventListener('click', el.turboClickEvent)
 			}
 		})
 
