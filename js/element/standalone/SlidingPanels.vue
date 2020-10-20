@@ -1,15 +1,13 @@
 <template>
-<div v-if="hasSlidingPanels" class="fixed inset-0 overflow-hidden">
-    <div class="absolute inset-0 overflow-hidden">
-        <transition-group name="slideLeft">
-            <vl-sliding-panel
-                v-for="(slide, key) in slides"
-                :obj="slide.obj"
-                :index="slide.id"
-                :key="slide.id"
-                @close="closeById" />
-        </transition-group>
-    </div>
+<div v-if="hasSlidingPanels" class="vlSlidingPanels">
+    <transition-group name="slideLeft">
+        <vl-sliding-panel
+            v-for="(slide, key) in slides"
+            :obj="slide.obj"
+            :index="slide.id"
+            :key="slide.id"
+            @close="closeById" />
+    </transition-group>
 </div>
 </template>
 

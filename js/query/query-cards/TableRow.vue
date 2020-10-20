@@ -1,5 +1,7 @@
 <template>
-    <tr :class="$_activeClass">
+    <tr 
+        v-bind="$_cardWrapperAttributes"
+        @click="$_clickAction">
         <template v-for="(component,k) in $_props">
             <td :key="k" v-if="$_vueTag(component)" >
                 <component 
@@ -14,6 +16,12 @@
 import Card from '../mixins/Card'
 
 export default {
-    mixins: [Card]
+    mixins: [Card],
+    computed: {
+        $_activeClass(){ return this.active ? 'vlActive' : '' },
+        $_customClassArray() { return [
+            this.$_activeClass
+        ] },
+    }
 }
 </script>

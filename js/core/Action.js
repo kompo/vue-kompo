@@ -83,7 +83,8 @@ export default class Action {
         if(!this.vue.formInfo.url)
             return
         
-        this.$_kAxios.$_submitFormAction().then(response => {
+        this.$_kAxios.$_submitFormAction()
+        .then(response => {
 
             this.vue.$_state({ loading: false })
             this.vue.$_state({ isSuccess: true })
@@ -144,6 +145,21 @@ export default class Action {
         this.vue.$nextTick( () => {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)
         })
+    }
+    insertModalAction(response){
+        this.vue.$modal.events.$emit(
+            'insertModal' + this.vue.kompoid, 
+            {
+                vkompo: response.data,
+                is: 'VlEditLinkModalContent',
+                index: this.vue.index,
+                kompoid: this.vue.kompoid,
+                keepModalOpen: this.vue.$_data('keepModalOpen')
+            }, 
+            {
+                warn: this.vue.$_data('warnBeforeClose')
+            }
+        )
     }
     fillPanelAction(response, parentAction){
         this.vue.$kompo.vlFillPanel(this.$_data('panelId'), response.data, parentAction.$_data('included'))

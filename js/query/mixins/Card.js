@@ -10,10 +10,25 @@ export default {
 		layout: { type: String},
 	},
 	computed:{
-		$_activeClass(){ return this.active ? 'vlActive' : '' },
-		$_props(){ return this.vkompo.komponents }
+		$_props(){ return this.vkompo.komponents },
+
+        $_customCardWrapperAttributes(){
+            return {}
+        },
+        $_cardWrapperAttributes(){
+            return Object.assign({
+                    ...this.$_defaultElementAttributes,
+                    class: this.$_classes,
+                    style: this.$_elementStyles
+                }, 
+                this.$_customCardWrapperAttributes
+            )
+        },
 	},
 	methods:{
+        $_clickAction(){
+            this.$_runOwnInteractions('click') //new experimental feature for TableRow
+        },
 		$_prop(propKey){ 
 			return this.$_props[propKey] || '' //otherwise classes were showing undefined
 		},

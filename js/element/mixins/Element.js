@@ -31,6 +31,11 @@ export default {
         $_rIcon() { return this.$_data('rIcon') },
         $_pureLabel() { return this.component.label },
         $_label() { 
+            return [this.$_icon, this.$_pureLabel, this.$_rIcon]
+                        .filter(n => n).join('&nbsp;')
+
+            if(this.$_icon && this.$_rIcon)
+                return this.$_icon + (this.$_pureLabel)
             return (this.$_icon ? (this.$_icon + '&nbsp;') : '') + 
                 this.$_pureLabel + 
                 (this.$_rIcon ? ('&nbsp;' + this.$_rIcon) : '')

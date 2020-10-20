@@ -31,7 +31,7 @@ export default {
 
 	methods: {
         $_clickAction(){
-            this.$_runOwnInteractions('click') //new experimental feature for Flex
+            this.$_runOwnInteractions('click') //new experimental feature for Flex, Row
         },
         $_attributes(component) { return this.$_defaultLayoutAttributes(component) },
         $_defaultLayoutAttributes(component) {
