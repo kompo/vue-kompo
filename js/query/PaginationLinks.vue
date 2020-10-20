@@ -1,5 +1,5 @@
 <template>
-    <ul v-if="needsPaginationLinks" class="pagination" role="navigation">
+    <ul v-if="needsPaginationLinks" class="vlPaginationLinks" role="navigation">
         <li v-if="isFirstPage" class="page-item disabled" aria-disabled="true" aria-label="previous">
             <span class="page-link" aria-hidden="true">&lsaquo;</span>
         </li>

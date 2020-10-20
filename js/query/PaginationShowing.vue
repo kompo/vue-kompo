@@ -1,10 +1,10 @@
 <template>
-    <div class="vlFlex vlAlignCenter">
+    <div v-if="needsPaginationLinks" class="vlFlex vlAlignCenter vlPaginationShowing">
         <div>
             <span v-html="pagination.total + ' results'" />
             <span v-html="'(showing '+from+' to '+to+') &nbsp;'" />
         </div>
-        <ul v-if="needsPaginationLinks" class="pagination" role="navigation">
+        <ul v-if="needsPaginationLinks" class="vlPaginationLinks" role="navigation">
             <li v-if="isFirstPage" class="page-item disabled" aria-disabled="true" aria-label="previous">
                 <span class="page-link" aria-hidden="true">&lsaquo;</span>
             </li>
