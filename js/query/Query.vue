@@ -1,32 +1,30 @@
 <template>
-    <div v-bind="queryAttributes" class="vlQuery">
+    <div v-bind="queryAttributes" :class="queryClass">
 
-        <div class="vlFlex">
-            <vl-filters v-bind="filtersAttributes('Left')" />
+        <vl-filters v-bind="filtersAttributes('Left')" />
 
-            <div class="vlQueryWrapper">
-                <vl-filters v-bind="filtersAttributes('Top')" />
-                <div class="vlQueryInner">
-                    <component v-if="topPagination" @browse="browseQuery" 
-                        v-bind="paginationAttributes" />
+        <div :class="queryWrapperClass">
+            <vl-filters v-bind="filtersAttributes('Top')" />
+            <div class="vlQueryInner">
+                <component v-if="topPagination" @browse="browseQuery" 
+                    v-bind="paginationAttributes" />
 
-                    <div v-if="isTableLayout" class="vlTableWrapper"><!-- TableWrapper useful for various CSS tricks, ex: border-radius -->
-                        <table class="w-full table vlTable" :class="tableClass">
-                            <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
-                            <component v-bind="layoutAttributes" />
-                        </table>
-                    </div>
-
-                    <component v-else v-bind="layoutAttributes" />
-
-                    <component v-if="bottomPagination" @browse="browseQuery" 
-                        v-bind="paginationAttributes" />
+                <div v-if="isTableLayout" class="vlTableWrapper"><!-- TableWrapper useful for CSS, ex: border-radius -->
+                    <table class="w-full table vlTable" :class="tableClass">
+                        <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
+                        <component v-bind="layoutAttributes" />
+                    </table>
                 </div>
-                <vl-filters v-bind="filtersAttributes('Bottom')" />
-            </div>
 
-            <vl-filters v-bind="filtersAttributes('Right')" />
+                <component v-else v-bind="layoutAttributes" />
+
+                <component v-if="bottomPagination" @browse="browseQuery" 
+                    v-bind="paginationAttributes" />
+            </div>
+            <vl-filters v-bind="filtersAttributes('Bottom')" />
         </div>
+
+        <vl-filters v-bind="filtersAttributes('Right')" />
 
         <vl-support-modal 
             :kompoid="$_elKompoId" 
@@ -67,10 +65,23 @@ export default {
     },
     computed: {
         filtersPlacement(){ return [ 'top', 'left', 'bottom', 'right' ] },
+        hasSideFilters(){
+            return this.filters['left'].length || this.filters['right'].length
+        },
+        queryClass(){
+            return this.$_classString([
+                'vlQuery',
+                this.hasSideFilters ? ' vlFlex' : '',
+                this.$_phpClasses
+            ])
+        },
+        queryWrapperClass(){
+            return 'vlQueryWrapper' + (this.hasSideFilters ? ' vlFlex1' : '')
+        },
         queryAttributes(){
             return {
                 ...this.$_defaultElementAttributes,
-                class: this.$_phpClasses,
+                class: this.queryClass,
                 style: this.$_elementStyles
             }
         },
