@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <form v-bind="formAttributes" class="vlForm">
+    <div v-bind="formAttributes" class="vlForm">
+        <form>
             <template v-for="component in komponents">
                 <component v-bind="$_attributes(component)"/>
             </template>
@@ -72,14 +72,11 @@ export default {
             }
         },
         submitError(e){
-
             this.$emit('error', e)
 
             if (e.response.status == 422){
                 this.$_validate(e.response.data.errors)
                 new Alert('Please correct the errors').asError().emitFrom(this)
-            }else{
-                new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this)
             }
         },
         getJsonFormData(){
