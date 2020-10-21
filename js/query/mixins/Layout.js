@@ -17,6 +17,7 @@ export default {
         this.items = this.cards
     },
     computed:{
+        $_orderingUrl(){ return this.$_data('orderingUrl') },
         $_hasItems(){ return this.items.length > 0 },
         $_orderable(){ return this.component.orderable },
         $_sortingAttributes(){
@@ -48,14 +49,13 @@ export default {
             this.activeIndex = (index == this.activeIndex) ? null : index
         },
         change(event){
-            this.layoutKey += 1 //<template v-for><component> wasn't rendering without it...
             if(this.$_orderable){
 
-                var minOrder = _.minBy(this.items, 'order')
-                var newOrder = _.map(this.items, (item, k) => {
+                const minOrder = _.minBy(this.items, 'data.item_order')
+                const newOrder = _.map(this.items, (item, k) => {
                     return {
-                        id: item.id,
-                        order: minOrder.order + k
+                        item_id: item.data.item_id,
+                        item_order: minOrder.data.item_order + k
                     }
                 })
 

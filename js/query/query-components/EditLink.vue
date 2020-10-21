@@ -22,7 +22,7 @@ export default {
         warnBeforeClose(){ return this.$_data('warnBeforeClose') },
         $_attributes(){
             return {
-                ...this.$_defaultTriggerAttributes,
+                //...this.$_defaultTriggerAttributes, //not needed since the vlLink or vlButton will add them
                 vkompo: Object.assign({}, this.vkompo), 
                 is: this.linkTag,
                 kompoid: this.kompoid

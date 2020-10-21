@@ -1,5 +1,5 @@
 <template>
-    <div :key="layoutKey">
+    <div>
         <div v-if="!component.orderable">
 
             <template v-for="(item, index) in items">
@@ -8,7 +8,9 @@
 
         </div>
 
-        <draggable v-else v-bind="$_sortingAttributes" v-on="$_sortingEvents">
+        <draggable v-else
+            v-bind="$_sortingAttributes" 
+            v-on="$_sortingEvents">
 
             <template v-for="(item, index) in items">
 
