@@ -15,8 +15,6 @@
             <vl-error-icon :error="showError" />
         </span>
 
-        <vl-form-info :component="component" />
-
     </button>
 </template>
 

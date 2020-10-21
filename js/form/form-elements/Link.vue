@@ -14,9 +14,7 @@
             <vl-success-icon :success="showCheckmark" />
             <vl-error-icon :error="showError" />
         </span>
-
-        <vl-form-info :component="component" />
-    
+            
     </a>
 </template>
 
@@ -38,12 +36,14 @@ export default {
             ]
         },
         linkClass(){
-            return (this.$_data('btnStyle') ? 'vlBtn' : 'vlLink') + 
-                (this.$_data('btnOutlined') ? ' vlBtnOutlined' : '') +
-                (this.$_data('btnPlain') ? ' vlBtnPlain' : '') +
-                (this.$_data('secondary') ? ' vlSecondary' : '')+
-                (this.$_data('btnInline') ? ' vlBtnInline' : '') +
-                (this.$_data('btnBlock') ? ' vlBtnBlock' : '') //inline by default
+            return this.$_classString([
+                this.$_data('btnStyle') ? 'vlBtn' : '',
+                this.$_data('btnOutlined') ? 'vlBtnOutlined' : '',
+                this.$_data('btnPlain') ? 'vlBtnPlain' : '',
+                this.$_data('secondary') ? 'vlSecondary' : '',
+                this.$_data('btnInline') ? 'vlBtnInline' : '',
+                this.$_data('btnBlock') ? 'vlBtnBlock' : '' //inline by default
+            ])
         }
     }
 }
