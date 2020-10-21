@@ -130,3 +130,12 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 .vlBtnPlain.vlSecondary, a.vlBtnPlain.vlSecondary{
 	@include btnPlain($secondary);
 }
+
+/**
+ * Link utilities
+ */
+.vlEditLink{
+	label{
+		cursor: pointer; //TODO: remove the need for label in Links...
+	}
+}
