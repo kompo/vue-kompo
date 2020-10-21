@@ -71,12 +71,15 @@ export default {
         queryClass(){
             return this.$_classString([
                 'vlQuery',
-                this.hasSideFilters ? ' vlFlex' : '',
+                this.hasSideFilters ? 'vlFlex' : '',
                 this.$_phpClasses
             ])
         },
         queryWrapperClass(){
-            return 'vlQueryWrapper' + (this.hasSideFilters ? ' vlFlex1' : '')
+            return this.$_classString([
+                'vlQueryWrapper',
+                this.hasSideFilters ? 'vlFlex1' : ''
+            ])
         },
         queryAttributes(){
             return {
@@ -167,8 +170,7 @@ export default {
                 if (e.response.status == 422){
                     this.$_validate(e.response.data.errors)
                 }else{
-                    this.$modal.showFill('modal'+this.$_elKompoId, 
-                        '<div>Error '+e.response.status+' | '+e.response.data.message+'</div>')
+                    this.$_kAxios.$_handleAjaxError(e) 
                 }
 
                 this.$_state({ loading: false })

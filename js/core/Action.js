@@ -34,23 +34,19 @@ export default class Action {
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
         this.$_kAxios.$_actionAxiosRequest()
-        .then(response => {
+        .then(r => {
 
 			this.vue.$_state({ loading: false })
             this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, true)
 
-            this.vue.$_runInteractionsOfType(this, 'success', response)
+            this.vue.$_runInteractionsOfType(this, 'success', r)
 
 
-        }).catch(error => {
+        }).catch(e => {
 
             this.vue.$_state({ loading: false })
 
-            if(this.vue.$_hasInteractionsOfType(this, 'error')){
-        	   this.vue.$_runInteractionsOfType(this, 'error', error)
-            }else{
-        	   this.$_kAxios.$_handleAjaxError(error) 
-            }
+            this.handleErrorInteraction(e)
 
         })
     }
@@ -84,28 +80,30 @@ export default class Action {
             return
         
         this.$_kAxios.$_submitFormAction()
-        .then(response => {
+        .then(r => {
 
             this.vue.$_state({ loading: false })
             this.vue.$_state({ isSuccess: true })
 
-            this.vue.$kompo.vlSubmitSuccess(this.vue.kompoid, response, this.vue)
-            this.vue.$_runInteractionsOfType(this, 'success', response)
+            this.vue.$kompo.vlSubmitSuccess(this.vue.kompoid, r, this.vue)
+            this.vue.$_runInteractionsOfType(this, 'success', r)
 
         })
-        .catch(error => {
+        .catch(e => {
 
             this.vue.$_state({ loading: false })
             this.vue.$_state({ hasError: true })
 
-            if(error.response.status == 449){
-                if(confirm(error.response.data)){
+            if(e.response.status == 449){
+                if(confirm(e.response.data)){
                     this.warningConfirmed = true
                     this.submitFormAction()
                 }
             }else{
-                this.vue.$kompo.vlSubmitError(this.vue.kompoid, error)
-                this.vue.$_runInteractionsOfType(this, 'error', error)
+                this.vue.$kompo.vlSubmitError(this.vue.kompoid, e)
+
+                if (e.response.status !== 422) //handled in vlSubmitError
+                    this.handleErrorInteraction(e)
             }
             
         })
@@ -202,6 +200,13 @@ export default class Action {
         if(this.warningConfirmed)
             formData.append('kompoConfirmed', this.warningConfirmed)
         return formData
+    }
+    handleErrorInteraction(e){
+        if(this.vue.$_hasInteractionsOfType(this, 'error')){
+           this.vue.$_runInteractionsOfType(this, 'error', e)
+        }else{
+           this.$_kAxios.$_handleAjaxError(e) 
+        }
     }
 
     /* utils */

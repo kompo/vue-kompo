@@ -14,8 +14,6 @@ export default class KompoAxios{
         this.$_routeMethod = element.$_data('routeMethod')
         this.$_ajaxPayload = element.$_data('ajaxPayload')
 
-        this.$_orderableRoute = element.$_data('orderableRoute') //TODO change to $_route
-
         this.$_kompoAction = element.$_data('X-Kompo-Action')
         this.$_kompoTarget = element.$_data('X-Kompo-Target')
 
@@ -77,13 +75,12 @@ export default class KompoAxios{
     }
     $_orderQuery(newOrder){
         return this.$_axiosWithErrorHandling({
-            url: this.$_orderableRoute, 
+            url: this.$_komponent.$_orderingUrl, 
             method: 'POST',
-            data: {
-                order: newOrder
-            },
+            data: {order: newOrder},
             headers: {
-                'X-Kompo-Info': this.$_getKompoInfo()
+                'X-Kompo-Info': this.$_getKompoInfo(),
+                'X-Kompo-Action': 'order-items'
             }
         })
     }
@@ -150,14 +147,13 @@ export default class KompoAxios{
                     })
     }
     $_axios(axiosRequest){
-
         return axios(axiosRequest)
     }
-    $_handleAjaxError(e){
-        if(e.response.status == 419 && confirm(this.$_sessionTimeoutMessage)){
+    $_handleAjaxError(e){                
+        if(e.response.status !== 419)
+            return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
+
+        if(confirm(this.$_sessionTimeoutMessage))
             window.location.reload()
-        }else{
-            new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
-        }
     }
 }
