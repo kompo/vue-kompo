@@ -15,6 +15,7 @@
 	}
 	&:hover{
 		background-color: mix($color, black, 85%);
+		color: #fff; //to remain white if it is a link with .vlBtn
 	}
 }
 

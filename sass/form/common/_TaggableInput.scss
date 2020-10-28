@@ -34,7 +34,7 @@
 		align-items: flex-end;
 		>div{
 			margin: 0.1rem;
-			@include tag($form-primary-color);
+			@include tag($tags-bg-color);
 			@include ellipsis1();
 		    padding: 0.1rem 0.5rem 0.1rem 0.2rem; //has to be after @include tag()
 			&.vlCustomLabel{ // to align x with customLabel, don't remove
