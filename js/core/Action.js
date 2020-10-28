@@ -125,7 +125,7 @@ export default class Action {
         ))
     }
     emitDirectAction(response){
-    	this.vue.$emit(this.$_data('event'), response.data)
+    	this.vue.$emit(this.$_data('event'), response ? response.data : null)
     }
     toggleElementAction(){
         if(this.$_data('toggleId'))
@@ -133,6 +133,10 @@ export default class Action {
     }
     hideSelfAction(){
         this.vue.$_toggleSelf()
+    }
+    runJsAction(){
+        const jsFunction = this.$_data('jsFunction')
+        this.vue.$nextTick(() => window[jsFunction]() )
     }
     fillModalAction(response){
     	var modalName = this.$_data('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')

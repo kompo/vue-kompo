@@ -99,12 +99,14 @@ export default {
             this.$_runOwnInteractionsWithAction('change', 'submitForm')
             this.$_runOwnInteractionsWithAction('change', 'browseQuery')
             this.$_runOwnInteractionsWithAction('change', 'sortQuery')
+            this.$_runOwnInteractionsWithAction('change', 'runJs')
 
             this.$_clearErrors()
         },
         $_inputAction(){
             this.debouncedSubmitOnInput()
             this.debouncedFilterOnInput()
+            this.$_runOwnInteractions('input')
         },
         $_focusAction(){
             if(this.$_readOnly)

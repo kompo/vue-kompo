@@ -3,9 +3,11 @@
         
         <component v-bind="$_attributes(komponents[0])" :key="renderKey">
             <template v-slot:after>
-                <a class="vlFormComment" href="javascript:void(0)" @click.stop="loadUpdateForm">
-                    <i class="icon-plus" /><span v-html="$_data('updateOptionsLabel')"/>
-                </a>
+                <a class="vlFormComment" 
+                    href="javascript:void(0)" 
+                    @click.stop="loadUpdateForm"
+                    :class="$_data('addLabelClass')"
+                    v-html="$_data('addLabel')" />
             </template>
         </component>
 

@@ -16,9 +16,11 @@
 </template>
 
 <script>
+import Element from '../../element/mixins/Element'
+
 export default {
+    mixins: [Element], // for $_elKompoId
     props: {
-        vkompo: {type: Object, required: true},
         kompoid: {type: String, required: true},
         index: {type: Number} //because addlink doesn't have an index
     },
@@ -43,7 +45,8 @@ export default {
     		this.$emit('closeModal')
     	},
         deleted(){
-            this.$emit('refresh', this.index)
+            this.$emit('refresh', this.index) //emit to parent support modal
+            this.$kompo.vlEmitFrom(this.$_elKompoId, 'deleted') //emit to DeleteLink
             this.closeModal()
         }
     }

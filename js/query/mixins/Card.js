@@ -1,4 +1,5 @@
 import Element from '../../element/mixins/Element'
+import TurboClick from '../../core/TurboClick'
 
 export default {
     mixins: [ Element ],
@@ -28,6 +29,9 @@ export default {
 	methods:{
         $_clickAction(){
             this.$_runOwnInteractions('click') //new experimental feature for TableRow
+
+            if(this.component.href && this.component.turbo)
+                new TurboClick(this.$vnode, this.component.href).trigger()
         },
 		$_prop(propKey){ 
 			return this.$_props[propKey] || '' //otherwise classes were showing undefined

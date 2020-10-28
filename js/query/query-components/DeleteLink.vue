@@ -39,6 +39,16 @@ export default {
                 },
                 {}
             )
+        },
+        $_attachEvents(){
+            this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
+                this.$emit('deleted')
+            })
+        },
+        $_destroyEvents(){
+            this.$_vlOff([
+                'vlEmit'+this.$_elKompoId
+            ])
         }
     },
     created(){
