@@ -1,4 +1,5 @@
 import {VueMasonryPlugin} from 'vue-masonry'
+import TurboClick from './js/core/TurboClick'
 
 window.$ = window.jQuery = require('jquery')
 
@@ -115,7 +116,9 @@ const Kompo = {
 
 						e.preventDefault()
 
-						axios.get(el.href).then(r => {
+						new TurboClick(vnode, el.href).trigger()
+
+						/*axios.get(el.href).then(r => {
 							
 							//parse the GET response HTML
 							var doc = new DOMParser().parseFromString(r.data, "text/html")
@@ -151,7 +154,7 @@ const Kompo = {
 
 			            }).catch(e => {
 			            	console.log('Error loading object in Panel:' + e)
-			            })
+			            })*/
 			        }
 				}
 
