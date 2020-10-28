@@ -1,14 +1,14 @@
 <template>
-    <div class="vlNoItems" v-html="noItemsFound" />
+	<div>
+    	<div class="vlNoItems" v-html="$_noItemsFound" />
+
+    </div>
 </template>
 
 <script>
+import NoItems from './mixins/NoItems'
+
 export default {
-    props: {
-        vkompo: {type: Object, required: true}
-    },
-    computed: {
-    	noItemsFound(){ return this.vkompo.noItemsFound }
-    }
+    mixins: [NoItems]
 }
 </script>

@@ -1,18 +1,20 @@
 <template>
     <tbody>
         <tr class="text-center">
-            <td :colspan="headers.length" v-html="noItemsFound" />
+            <td v-if="$_noItemsAsHtml" :colspan="headers.length" v-html="$_noItemsFound" />
+            <td v-else :colspan="headers.length">
+                <component v-bind="$_noItemsAttributes" />
+            </td>
         </tr>
     </tbody>
 </template>
 
 <script>
+import NoItems from './mixins/NoItems'
+
 export default {
-    props: {
-        vkompo: {type: Object, required: true}
-    },
+    mixins: [NoItems],
     computed: {
-    	noItemsFound(){ return this.vkompo.noItemsFound },
         headers(){ return this.vkompo.headers }
     }
 }
