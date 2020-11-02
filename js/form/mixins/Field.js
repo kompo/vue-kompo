@@ -106,7 +106,7 @@ export default {
         $_inputAction(){
             this.debouncedSubmitOnInput()
             this.debouncedFilterOnInput()
-            this.$_runOwnInteractions('input')
+            this.$_runOwnInteractionsWithAction('input', 'runJs')
         },
         $_focusAction(){
             if(this.$_readOnly)

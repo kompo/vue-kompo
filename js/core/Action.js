@@ -126,6 +126,8 @@ export default class Action {
     }
     emitDirectAction(response){
     	this.vue.$emit(this.$_data('event'), response ? response.data : null)
+
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     toggleElementAction(){
         if(this.$_data('toggleId'))

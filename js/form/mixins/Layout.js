@@ -25,7 +25,12 @@ export default {
                 this.component.href : ''
         },
         $_layoutHrefAttributes(){
-            return this.$_layoutHref ? { is: 'a', href: this.$_layoutHref } : { is: 'div' }
+            if(!this.$_layoutHref)
+                return { is: 'div' }
+
+            return Object.assign({ is: 'a', href: this.$_layoutHref }, 
+                this.component.target ? {target: this.component.target} : {}
+            )
         }
     },
 
