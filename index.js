@@ -68,6 +68,12 @@ const Kompo = {
 	    	vlDeliverKompoInfo(askerId, kompoInfo){
 	    		Kompo.events.$emit('vlDeliverKompoInfo'+askerId, kompoInfo)
 	    	},
+			vlToggleSidebar(sidebar, elKompoId){
+				Kompo.events.$emit('vlToggleSidebar'+sidebar, elKompoId)
+			},
+			vlToggleSidebarToggler(kompoid){
+				Kompo.events.$emit('vlToggleSidebarToggler'+kompoid)
+			},
 	    	events : this.events
 		}
 

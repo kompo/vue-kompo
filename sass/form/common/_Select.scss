@@ -15,7 +15,7 @@
 	position: absolute;
 	left: 0;
 	background-color: $form-control-bg;
-	z-index:100;
+	z-index: 50;
 	max-height: 240px;
 	overflow-y: auto;
 	@extend .mini-scroll !optional;

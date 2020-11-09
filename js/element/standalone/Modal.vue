@@ -67,6 +67,8 @@
         },
         methods:{
             outsideModal(e){
+                if(!this.$refs.modalContainer) //double click outside modal, the ref doesn't exist by the time the second click is triggered
+                    return false
                 //Note for vlModalClose: I deleted @mouse.stop="closeAction"
                 //cuz clicking on the (X) is the same as clicking outside the modal.
                 return !e.target.classList.contains('vlModalContainer') 

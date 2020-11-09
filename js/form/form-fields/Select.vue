@@ -4,8 +4,8 @@
             v-click-out="blur"
             v-bind="$_taggableInputAttributes" 
             v-on="$_taggableInputEvents">
-            <template v-slot:prepend v-if="prependIcon">
-                <i :class="prependIcon"/>
+            <template v-slot:prepend v-if="$_icon">
+                <div v-bind="prependIcon" />
             </template>
             <input
                 class="vlFormControl"
@@ -16,8 +16,8 @@
                 ref="input"
                 autocomplete="nope"
             />
-            <template v-slot:append v-if="appendIcon">
-                <i v-if="!$_readOnly" :class="appendIcon"/>
+            <template v-slot:append v-if="appendIcon && !$_readOnly">
+                <i :class="appendIcon"/>
             </template>
         </vlTaggableInput>
         <div v-if="filteredOptions.length" class="vlOptions" :key="optionsKey">
@@ -79,7 +79,11 @@ export default {
             }
         },
         options(){ return this.component.options },
-        prependIcon(){ return this.$_data('searchInput') ? 'icon-search' : null },
+        prependIcon(){ 
+            return {
+                is: {template: this.$_icon}
+            }
+        },
         appendIcon(){ return this.$_data('searchInput') ? null : 
             (this.$_state('focusedField') ? 'icon-up' : 'icon-down') },
         noOptionsFound(){ return this.$_data('noOptionsFound')},

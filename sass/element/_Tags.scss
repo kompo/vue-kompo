@@ -1,0 +1,7 @@
+.vlTag{
+	@include tagFilled($primary);
+}
+
+.vlTagOutlined{
+	@include tagOutlined($primary);
+}

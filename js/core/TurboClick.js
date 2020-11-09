@@ -7,29 +7,37 @@ export default class TurboClick {
 
 
 	}
+    getMainVueOptionsRecursively(element){
+        return element.$parent ? 
+            
+            this.getMainVueOptionsRecursively(element.$parent) : 
+
+            element.$options
+    }
+    getMainVueBootObject(vnode){
+        const mainOpts = this.getMainVueOptionsRecursively(vnode.context)
+
+        return Object.assign(
+            {el: mainOpts.el}, 
+            mainOpts.vuetify ? {vuetify: mainOpts.vuetify} : {}
+        )
+    }
     trigger(){
         axios.get(this.url).then(r => {
                             
             //parse the GET response HTML
-            var doc = new DOMParser().parseFromString(r.data, "text/html")
+            const doc = new DOMParser().parseFromString(r.data, "text/html")
 
             document.title = doc.title
             document.getElementsByTagName('body')[0].innerHTML= doc.getElementsByTagName('body')[0].innerHTML
-
-            const getMainVueBootObject = function(vnode){
-                const getMainVueOptionsRecursively = function (element){
-                    return element.$parent ? 
-                        getMainVueOptionsRecursively(element.$parent) : 
-                        element.$options
-                }
-                const mainOpts = getMainVueOptionsRecursively(vnode.context)
-                return Object.assign(
-                    {el: mainOpts.el}, 
-                    mainOpts.vuetify ? {vuetify: mainOpts.vuetify} : {}
-                )
-            }
             
-            new Vue(getMainVueBootObject(this.vnode))
+            new Vue(this.getMainVueBootObject(this.vnode))
+
+            Array.from(doc.getElementsByClassName('komposer-script')).forEach((scriptString) => {
+                let script = document.createElement('script')
+                script.textContent = scriptString.textContent
+                document.head.appendChild(script)
+            })
 
             //Re-run scripts with the class .reloadable-script
             //Kompo.events.$nextTick( () => { //nextTick not enough because of anonymous component in Panel {template: ...}
@@ -39,7 +47,8 @@ export default class TurboClick {
             }, 400)
 
             //Change the browser's url and reload if back is pressed
-            window.history.pushState({url: this.url}, "", this.url)
+            const responseURL = r.request.responseURL
+            window.history.pushState({url: responseURL}, "", responseURL)
             window.onpopstate = function(e) {location.reload()} //for back button
 
         }).catch(e => {

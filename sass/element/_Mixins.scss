@@ -18,10 +18,22 @@
 	overflow: hidden;
 }
 
-@mixin tag($color){
+@mixin tag(){
+	border-radius: 0.2rem;
+    padding: 0.15rem 0.2rem;
+	@include ellipsis1();
+}
+
+@mixin tagFilled($color){
 	background-color: $color;
 	color: white;
 	font-weight: 700;
-	border-radius: 0.2rem;
-    padding: 0.15rem 0.2rem;
+	@include tag();
+}
+
+@mixin tagOutlined($color){
+	border-color: $color;
+	border-width: 1px;
+	color: $color;
+	@include tag();
 }
