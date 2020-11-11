@@ -20,7 +20,8 @@ export default {
 
     data(){
         return {
-            canSubmit: true
+            canSubmit: true,
+            jsonFormData: null
         }
     },
 
@@ -46,7 +47,7 @@ export default {
     methods: {
         preSubmit(){
             if(this.emitFormData)
-                this.$emit('submit', this.getJsonFormData())
+                this.$emit('submit', this.jsonFormData)
         },
         submitSuccess(r, submitKomponent){
 
@@ -64,7 +65,7 @@ export default {
             }
             //check responseInModal() helper
             if(r.data.inModal)
-                this.$modal.showFill('modal'+this.$_elKompoId, r.data.message || r.data)
+                this.$kompo.vlModalShowFill('modal'+this.$_elKompoId, r.data.message || r.data)
 
             if(r.status === 202){
                 this.$_destroyEvents()
@@ -115,9 +116,10 @@ export default {
                 this.canSubmit = canSubmit
             })
             this.$_vlOn('vlRequestFormInfo'+this.$_elKompoId, (askerId) => {
+                this.jsonFormData = this.getJsonFormData()
                 this.$kompo.vlDeliverFormInfo(askerId, {
                     canSubmit: this.canSubmit,
-                    jsonFormData: this.getJsonFormData(),
+                    jsonFormData: this.jsonFormData,
                     url: this.formUrl, 
                     method: this.formMethod,
                     action: this.submitAction

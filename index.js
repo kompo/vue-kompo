@@ -74,21 +74,20 @@ const Kompo = {
 			vlToggleSidebarToggler(kompoid){
 				Kompo.events.$emit('vlToggleSidebarToggler'+kompoid)
 			},
-	    	events : this.events
-		}
-
-	    Vue.prototype.$modal = {
-	    	show(modal, ajaxContent, warnbeforeclose){
-	    		Kompo.events.$emit('show', modal, ajaxContent, warnbeforeclose)
+	    	vlModalShow(modal, ajaxContent, warnbeforeclose){
+	    		Kompo.events.$emit('vlModalShow' + modal, ajaxContent, warnbeforeclose)
 	    	},
-	    	close(modal){
-	    		Kompo.events.$emit('close', modal)
+	    	vlModalClose(modal){
+	    		Kompo.events.$emit('vlModalClose' + modal)
 	    	},
-	    	showFill(modal, html){
-	    		Kompo.events.$emit('showFill' + modal, html)
+	    	vlModalShowFill(modal, html){
+	    		Kompo.events.$emit('vlModalShowFill' + modal, html)
 	    	},
-	    	insertModal(kompoid, componentProps, modalProps){
-	    		Kompo.events.$emit('insertModal' + kompoid, componentProps, modalProps)
+	    	vlModalInsert(kompoid, componentProps, modalProps){
+	    		Kompo.events.$emit('vlModalInsert' + kompoid, componentProps, modalProps)
+	    	},
+	    	vlAlertShow(alert){
+	    		Kompo.events.$emit('vlAlertShow', alert)
 	    	},
 	    	events : this.events
 	    }

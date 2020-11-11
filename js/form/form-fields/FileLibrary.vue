@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import FieldFile from '../mixins/FieldFile'
+import FieldImage from '../mixins/FieldImage'
 import HasTaggableInput from '../mixins/HasTaggableInput'
 
 export default {
-    mixins: [FieldFile],
+    mixins: [FieldImage],
     data(){
         return {
             labelKey: 'name'

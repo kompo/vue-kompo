@@ -1,5 +1,5 @@
-import Field from '../mixins/Field'
-import SetInitialValueAsArray from '../mixins/SetInitialValueAsArray'
+import Field from './Field'
+import SetInitialValueAsArray from './SetInitialValueAsArray'
 
 export default {
     mixins: [Field, SetInitialValueAsArray],
@@ -14,7 +14,7 @@ export default {
             return {
                 ...this.$_defaultFieldEvents,
                 change: this.addFile,
-                // blur: ()=>{} //do nothing //<- why??? I commented out
+                blur: ()=>{} //do nothing //otherwise it blurs on open
             }
         },
         $_pristine() {
@@ -26,16 +26,6 @@ export default {
         }
     },
     methods: {
-        $_makeFileImages(){
-            Array.from(this.$refs.input.files).forEach( file => {
-                let reader = new FileReader()
-                reader.readAsDataURL(new File([file], file.name, {type: file.type}))
-                reader.onload = () => { 
-                    file.src = reader.result
-                    this.$_addFileToValue( file )
-                }
-            })
-        },
         $_addRefFiles(){
             Array.from(this.$refs.input.files).forEach( file => {
                 this.$_addFileToValue( file )
@@ -45,11 +35,11 @@ export default {
             this.$_multiple ? this.component.value.push(file) : this.component.value = [file]
         },
         $_fill(jsonFormData) {
+            if(!this.$_value.length)
+                jsonFormData[this.$_name + (this.$_multiple ? '[]' : '')] = null
+
             this.$_value.forEach( (file, i) => {
                 var name = this.$_name + (this.$_multiple ? '['+i+']' : '')
-                
-                if(file.src)
-                    delete file.src
                 
                 if(file.id){
                     jsonFormData[name]= JSON.stringify(file)

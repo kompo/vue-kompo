@@ -18,8 +18,10 @@
 </template>
 
 <script>
+import EmitsEvents from '../mixins/EmitsEvents'
 
 export default {
+    mixins: [EmitsEvents],
     props: {
         kompoid: { type: String, required: true }
     },
@@ -31,19 +33,21 @@ export default {
         modalName(){ return 'modal'+this.kompoid}
     },
     methods: {
-        openModal(){ this.$modal.show(this.modalName) },
-        closeModal(){ this.$modal.close(this.modalName) },
+        openModal(){ this.$kompo.vlModalShow(this.modalName) },
+        closeModal(){ this.$kompo.vlModalClose(this.modalName) },
         refresh(index){this.$emit('refresh', index)},
         
         $_attachEvents(){
-            this.$modal.events.$on('insertModal'+this.kompoid, (componentProps, modalProps) => {
+            this.$_vlOn('vlModalInsert'+this.kompoid, (componentProps, modalProps) => {
                 this.modalComponentProps = componentProps
                 this.modalProps = modalProps
-                this.$modal.show(this.modalName)
+                this.$kompo.vlModalShow(this.modalName)
             })
         },
         $_destroyEvents(){
-            this.$modal.events.$off(['insertModal'+this.kompoid])
+            this.$_vlOff([
+                'vlModalInsert'+this.kompoid
+            ])
         }
     },
     created() {

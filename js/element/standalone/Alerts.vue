@@ -16,35 +16,38 @@
 </template>
 
 <script>
-    export default {
-        data(){
-            return {
-                alerts : [],
-                zIndex: 2500, //higher than Modal's 2000
-                initialId: 0
-            }
-        },
-        methods:{
-            close(k){
-                this.alerts.splice(k)
-            },
-            closeById(id){
-                var indexWithId = _.findIndex(this.alerts, (alert) => alert.id == id)
-                this.alerts.splice(indexWithId)
-            },
-            addAlert(alert){
-                this.initialId += 1
-                
-                this.alerts.push(Object.assign(alert, {
-                    id: this.initialId
-                }))
-                setTimeout(()=> this.closeById(this.initialId), 3000)
-            }
-        },
-        mounted(){
-            this.$modal.events.$on('showAlert', (alert) => {
-                this.addAlert(alert)
-            })
+import EmitsEvents from '../mixins/EmitsEvents'
+
+export default {
+    mixins: [EmitsEvents],
+    data(){
+        return {
+            alerts : [],
+            zIndex: 2500, //higher than Modal's 2000
+            initialId: 0
         }
+    },
+    methods:{
+        close(k){
+            this.alerts.splice(k)
+        },
+        closeById(id){
+            var indexWithId = _.findIndex(this.alerts, (alert) => alert.id == id)
+            this.alerts.splice(indexWithId)
+        },
+        addAlert(alert){
+            this.initialId += 1
+            
+            this.alerts.push(Object.assign(alert, {
+                id: this.initialId
+            }))
+            setTimeout(()=> this.closeById(this.initialId), 3000)
+        }
+    },
+    mounted(){
+        this.$_vlOn('showAlert', (alert) => {
+            this.addAlert(alert)
+        })
     }
+}
 </script>

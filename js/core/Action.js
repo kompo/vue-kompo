@@ -144,15 +144,15 @@ export default class Action {
     	var modalName = this.$_data('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_data('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
-        this.vue.$modal.show(modalName, true, this.$_data('warnBeforeClose'))
+        this.vue.$kompo.vlModalShow(modalName, true, this.$_data('warnBeforeClose'))
 
         this.vue.$nextTick( () => {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)
         })
     }
-    insertModalAction(response){
-        this.vue.$modal.events.$emit(
-            'insertModal' + this.vue.kompoid, 
+    modalInsertAction(response){
+        this.vue.$kompo.vlModalInsert(
+            this.vue.kompoid, 
             {
                 vkompo: response.data,
                 is: 'VlEditLinkModalContent',

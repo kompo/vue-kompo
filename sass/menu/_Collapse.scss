@@ -1,7 +1,7 @@
-.vl-collapse{
+.vlCollapse{
     display: flex;
     flex-direction: column;
-    .vl-collapse-toggler{
+    .vlCollapseToggler{
         display: flex;
         justify-content: space-between;
         
@@ -14,7 +14,7 @@
             align-items: center;
         }
 
-        &.vl-toggler-closed .icon-down-dir{
+        &.vlTogglerClosed .icon-down-dir{
             display: block;
             transform: rotate(90deg);
             z-index: 0; // for somee reason, transform rotate adds z-index...
@@ -23,11 +23,11 @@
             }
         }
     }
-    .vl-collapse-menu{
+    .vlCollapseMenu{
         display: flex;
         flex-direction: column;
         width: 100%;
-        &.vl-menu-closed{
+        &.vlMenuClosed{
             display: none;
         }
     }

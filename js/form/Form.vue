@@ -39,7 +39,7 @@ export default {
             this.formKey += 1
         },
         successEvent(response, submitKomponent){
-            this.$emit('success',response, submitKomponent)
+            this.$emit('success', response, submitKomponent)
 
             if(submitKomponent.$_getFreshForm)
                 this.reloadFreshForm()

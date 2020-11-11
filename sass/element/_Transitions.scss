@@ -54,3 +54,18 @@
 .slideRight-leave-active{
     transition: all 0.3s ease;
 }
+
+/*********** slideDown ************/
+.slideDown-enter, .slideDown-leave-to{
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-100px);
+}
+.slideDown-enter-to, .slideDown-leave{
+    opacity: 1;
+    max-height: 100vh;
+    transform: translateY(0);
+}
+.slideDown-enter-active, .slideDown-leave-active{
+    transition: all .3s ease;
+}

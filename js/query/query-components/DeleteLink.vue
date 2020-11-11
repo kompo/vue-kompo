@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         confirmDelete(){
-            this.$modal.insertModal(
+            this.$kompo.vlModalInsert(
                 this.kompoid, {
                     vkompo: this.vkompo,
                     is: this.$options.name+ 'ModalContent',

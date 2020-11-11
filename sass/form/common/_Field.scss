@@ -50,7 +50,7 @@
 	}
 }
 
-input, textarea{
+input, textarea, select{
 	background-color: transparent; //reset the default browser bg #fff
 	&:-internal-autofill-selected{
 		background-color: transparent !important;

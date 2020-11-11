@@ -64,11 +64,6 @@ export default {
         this.optionsMessage = this.ajaxOptions ? this.enterMoreCharacters : this.noOptionsFound
     },
     computed: {
-        $_attributes() {
-            return {
-                ...this.$_defaultFieldAttributes
-            }
-        },
         $_events() {
             return {
                 ...this.$_defaultFieldEvents,

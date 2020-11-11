@@ -81,6 +81,6 @@ $scroll-color: #a3aabb !default;
 .mini-scroll::-webkit-scrollbar-track { background: #e7e9ec; }
 .mini-scroll::-webkit-scrollbar-thumb { background: $scroll-color; }
 
-.vl-sidebar-l, .vl-sidebar-r, .kompoScrollableContent, .vl-collapse-on-mobile-menu{
+.vl-sidebar-l, .vl-sidebar-r, .kompoScrollableContent{
     @extend .mini-scroll !optional;
 }

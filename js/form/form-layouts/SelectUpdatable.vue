@@ -39,7 +39,7 @@ export default {
             this.$_kAxios.$_loadKomposer().then(r => {
 
                 this.updateForm = r.data
-                this.$modal.show('modal'+this.$_elKompoId)
+                this.$kompo.vlModalShow('modal'+this.$_elKompoId)
 
             })
 
@@ -65,7 +65,7 @@ export default {
             this.renderKey += 1
 
             if(!this.$_data('keepModalOpen'))
-                this.$modal.close('modal'+this.$_elKompoId)
+                this.$kompo.vlModalClose('modal'+this.$_elKompoId)
         }
     }
 }

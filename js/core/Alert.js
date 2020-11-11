@@ -22,6 +22,6 @@ export default class Alert {
         return this
     }
     emitFrom(emittor){
-        emittor.$modal.events.$emit('showAlert', this)
+        emittor.$kompo.vlAlertShow(this)
     }
 }

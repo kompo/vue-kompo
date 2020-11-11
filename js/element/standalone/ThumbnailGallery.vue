@@ -51,7 +51,7 @@ export default {
     methods: {
         previewAndOpen(index){
             this.preview(index)
-            this.$modal.show(this.modalname)
+            this.$kompo.vlModalShow(this.modalname)
         },
         preview(index){
             this.previewIndex = index

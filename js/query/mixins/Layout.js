@@ -20,11 +20,15 @@ export default {
         $_orderingUrl(){ return this.$_data('orderingUrl') },
         $_hasItems(){ return this.items.length > 0 },
         $_orderable(){ return this.component.orderable },
+        $_dragHandle(){ return this.component.dragHandle },
         $_sortingAttributes(){
-            return {
-                disabled: this.sortingDisabled,
-                list: this.items
-            }
+            return Object.assign({
+                    disabled: this.sortingDisabled,
+                    list: this.items
+                }, this.$_dragHandle ? {
+                    handle: this.$_dragHandle
+                } : {}
+            )
         },
         $_sortingEvents(){
             return {

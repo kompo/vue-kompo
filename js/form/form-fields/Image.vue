@@ -15,7 +15,7 @@
             />
             
             <vl-thumbnail-gallery 
-                :images="$_value.length ? $_value : []" 
+                :images="thumbnails ? thumbnails : []" 
                 :height="thumbHeight"
                 @remove="remove"/>
 
@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import FieldFile from '../mixins/FieldFile'
+import FieldImage from '../mixins/FieldImage'
 
 export default {
-    mixins: [FieldFile],
+    mixins: [FieldImage],
     computed:{
         placeholder(){
             return this.$_pristine ? 
@@ -42,7 +42,6 @@ export default {
         addFile(){
             this.$_makeFileImages()
             this.$_blurActionDelayed()
-            this.$_changeAction()
         }
     }
 }

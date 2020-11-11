@@ -55,7 +55,7 @@ export default {
 		},
 		$_previewModal(arrows){
 
-			this.$modal.insertModal(
+			this.$kompo.vlModalInsert(
                 this.kompoid, {
                 	is: 'VlImageModalContent',
 					image: this.$_prop('image'),

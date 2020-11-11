@@ -31,8 +31,8 @@ export default {
     },
     methods:{
         insertForm(form){
-            this.$modal.events.$emit(
-                'insertModal' + this.kompoid, 
+            this.$kompo.vlModalInsert(
+                this.kompoid, 
                 this.componentProps(form), 
                 this.modalProps()
             )
