@@ -72,7 +72,7 @@ export default {
             if(this.$_multiple)
                 this.$_value.forEach( (v,k) => {
                     if(errors[errorName+'.'+k])
-                        this.$_setError(errors[errorName+'.'+k]) //showing the last error only
+                        this.$_setError(errors[errorName+'.'+k], k) //showing the last error only
                 })
         },
         $_keyUp(key){}, //to be overriden in komponents when needed
@@ -136,8 +136,12 @@ export default {
         $_resetValue(){
             this.component.value = _.cloneDeep(this.$_emptyValue)
         },
-        $_setError(error){
+        $_setError(error, index){
             this.errors = error || null
+            this.$_handleError(error, index)
+        },
+        $_handleError(error, index){
+            //to override in Fields.
         },
         $_getErrors(errors) {
             if(this.errors)

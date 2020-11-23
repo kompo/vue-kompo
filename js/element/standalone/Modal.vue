@@ -38,7 +38,7 @@
                         v-show="ajaxContent"
                         :id="panelId" />
                 
-                    <slot />
+                    <slot v-if="!ajaxContent" />
 
                 </div>
                 

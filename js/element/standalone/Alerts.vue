@@ -45,7 +45,7 @@ export default {
         }
     },
     mounted(){
-        this.$_vlOn('showAlert', (alert) => {
+        this.$_vlOn('vlAlertShow', (alert) => {
             this.addAlert(alert)
         })
     }

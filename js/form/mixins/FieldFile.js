@@ -35,8 +35,10 @@ export default {
             this.$_multiple ? this.component.value.push(file) : this.component.value = [file]
         },
         $_fill(jsonFormData) {
+            
+            /* You can only send string or File in FormData, so null becomes "null"
             if(!this.$_value.length)
-                jsonFormData[this.$_name + (this.$_multiple ? '[]' : '')] = null
+                jsonFormData[this.$_name + (this.$_multiple ? '[]' : '')] = null*/
 
             this.$_value.forEach( (file, i) => {
                 var name = this.$_name + (this.$_multiple ? '['+i+']' : '')
@@ -47,11 +49,6 @@ export default {
                     jsonFormData[name]= file 
                 }            
             })
-        },
-        remove(index) {
-            this.component.value.splice( index, 1)
-            this.$_blurAction()
-            this.$_changeAction()
         }
     },
 }

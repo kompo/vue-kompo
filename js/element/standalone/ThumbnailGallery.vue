@@ -12,12 +12,14 @@
                     :image="image" 
                     :height="calculatedHeight"
                     :index="index"
+                    :previewable="previewable"
                     @remove="remove"
                     @preview="previewAndOpen" />
             </transition-group>
         </draggable>
 
         <vl-thumbnail-modal 
+            v-if="previewable"
             :name="modalname"
             :image="previewImage" 
             :length="images.length"
@@ -32,7 +34,11 @@
 import draggable from 'vuedraggable'
 
 export default {
-    props: ['images', 'height'],
+    props: {
+        images: {type: Array, required: true}, 
+        height: {type: String, required: false},
+        previewable: {type: Boolean, default: true}
+    },
 
     components: { draggable },
 

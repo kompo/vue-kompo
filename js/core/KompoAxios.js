@@ -26,11 +26,21 @@ export default class KompoAxios{
     }
 
     /****** Actions ******/ 
-    $_actionAxiosRequest(){
+    $_actionAxiosRequest(payload){
+
+        var route = this.$_route
+        var data = Object.assign(
+            this.element.getPayloadForStore(),
+            payload
+        )
+
+        if(this.$_routeMethod == 'GET')
+            route = this.$_route+'?'+ new URLSearchParams(data).toString()
+
         return this.$_axios({
-            url: this.$_route, 
+            url: route, 
             method: this.$_routeMethod || 'POST', //POST when used outside PHP
-            data: this.element.getPayloadForStore(),
+            data: data,
             headers: Object.assign(
                 {'X-Kompo-Info': this.$_getKompoInfo()}, 
                 this.$_kompoAction ? { 'X-Kompo-Action': this.$_kompoAction } : {},
@@ -149,7 +159,7 @@ export default class KompoAxios{
     $_axios(axiosRequest){
         return axios(axiosRequest)
     }
-    $_handleAjaxError(e){                
+    $_handleAjaxError(e){
         if(e.response.status !== 419)
             return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
 

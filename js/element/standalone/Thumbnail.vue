@@ -1,6 +1,9 @@
 <template>
 	<div class="gallery-item">
-		<p class="thumbnail-preview" @click.prevent="$emit('preview', index)">
+		<p
+            v-if="previewable" 
+            class="thumbnail-preview" 
+            @click.prevent="$emit('preview', index)">
 			<i class="icon-search"/>
 		</p>
 		<p class="thumbnail-delete" @click.stop.prevent="$emit('remove', index)">
@@ -20,6 +23,11 @@
 <script>
 
 export default {
-	props: ['image', 'index', 'height']
+	props: {
+		image: {type: File|Object, required: true}, 
+		index: {type: Number, required: true},
+		height: {type: String, required: false},
+		previewable: {type: Boolean, default: true}
+	}
 }
 </script>

@@ -34,6 +34,19 @@ export default {
         $_addImageToThumbnails(file){
             this.$_multiple ? this.thumbnails.push(file) : this.thumbnails = [file]
         },
+        remove(index) {
+            this.removeFromValue(index)
+            this.$_changeAction()
+        },
+        removeFromValue(index){
+            this.thumbnails.splice( index, 1)
+            this.component.value.splice( index, 1)    
+            this.$_blurAction()        
+        },
+        $_handleError(error, index){ //when the _Image() auto-submits, we want to remove the thumb if the image was not set
+            index = index || 0
+            this.removeFromValue(index) //on Error: remove thumbnail, but don't trigger changeAction
+        },
     },
     created(){
         this.thumbnails = this.$_value

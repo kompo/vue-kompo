@@ -116,7 +116,12 @@ export default {
             .concat([this.topPagination ? 'vlPaginationT' : ''])
             .concat([this.bottomPagination ? 'vlPaginationB' : ''])
         ) },
-        layoutComponent(){ return this.hasItems ? 'vl-' + this.component.layout : this.noItemsComponent },
+        layoutComponent(){ 
+            if(this.component.layout == 'CalendarMonth')
+                return 'VlCalendarMonth'
+
+            return this.hasItems ? 'vl-' + this.component.layout : this.noItemsComponent 
+        },
         isTableLayout(){ return this.component.layout.indexOf('Table') > -1 },
         hasItems(){ return this.cards.length > 0 },
         noItemsComponent(){ return this.isTableLayout ? 'vl-table-no-items' : 'vl-no-items' },
@@ -183,10 +188,6 @@ export default {
                 this.$_runOwnInteractions('emit', {
                     payload: eventPayload
                 })
-
-                //to delete??
-                /*if(this.kompoid)
-                    this.$_vlEmitFrom(eventName, eventPayload)*/
             })
             this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page) => {
                 this.currentPage = page ? page : this.currentPage

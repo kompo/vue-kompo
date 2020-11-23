@@ -17,6 +17,7 @@
             <vl-thumbnail-gallery 
                 :images="thumbnails ? thumbnails : []" 
                 :height="thumbHeight"
+                :previewable="previewable"
                 @remove="remove"/>
 
         </div>
@@ -36,6 +37,9 @@ export default {
         },
         thumbHeight(){
             return this.$_data('thumbHeight')
+        },
+        previewable(){
+            return !this.$_data('thumbPreviewDisabled')
         }
     },
     methods: {

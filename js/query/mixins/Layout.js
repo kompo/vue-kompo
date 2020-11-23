@@ -40,26 +40,28 @@ export default {
         $_attributes(item, index) { return this.$_defaultLayoutAttributes(item, index) },
         $_defaultLayoutAttributes(item, index) {
             return {
-                key: item.id || index,
+                key: this.itemAttributes(item).id || index,
                 index: parseInt(index),
                 active: this.activeIndex == index,
-                is: this.$_vueTag(item),
-                vkompo: item,
+                is: this.$_vueTag(this.itemRender(item)),
+                vkompo: this.itemRender(item),
                 kompoid: this.kompoid,
                 layout: this.component.layout
             }
         },
+        itemRender(item){ return item.render },
+        itemAttributes(item){ return item.attributes },
         activate(index){
             this.activeIndex = (index == this.activeIndex) ? null : index
         },
         change(event){
             if(this.$_orderable){
 
-                const minOrder = _.minBy(this.items, 'data.item_order')
+                const minOrder = _.minBy(this.items, (item) => this.itemRender(item).data.item_order )
                 const newOrder = _.map(this.items, (item, k) => {
                     return {
-                        item_id: item.data.item_id,
-                        item_order: minOrder.data.item_order + k
+                        item_id: this.itemRender(item).data.item_id,
+                        item_order: this.itemRender(minOrder).data.item_order + k
                     }
                 })
 

@@ -72,7 +72,7 @@ export default {
       	return event.color
       },
       showEvent(event){
-      	console.log(event)
+      	
       }
   	}
 }

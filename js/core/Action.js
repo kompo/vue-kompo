@@ -29,11 +29,11 @@ export default class Action {
             parameters ? parameters.payload : null
         ) 
 	}
-    axiosRequestAction(){
+    axiosRequestAction(r, p, payload){
     	this.vue.$_state({ loading: true })
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
-        this.$_kAxios.$_actionAxiosRequest()
+        this.$_kAxios.$_actionAxiosRequest(payload)
         .then(r => {
 
 			this.vue.$_state({ loading: false })

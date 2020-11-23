@@ -71,6 +71,9 @@
         overflow: hidden; //to handle background overflow
         order: 1;
     }
+    .vlFormComment{
+        order: 3;
+    }
     input[type=checkbox]{
         position: absolute;
         opacity: 0;

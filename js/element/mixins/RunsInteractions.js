@@ -27,7 +27,7 @@ export default {
             if(this.$_hasInteractions)
                 this.$_interactions.forEach( interaction => {
                     if(interaction.interactionType == type)
-                        this.$_runAction(interaction.action, parameters) 
+                        this.$_runAction(interaction.action, parameters)
                 })
 
         },
