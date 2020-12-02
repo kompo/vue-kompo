@@ -1,11 +1,9 @@
 import Komponent from './Komponent'
 import Element from '../../element/mixins/Element'
+import HasKomponents from './HasKomponents'
 
 export default {
-    mixins: [ Komponent ],
-    data: () => ({
-        komponents: []
-    }),
+    mixins: [ Komponent, HasKomponents],
 
     computed: {
         $_customLayoutAttributes(){
@@ -37,15 +35,6 @@ export default {
 	methods: {
         $_clickAction(){
             this.$_runOwnInteractions('click') //new experimental feature for Flex, Row
-        },
-        $_attributes(component) { return this.$_defaultLayoutAttributes(component) },
-        $_defaultLayoutAttributes(component) {
-            return {
-                key: component.id,
-                is: this.$_vueTag(component),
-                vkompo: component,
-                kompoid: this.kompoid || this.$_elKompoId //this.$_elKompoId is for FormInner or FormPanel outside a form,
-            }
         },
         $_getPathById(id, path){
             path = path || ''
@@ -85,9 +74,5 @@ export default {
         $_deliverJsonTo(componentId, json){
             this.komponents.forEach( item => item.$_deliverJsonTo(componentId, json) )
         },
-	},
-    created() {
-        this.komponents = this.component.komponents
-    }
-
+	}
 }

@@ -1,8 +1,8 @@
 <template>
-    <section class="vlSlidingPanel" v-click-out="closeMe">
+    <section class="vlSlidingPanel">
         <div class="vlPanelClose">
           <button aria-label="Close panel" @click="closeMe">
-            <i class="icon-times-circle"></i>
+            <i class="icon-times"></i>
           </button>
         </div>
         <component 

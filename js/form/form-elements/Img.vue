@@ -28,11 +28,9 @@ export default {
     	$_attributes() {
             return Object.assign(
             	this.$_defaultOtherAttributes,{
-            	style: Object.assign(this.$_elementStyles, this.bgCover ? {
-            		'background-image': 'url('+this.$_label+')',
-            		'background-size': 'cover',
-            		'background-position': 'center'
-            	} : {})
+            	style: this.$_elementStyles + (this.bgCover ? 
+                    (';background-image:url('+this.$_label+');background-size:cover;background-position:center')
+            	: '')
             })
         }
     }

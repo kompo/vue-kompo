@@ -2,7 +2,7 @@
     <vl-form-field v-bind="$_wrapperAttributes" @labelclick="focus">
 
         <div class="vlInputGroup">
-            <div class="vlInputPrepend" @click.stop="focus" v-html="$_icon" />
+            <div class="vlInputPrepend" @click.stop="openCalendar" v-html="$_icon" />
             <flat-pickr 
                 v-model="component.value"                                                    
                 class="vlFormControl"
@@ -54,40 +54,44 @@ export default {
         $_events() { 
             return {
                 ...this.$_defaultFieldEvents,
+                blur: () => {}, //had to disable blur action because it was making me click twice on the calendar
                 change: () => {},
-                'on-change': this.change,
-                'on-open': this.focus,
-                'on-close': this.persistDate
+                'on-change': this.onChange,
+                'on-open': this.onOpen,
+                'on-close': this.onClose
             }
         }
     },
     methods:{
         //useful methods if needed
-        //this.$refs.flatpickr.fp.open()
         //this.$refs.flatpickr.fp._input.focus()
         //this.$refs.flatpickr.fp.close()
+        openCalendar(){
+            this.$refs.flatpickr.fp.open()
+        },
         focus(){
             this.$refs.flatpickr.fp.showTimeInput = true //fix to show time in datetime
             if(this.$_noCalendar) //for Time, we want it to focus to the hour input
                 setTimeout( () => this.$refs.flatpickr.fp.hourElement.focus(), 50)
         },
-        change(obj,value) {
+        onChange(obj,value) {
             this.$_clearErrors()
             this.component.value = value
             this.$_changeAction()
+
+            this.$emit('change', value, event) //there's a magical event variable that is defined when a date changes but not when time changes. seen on SO. used for tasks in condoedge
         },
         clear(){
             this.component.value = ''
             this.$_blurAction()
             this.$_changeAction()
         },
-        persistDate(obj, value){
-            /*if(value){
-                this.component.value = value
-                this.$_changeAction()
-                //this.key += 1
-            }
-            this.$_blurAction()*/
+        onOpen(obj, value){
+            this.focus()
+            this.$emit('open', value, event)
+        },
+        onClose(obj, value){
+            this.$emit('close', value, event)
         }
     }
 }

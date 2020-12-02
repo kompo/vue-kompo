@@ -20,6 +20,9 @@ import Flatpickr from 'flatpickr'
 
 export default {
     mixins: [Layout],
+    props: {
+        initial: {type: Object}
+    },
     data(){
     	return {
     		sortedItems: []
@@ -28,9 +31,26 @@ export default {
     methods: {
     	dateId(dateStr){
     		return 'date-'+dateStr
-    	}
+    	},
+        monthYearChange(instance){
+            this.currentDate = instance.currentYear+'-'+instance.currentMonth+'-01'
+            this.$kompo.vlBrowseQuery(this.$_elKompoId, null, {
+                month: instance.currentMonth + 1, 
+                year: instance.currentYear
+            })
+        },
+        $_attributes(item, index) { 
+            return {
+                ...this.$_defaultLayoutAttributes(item, index),
+                key: this.itemAttributes(item).event_type + this.itemAttributes(item).id //in case of multiple models with same id
+            }
+        }
     },
     mounted(){
+        /* --- event object ---
+         * required attributes: ['start_date']
+         * optional attributes: ['event_type']
+        */
     	var VueScrollTo = require('vue-scrollto')
 
     	this.sortedItems = _.groupBy(this.items, (item) => {
@@ -38,7 +58,11 @@ export default {
     	})
 
         var a = new Flatpickr(this.$refs.calendar, {
+            
             inline: true,
+            
+            defaultDate: _.isEmpty(this.initial) ? null : (this.initial.year+'-'+this.initial.month+'-01'),
+
             onDayCreate: (dObj, dStr, fp, dayElem) => {
             	var date = dayElem.dateObj
             	//https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
@@ -46,22 +70,26 @@ export default {
 				date = new Date(date.getTime() - (offset*60*1000))
 				date = date.toISOString().split('T')[0]
 
-				if(this.sortedItems[date])
-					dayElem.innerHTML += '<div></div>'
+				if(this.sortedItems[date]){
+                    var eventHints = ''
+                    this.sortedItems[date].forEach((event) => {
+                        let event_type = this.itemAttributes(event).event_type
+                        let type_class = event_type ? (' class="'+event_type+'"') : ''
+                        eventHints += '<div'+type_class+'></div>'
+                    })
+                    dayElem.innerHTML += '<div>'+eventHints+'</div>'
+                }
             },
             onChange: (selectedDates, dateStr, instance) => {
             	this.$_vlEmitFrom('selected', {date : dateStr})
 
-            	var scroll = this.$scrollTo('#'+this.dateId(dateStr), 300, {
-				    container: ".vlEventsList"
-				})
+            	var scroll = this.$scrollTo('#'+this.dateId(dateStr), 300, { container: ".vlEventsList" })
             },
             onMonthChange: (selectedDates, dateStr, instance) => {
-
+                this.monthYearChange(instance)
             },
             onYearChange: (selectedDates, dateStr, instance) => {
-            	
-
+                this.monthYearChange(instance)
             },
         })
     }
@@ -81,14 +109,22 @@ export default {
     .flatpickr-rContainer{
     	width: 100%;
     }
-    .flatpickr-day>div{
-    	position: absolute;
-    	top: 5px;
-    	right: 5px;
-    	border-radius: 50%;
-    	height: 0.4rem;
-    	width: 0.4rem;
-    	background-color: gray;
+    .flatpickr-day{
+        overflow: hidden;
+        >div{
+        	position: absolute;
+        	top: 5px;
+        	right: 5px;
+        	border-radius: 50%;
+        	height: 0.3rem;
+        	width: 0.3rem;
+        	background-color: gray;
+            >div{
+                height: 100%;
+                border-radius: 50%;
+                margin-bottom: 2px;
+            }
+        }
     }
 }
 .vlEventsList{

@@ -35,6 +35,9 @@ export default {
             this.$_multiple ? this.thumbnails.push(file) : this.thumbnails = [file]
         },
         remove(index) {
+            if(this.$_data('confirmDelete') && !confirm(this.$_data('confirmDelete')))
+                return
+
             this.removeFromValue(index)
             this.$_changeAction()
         },

@@ -32,8 +32,8 @@ const Kompo = {
 			vlSubmitError(kompoid, error){
 	    		Kompo.events.$emit('vlSubmitError'+kompoid, error)
 	    	},
-			vlBrowseQuery(kompoid, page){
-	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page)
+			vlBrowseQuery(kompoid, page, initialFilter){
+	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
 	    	},
 	    	vlRefreshKomposer(kompoid, url, payload){
 	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, url, payload)

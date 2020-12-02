@@ -1,9 +1,11 @@
-.vl-dropdown{
+.vlDropdown{
 	position: relative;
 	cursor: pointer;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+	.vlDropdownToggler{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;		
+	}
 	.icon-down{
 		font-size: 70%;
 		color: gainsboro;
@@ -11,12 +13,12 @@
 	.vl-nav-item{
 		align-items: center;
 	}
-	&:hover .vl-dropdown-menu{
+	&:hover .vlDropdownMenu{
 		transform: scale(1);
 		opacity: 1;
 	}
 }
-.vl-dropdown-menu {
+.vlDropdownMenu {
 	position: absolute;
 	left: 0;
 	top: 100%;
@@ -26,12 +28,18 @@
 	transition: all .2s ease-in-out;
 	opacity: 0;
 	transform-origin: top left;
-    &.vl-menu-closed{
+    &.vlMenuClosed{
         display: block; //cancel mobile effect
     }
-	&.vl-dropdown-menu-right{
+	&.vlDropdownMenuRight{
 		left: auto;
 		right: 0;
 		transform-origin: top right;
+	}
+	&.vlDropdownMenuUpRight{
+		left: auto;
+		right: 0;
+		top: auto;
+		bottom: 100%;
 	}
 }

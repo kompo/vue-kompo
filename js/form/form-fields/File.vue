@@ -5,7 +5,6 @@
             v-on="$_taggableInputEvents"
             :labelKey="labelKey">
             <input
-                class="vlFormControl" 
                 v-bind="$_attributes"
                 v-on="$_events"
                 type="file"

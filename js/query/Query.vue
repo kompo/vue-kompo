@@ -48,6 +48,7 @@ export default {
     data: () => ({
         currentPage: 1,
         currentSort: '',
+        initialFilters: {},
         filters: [],
         cards: [],
         pagination: null,
@@ -64,6 +65,7 @@ export default {
         this.headers = this.component.headers
     },
     computed: {
+
         filtersPlacement(){ return [ 'top', 'left', 'bottom', 'right' ] },
         hasSideFilters(){
             return this.filters['left'].length || this.filters['right'].length
@@ -94,7 +96,8 @@ export default {
                 vkompo: this.component,
                 kompoid: this.$_elKompoId,
                 cards: this.cards,
-                key: this.cardsKey
+                key: this.cardsKey,
+                initial: this.initialFilters
             }
         },
         paginationAttributes(){
@@ -142,7 +145,7 @@ export default {
             return jsonFormData
         },
         preparedFormData(){
-            var formData = new FormData(), jsonFormData = this.getJsonFormData({})
+            var formData = new FormData(), jsonFormData = this.getJsonFormData(Object.assign({}, this.initialFilters))
             for ( var key in jsonFormData ) {
                 formData.append(key, jsonFormData[key])
             }
@@ -165,8 +168,8 @@ export default {
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 this.$_state({ loading: false })
-                //this.pagination = this.getPagination(r.data)
-                //Vue.set(this, 'cards', this.getCards(r.data))
+
+                //Replacing queries
                 this.pagination = r.data
                 Vue.set(this, 'cards', r.data.data)
                 this.cardsKey += 1 //to re-render cards
@@ -189,8 +192,9 @@ export default {
                     payload: eventPayload
                 })
             })
-            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page) => {
+            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters) => {
                 this.currentPage = page ? page : this.currentPage
+                this.initialFilters = initialFilters ? initialFilters : this.initialFilters //first introduced to get month, year from CalendarMonth
 
                 this.browseQuery()
             })

@@ -69,7 +69,8 @@ export default class KompoAxios{
     }
 
     /******* Komponents *********/
-    $_browseQuery(page, sort, addStore){
+    //$_browseQuery(page, sort, addStore){  //TODO: delete I think this is an abandoned experiment
+    $_browseQuery(page, sort){
         return this.$_axios({
             url: this.$_komponent.queryUrl, 
             method: 'POST',
@@ -79,7 +80,7 @@ export default class KompoAxios{
                 'X-Kompo-Page': page,
                 'X-Kompo-Sort': sort,
                 'X-Kompo-Action': 'browse-items',
-                'X-Kompo-Store': JSON.stringify(addStore)
+                //'X-Kompo-Store': JSON.stringify(addStore) //TODO: delete I think this is an abandoned experiment
             }
         })
     }

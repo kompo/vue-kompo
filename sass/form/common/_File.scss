@@ -1,7 +1,8 @@
 .vlFile{
 	.vlTaggableInput{
-	    .vlFormControl{
+	    input{
 	    	opacity: 0;
+	    	position: absolute;
 		    cursor: pointer;
 		    z-index: 1;
 			line-height: 1.15; //not working on Firefox

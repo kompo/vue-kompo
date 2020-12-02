@@ -2,10 +2,9 @@
 
     <span
     	v-if="info" 
-    	:title="info"
-        data-toggle="tooltip" 
-        data-html="true"
-        :data-placement="placement" 
+    	:aria-label="info"
+        :data-balloon-pos="placement" 
+        :data-balloon-length="length"
         v-html="infoIcon"/>
 
 </template>
@@ -19,7 +18,10 @@ export default {
             return this.component.$_data('info')
         },
         placement(){
-            return this.component.$_data('infoPlacement') || 'top'
+            return this.component.$_data('infoPlacement') || 'up'
+        },
+        length(){
+            return this.component.$_data('infoLength') || 'medium'
         },
         infoIcon(){
             return this.component.$_data('infoIcon') || '<i class="icon-question-circle"></i>'

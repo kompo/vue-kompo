@@ -1,23 +1,28 @@
 <template>
-<div v-if="hasSlidingPanels" class="vlSlidingPanels">
-    <transition-group name="slideLeft">
-        <vl-sliding-panel
-            v-for="(slide, key) in slides"
-            :obj="slide.obj"
-            :index="slide.id"
-            :key="slide.id"
-            @close="closeById" />
-    </transition-group>
+<div v-if="hasSlidingPanels"
+     class="vlSlidingPanels"
+     @click="close" >
+    <div ref="panelContainer" class="vlPanelContainer">
+      <transition-group name="slideLeft">
+          <vl-sliding-panel
+              v-for="(slide, key) in slides"
+              :obj="slide.obj"
+              :index="slide.id"
+              :key="slide.id"
+              @close="closeById" />
+      </transition-group>
+    </div>
 </div>
 </template>
 
 <script>
+import EmitsEvents from '../mixins/EmitsEvents'
 
 export default {
+    mixins: [EmitsEvents],
     data(){
         return {
             slides : [],
-            zIndex: 2200, //lower than Alerts 2500
             initialId: 0,
             hasSlidingPanels: 0 //I had to decouple it for the transition effect to work
         }
@@ -28,9 +33,23 @@ export default {
         }*/
     },
     methods:{
+        outsideModal(e){
+          if(!this.$refs.panelContainer)
+            return false
+
+          return !e.target.classList.contains('vlPanelContainer')
+              && !this.$refs.panelContainer.contains(e.target)
+        },
+        close(e){
+          if (this.outsideModal(e))
+            this.closeByIndex(this.slides.length-1)
+        },
         closeById(id){
             var indexWithId = _.findIndex(this.slides, (slide) => slide.id == id)
-            this.slides.splice(indexWithId)
+            this.closeByIndex(indexWithId)
+        },
+        closeByIndex(index){
+            this.slides.splice(index)
             this.hasSlidingPanels = this.slides.length
         },
         addSlidingPanel(obj){
@@ -42,12 +61,24 @@ export default {
                 id: 'vl-sliding-panel-'+this.initialId,
                 obj: obj
             }))
+        },
+        $_attachEvents(){
+            this.$_vlOn('vlFillSlidingPanel', (response) => {
+                this.addSlidingPanel(response.data)
+            })
+        },
+        $_destroyEvents(){
+            this.$_vlOff(['vlFillSlidingPanel'])
         }
+
     },
-    mounted(){
-        this.$kompo.events.$on('vlFillSlidingPanel', (response) => {
-            this.addSlidingPanel(response.data)
-        })
+    created(){
+        this.$_destroyEvents()
+        this.$_attachEvents()
+    },
+    updated() {
+        this.$_destroyEvents()
+        this.$_attachEvents()
     }
 }
 </script>

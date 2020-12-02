@@ -1,7 +1,9 @@
 <template>
 	<div>
-    	<div class="vlNoItems" v-html="$_noItemsFound" />
-
+    	<div v-if="$_noItemsAsHtml" class="vlNoItems" v-html="$_noItemsFound" />
+        <div v-else>
+            <component v-bind="$_noItemsAttributes" />
+        </div>
     </div>
 </template>
 
