@@ -25,7 +25,8 @@
                 </tbody>
             </table>
         </div>
-        <a href="javascript:void(0)" 
+        <a v-if="!noAdding" 
+            href="javascript:void(0)" 
             @click.stop="addRow"
             :class="$_data('addLabelClass')"
             v-html="$_data('addLabel')" />

@@ -144,7 +144,7 @@ export default class Action {
     	var modalName = this.$_data('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_data('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
-        this.vue.$kompo.vlModalShow(modalName, true, this.$_data('warnBeforeClose'))
+        this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_data('warnBeforeClose'))
 
         this.vue.$nextTick( () => {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)

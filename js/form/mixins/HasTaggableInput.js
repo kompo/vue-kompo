@@ -28,10 +28,7 @@ export default {
             var input = this.$refs.input.$el || this.$refs.input
             input.click()
             input.focus()
-            this.inputValue = ''
-            /*this.inputValue = selection ? 
-                    (_.isString(selection.label) ? selection.label : selection.label.label ) : 
-                    ''*/
+            this.inputValue = this.$_bestGuessLabelFromSelection(selection)
         },
         $_remove(index) {
             if(this.$_readOnly)
@@ -44,6 +41,21 @@ export default {
         },
         $_emptyInput() {
             this.inputValue = ''
+        },
+        $_bestGuessLabelFromSelection(selection)
+        {
+            if(!selection)
+                return ''
+
+            if(selection.label){
+                if(_.isString(selection.label))
+                    return selection.label 
+
+                if(selection.label.label && _.isString(selection.label.label))
+                    return selection.label.label
+            }
+
+            return ''
         }
     },
 }

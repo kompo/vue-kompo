@@ -14,7 +14,7 @@
 
         <transition name="slideDown">
 
-            <div v-if="open"
+            <div v-show="open"
                 class="vlCollapseMenu"
                 :class="menuClass" >
             

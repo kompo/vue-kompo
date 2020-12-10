@@ -6,6 +6,7 @@
 		    cursor: pointer;
 		    z-index: 1;
 			line-height: 1.15; //not working on Firefox
+			width: 100%; //otherwise it was overflowing
 		}
 	}
 }

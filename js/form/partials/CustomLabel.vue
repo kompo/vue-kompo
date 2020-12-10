@@ -16,13 +16,13 @@ export default {
     },
     computed: {
     	customLabel(){
-    		return this.isStringLabel ? 'VlPlainSpan' : this.$_vueTag(this.vkompo)
+    		return this.isObjectLabel ? this.$_vueTag(this.vkompo) : 'VlPlainSpan'
     	},
     	component(){
-    		return this.isStringLabel ? {label: this.vkompo} : this.vkompo
+    		return this.isObjectLabel ? this.vkompo : {label: this.vkompo || ''}
     	},
-        isStringLabel(){
-            return _.isString(this.vkompo)  || !this.vkompo
+        isObjectLabel(){
+            return _.isObject(this.vkompo)
         }
     }
 }

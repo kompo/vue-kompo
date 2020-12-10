@@ -159,7 +159,7 @@ export default {
         },
         filterOptions(){
             this.filteredOptions = _.filter(this.options, (opt) => {
-                var searchable = (_.isString(opt.label) ? opt.label : opt.label.label).toString().toLowerCase()
+                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().toLowerCase()
                 return searchable.indexOf(this.inputValue.toString().toLowerCase()) !== -1
             })
         },

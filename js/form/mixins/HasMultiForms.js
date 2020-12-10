@@ -4,11 +4,17 @@ export default {
             item.key = this.getRandomKey()
         })
     },
+    computed: {
+        noAdding(){ return this.$_data('noAdding') }
+    },
     methods:{
         getRandomKey(){
             return 'multiform-'+Math.random()
         },
         addRow(){
+            if(this.noAdding)
+                return
+            
             this.$_kAxios.$_loadKomposer().then(r => {
 
                 this.komponents.push(Object.assign(r.data, {key: this.getRandomKey()}))
