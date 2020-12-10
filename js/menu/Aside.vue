@@ -9,8 +9,10 @@
 
 <script>
 import EmitsEvents from '../element/mixins/EmitsEvents'
+import IsMobile from './mixins/IsMobile'
+
 export default {
-    mixins: [EmitsEvents],
+    mixins: [EmitsEvents, IsMobile],
     props:{
         side: {type: String, required: true}
     },
@@ -23,7 +25,7 @@ export default {
     },
     methods:{
         toggle(){
-            if(!window.vlMobile)
+            if(!this.$_isMobile())
                 return 
 
             this.sidebarClass = this.sidebarClass == '' ? 'vlOpen' : ''
@@ -33,7 +35,7 @@ export default {
             this.$kompo.vlToggleSidebarToggler(this.togglerKompoId)
         },
         close(){
-            if(!window.vlMobile || !this.open)
+            if(!this.$_isMobile() || !this.open)
                 return 
 
             this.sidebarClass = ''

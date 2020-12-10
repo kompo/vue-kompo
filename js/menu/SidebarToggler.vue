@@ -11,8 +11,10 @@
 
 <script>
 import Element from '../element/mixins/Element'
+import IsMobile from './mixins/IsMobile'
+
 export default {
-    mixins: [Element],
+    mixins: [Element, IsMobile],
     data(){
         return {
             toggleClass: ''
@@ -20,7 +22,7 @@ export default {
     },
     methods:{
         toggle(){
-            if(!window.vlMobile)
+            if(!this.$_isMobile())
                 return 
 
             this.$kompo.vlToggleSidebar(this.$_data('toggleSidebar'), this.$_elKompoId)
