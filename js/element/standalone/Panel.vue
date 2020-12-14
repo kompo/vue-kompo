@@ -1,14 +1,12 @@
 <template>
     
-    <div :id="id" class="vlPanel">
+    <div :id="id" :class="panelClass">
+
+        <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
         
         <transition :name="usedTransition" :mode="usedMode">
             <slot />
             <div v-if="html" :is="{template: html}" />
-            <component 
-                v-if="partial" :is="partial" 
-                :vkompo="component" 
-                :key="panelKey" />
             <template v-for="(row,index) in komponents">
                 <component v-bind="$_attributes(row)" />
             </template>
@@ -21,48 +19,66 @@
 <script>
 import HasKomponents from '../../form/mixins/HasKomponents'
 import EmitsEvents from '../mixins/EmitsEvents'
+import HasClasses from '../mixins/HasClasses'
 
 export default {
-    mixins: [HasKomponents, EmitsEvents],
+    mixins: [HasKomponents, EmitsEvents, HasClasses],
     props: {
         id: { type: String, required: true },
         transition: { type: String },
-        mode: { type: String }
+        mode: { type: String },
+        closable: { type: String }
     },
     data(){
         return {
             html : null,
             component: {},
-            partial: null,
-            panelKey: 0,
             usedTransition: null,
             usedMode: null
         }
     },
+    computed: {
+        showCloseButton(){
+            return this.closable && this.hasLoadedKomponents
+        },
+        panelClass(){
+            return this.$_classString([
+                'vlPanel',
+                this.hasLoadedKomponents ? 'vlPanelNotEmpty' : ''
+            ])
+        },
+        hasLoadedKomponents(){
+            return this.komponents && this.komponents.length > 0
+        }
+    }, 
     methods: {
+        reset(){
+            this.component = {}
+            this.html = null
+            this.partial = null
+            this.komponents = []
+        },
+        close(){
+            this.reset()
+        },
         $_attachEvents(){
             this.$_vlOn('vlFillPanel' + this.id, (response, included) => {
-                this.component = {}
-                this.html = null
-                this.partial = null
+
+                this.reset()
 
                 if(included)
                     return this.$emit('includeObj', response) //emit and stop
 
-                if(!_.isString(response)){
+                this.$nextTick(() => {
+                    if(!_.isString(response)){
 
-                    this.komponents = _.isArray(response) ? response : [response] //Array when getKomponents() is used, non-array when selfGet returns a single Komponent
+                        this.komponents = _.isArray(response) ? response : [response] //Array when getKomponents() is used, non-array when selfGet returns a single Komponent
 
-                    /*
-                    this.partial = this.$_getKomposerTemplate(response)
-                    this.component = _.isArray(response) ? response[0] : response
-                    this.panelKey += 1
-
-                    setTimeout(() => this.panelKey += 1, 500)*/
-                }else{
-                    this.html = response
-                }
-                this.$emit('loaded')
+                    }else{
+                        this.html = response
+                    }
+                    this.$emit('loaded')
+                })
             })
         },
         $_destroyEvents(){
