@@ -1,0 +1,32 @@
+.vlCounter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    .vlInputWrapper{
+        flex-shrink: 1;
+    }
+    .vlFormControl{
+        text-align: center;
+    }
+}
+
+.vlCounterBtn{
+    height: 20px;
+    flex: 0 0 20px;
+    font-size: 17px;
+    line-height: 1;
+    text-align: center;
+    border-radius: 50%;
+    border: $form-control-border;
+    color: $form-control-border-color;
+    cursor: pointer;
+}
+.vlCounter{
+    .vlCounterBtn:first-child{
+        margin-right: 0.5rem;
+    }
+    .vlCounterBtn:nth-child(3){
+        margin-left: 0.5rem;        
+    }
+}

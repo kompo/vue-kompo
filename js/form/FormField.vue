@@ -3,6 +3,8 @@
 
         <vl-form-label :component="component" @click="$emit('labelclick')" />
 
+        <slot name="before"/>
+
         <div v-if="!$_noInputWrapper" class="vlInputWrapper"><slot /></div>
         <div v-else><slot /></div>
 

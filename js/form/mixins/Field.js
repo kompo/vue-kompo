@@ -64,7 +64,7 @@ export default {
                 this.$_fill(jsonFormData)
         },
         $_fill(jsonFormData){
-            jsonFormData[this.$_name] = this.$_value || ''
+            jsonFormData[this.$_name] = _.isNil(this.$_value) ? '' : this.$_value
         },
         $_validate(errors) {
             var errorName = this.$_name.replace('.', '_')

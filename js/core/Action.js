@@ -144,9 +144,16 @@ export default class Action {
     hideSelfAction(){
         this.vue.$_toggleSelf()
     }
-    runJsAction(){
+    runJsAction(response){
         const jsFunction = this.$_data('jsFunction')
-        this.vue.$nextTick(() => window[jsFunction]() )
+        this.vue.$nextTick(() => { //yep, run it if you find it
+            
+            if(window[jsFunction])
+                window[jsFunction](response) 
+
+            if(this.vue[jsFunction]) //never used yet but maybe one day. The idea is interesting
+                this.vue[jsFunction](response) 
+        })
     }
     fillModalAction(response){
     	var modalName = this.$_data('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
