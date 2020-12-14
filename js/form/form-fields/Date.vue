@@ -28,6 +28,14 @@ import 'flatpickr/dist/themes/airbnb.css';
 export default {
     mixins: [Field],
     components: { flatPickr },
+    data(){
+        return {
+            dateCheck: null
+        }
+    },
+    mounted(){
+        this.dateCheck = this.$_value //to emit accurate change events
+    },
     computed: {
         $_enableTime(){ return this.$_data('enableTime') || false },
         $_noCalendar(){ return this.$_data('noCalendar') || false },
@@ -74,12 +82,16 @@ export default {
             if(this.$_noCalendar) //for Time, we want it to focus to the hour input
                 setTimeout( () => this.$refs.flatpickr.fp.hourElement.focus(), 50)
         },
-        onChange(obj,value) {
+        onChange(selectedDates, dateStr, instance) {
+
+            if(dateStr == this.dateCheck) //Flatpickr emits even if the date does not change... had to do the check myself
+                return
+
             this.$_clearErrors()
-            this.component.value = value
+            this.dateCheck = dateStr
             this.$_changeAction()
 
-            this.$emit('change', value, event) //there's a magical event variable that is defined when a date changes but not when time changes. seen on SO. used for tasks in condoedge
+            this.$emit('change', dateStr, event) //there's a magical event variable that is defined when a date changes but not when time changes. seen on SO. used for tasks in condoedge
         },
         clear(){
             this.component.value = ''

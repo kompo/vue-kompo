@@ -25,78 +25,112 @@ export default {
     },
     data(){
     	return {
-    		sortedItems: []
+    		sortedItems: [],
+            selectedDate: null //for rescrolling into view on month/year change
     	}
     },
     methods: {
     	dateId(dateStr){
     		return 'date-'+dateStr
     	},
-        monthYearChange(instance){
-            this.currentDate = instance.currentYear+'-'+instance.currentMonth+'-01'
+        dayChange(selectedDates, dateStr, instance){
+            this.$_vlEmitFrom('selected', {date : dateStr}) //Emits to parent komposer for doing more actions
+
+            this.selectedDate = dateStr
+
+            this.scrollToDate()
+        },
+        monthYearChange(selectedDates, dateStr, instance){
+
+            this.selectedDate = this.formatDate(selectedDates[0]) != dateStr ? //arrow changing
+
+                                    this.formatDate(selectedDates[0]) : 
+
+                                    this.formatDate(new Date(instance.currentYear, instance.currentMonth, 1))
+
             this.$kompo.vlBrowseQuery(this.$_elKompoId, null, {
                 month: instance.currentMonth + 1, 
-                year: instance.currentYear
+                year: instance.currentYear,
+                selectedDate: this.selectedDate
             })
         },
         $_attributes(item, index) { 
             return {
                 ...this.$_defaultLayoutAttributes(item, index),
-                key: this.itemAttributes(item).event_type + this.itemAttributes(item).id //in case of multiple models with same id
+                key: this.itemAttributes(item).event_class + this.itemAttributes(item).id //in case of multiple models with same id
             }
+        },
+        scrollToDate() {
+            this.$nextTick(() => {
+                
+                let id = this.dateId(this.selectedDate)
+
+                if( document.getElementById(id) )
+                    this.$scrollTo('#'+id, 300, { container: ".vlEventsList" }) 
+            })
+        },
+        createDate(dObj, dStr, fp, dayElem) {
+            var dateStr = this.formatDate(dayElem.dateObj)
+
+            if(this.sortedItems[dateStr]){
+                var eventHints = ''
+                this.sortedItems[dateStr].forEach((event) => {
+                    let event_class = this.itemAttributes(event).event_class
+                    let type_class = event_class ? (' class="'+event_class+'"') : ''
+                    eventHints += '<div'+type_class+'></div>'
+                })
+                dayElem.innerHTML += '<div>'+eventHints+'</div>'
+            }
+        },
+        formatDate(date){            
+            //https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+            const offset = date.getTimezoneOffset()
+            date = new Date(date.getTime() - (offset*60*1000))
+            return date.toISOString().split('T')[0]
         }
+    },
+    created(){   
+        var VueScrollTo = require('vue-scrollto')
+
+        this.selectedDate = _.isEmpty(this.initial) ? 
+                                this.formatDate(new Date()) : //today
+                                this.initial.selectedDate
+
     },
     mounted(){
         /* --- event object ---
          * required attributes: ['start_date']
-         * optional attributes: ['event_type']
+         * optional attributes: ['event_class']
         */
-    	var VueScrollTo = require('vue-scrollto')
 
-    	this.sortedItems = _.groupBy(this.items, (item) => {
-    		return this.itemAttributes(item).start_date.substr(0,10)
-    	})
+    	this.sortedItems = _.groupBy(
 
-        var a = new Flatpickr(this.$refs.calendar, {
+            _.sortBy(this.items, (item) => this.itemAttributes(item).start_date), 
+
+            (item) => this.itemAttributes(item).start_date.substr(0,10)
+        )
+
+        var fp = new Flatpickr(this.$refs.calendar, {
             
             inline: true,
             
-            defaultDate: _.isEmpty(this.initial) ? null : (this.initial.year+'-'+this.initial.month+'-01'),
+            defaultDate: this.selectedDate,
 
-            onDayCreate: (dObj, dStr, fp, dayElem) => {
-            	var date = dayElem.dateObj
-            	//https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-            	const offset = date.getTimezoneOffset()
-				date = new Date(date.getTime() - (offset*60*1000))
-				date = date.toISOString().split('T')[0]
-
-				if(this.sortedItems[date]){
-                    var eventHints = ''
-                    this.sortedItems[date].forEach((event) => {
-                        let event_type = this.itemAttributes(event).event_type
-                        let type_class = event_type ? (' class="'+event_type+'"') : ''
-                        eventHints += '<div'+type_class+'></div>'
-                    })
-                    dayElem.innerHTML += '<div>'+eventHints+'</div>'
-                }
-            },
-            onChange: (selectedDates, dateStr, instance) => {
-            	this.$_vlEmitFrom('selected', {date : dateStr})
-
-            	var scroll = this.$scrollTo('#'+this.dateId(dateStr), 300, { container: ".vlEventsList" })
-            },
-            onMonthChange: (selectedDates, dateStr, instance) => {
-                this.monthYearChange(instance)
-            },
-            onYearChange: (selectedDates, dateStr, instance) => {
-                this.monthYearChange(instance)
-            },
+            onDayCreate: this.createDate,
+            onChange: this.dayChange,
+            onMonthChange: this.monthYearChange,
+            onYearChange: this.monthYearChange,
         })
+
+        this.scrollToDate()
     }
 }
 </script>
 <style lang="scss">
 .VlCalendarMonth{
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
     .flatpickr-calendar {
         width: 100%;
     }
@@ -128,7 +162,6 @@ export default {
     }
 }
 .vlEventsList{
-	height: 40vh;
 	overflow-y: auto; 
 }
 </style>

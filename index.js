@@ -33,8 +33,8 @@ const Kompo = {
 			vlBrowseQuery(kompoid, page, initialFilter){
 	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
 	    	},
-	    	vlRefreshKomposer(kompoid, url, payload){
-	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, url, payload)
+	    	vlRefreshKomposer(kompoid, url, payload, successFunc){
+	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, url, payload, successFunc)
 	    	},
 	    	vlToggle(kompoid, toggleId){
 	    		Kompo.events.$emit('vlToggle'+kompoid, toggleId)

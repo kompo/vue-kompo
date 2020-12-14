@@ -55,10 +55,18 @@ export default class Action {
         this.vue.$kompo.vlBrowseQuery(this.$_data('kompoid') || this.vue.kompoid, this.$_data('page'))
     }
     refreshKomposerAction(r, pa, payload){
+
         this.vue.$_state({ loading: true })
 
         this.getAsArray(this.$_data('kompoid'), this.vue.kompoid).forEach(kompoid => {
-            this.vue.$kompo.vlRefreshKomposer(kompoid, this.$_data('route'), payload)
+            this.vue.$kompo.vlRefreshKomposer(
+                kompoid, 
+                this.$_data('route'), 
+                payload, 
+                // The komposer here is loading, but now we are about to leave the realm of this komposer
+                // And go to the context of the komposer being refreshed
+                () => this.vue.$_state({ loading: false }) //It's amazing that this executes "this" context in another file...
+            )
         })
     }
     submitFormAction(){

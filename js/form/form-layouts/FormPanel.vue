@@ -23,7 +23,8 @@ export default {
         $_customLayoutAttributes(){
             return {
                 transition: this.$_data('transition'),
-                mode: this.$_data('transitionMode')
+                mode: this.$_data('transitionMode'),
+                closable: this.$_data('closable'),
             }
         },
         hidesOnLoad(){

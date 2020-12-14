@@ -198,7 +198,7 @@ export default {
 
                 this.browseQuery()
             })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload) => {
+            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
                 this.$_kAxios.$_refreshSelf(url, payload).then(r => {
                     this.component = r.data
 
@@ -209,6 +209,8 @@ export default {
 
                     this.cardsKey += 1
                     this.filtersKey += 1
+
+                    successFunc && successFunc()
                 })
             })
             this.$_vlOn('vlSort'+this.$_elKompoId, (sortValue, emitterId) => {

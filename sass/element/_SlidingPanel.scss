@@ -1,3 +1,6 @@
+.vlPanel{
+    position: relative;
+}
 .vlSlidingPanels{
     @extend .vlAbsoluteInset;
     position: fixed;

@@ -125,10 +125,12 @@ export default {
                     action: this.submitAction
                 })
             })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload) => {
+            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
                 this.$_kAxios.$_refreshSelf(url, payload).then(r => {
                     this.$_destroyEvents()
                     this.$emit('refreshForm', r.data)
+
+                    successFunc && successFunc()
                 })
             })
 
