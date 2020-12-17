@@ -49,9 +49,9 @@ export default {
             this.option = r.data.option //The user has to set a public option property on the Form
             this.optionValue = Object.keys(this.option)[0]
 
-            this.$_data({
-                ajaxPayload: {id: this.optionValue}
-            })
+          this.$_data({
+            ajaxPayload: Object.assign({id: this.optionValue}, this.$_data('ajaxPayload')),
+          })
                 
             var newSelect = this.komponents[0]
 
