@@ -38,6 +38,7 @@ export default {
 
         formUrl(){ return this.$_data('submitUrl') },
         formMethod(){ return this.$_data('submitMethod') },
+        validationErrorAlert(){ return this.$_data('validationErrorAlert') },
         submitAction(){ return this.$_data('submitAction') },
 
         redirectUrl(){ return this.$_data('redirectUrl') },
@@ -76,8 +77,12 @@ export default {
             this.$emit('error', e)
 
             if (e.response.status == 422){
+                
                 this.$_validate(e.response.data.errors)
-                new Alert('Please correct the errors').asError().emitFrom(this)
+
+                if(this.validationErrorAlert)
+                    new Alert(this.validationErrorAlert).asError().emitFrom(this)
+                
             }
         },
         getJsonFormData(){
