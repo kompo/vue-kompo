@@ -1,6 +1,10 @@
 <template>
 
-    <vl-form v-bind="$_attributes" @click.stop="$_clickAction" />
+    <vl-form 
+        v-bind="$_attributes" 
+        @click.stop="$_clickAction" 
+        @closeModal="closeModal" 
+    />
 
 </template>
 

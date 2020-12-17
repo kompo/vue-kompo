@@ -12,6 +12,11 @@ export default {
                 class: this.$_classes
             }
         }
-	}
+	},
+    methods: {
+        closeModal(){
+            this.$emit('closeModal')
+        }
+    }
 
 }

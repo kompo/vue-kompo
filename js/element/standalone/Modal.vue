@@ -36,7 +36,9 @@
                     <vl-panel 
                         v-if="panelId" 
                         v-show="ajaxContent"
-                        :id="panelId" />
+                        :id="panelId"
+                        @closeModal="closeAction"
+                    />
                 
                     <slot v-if="!ajaxContent" />
 

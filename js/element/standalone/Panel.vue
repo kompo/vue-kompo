@@ -8,7 +8,10 @@
             <slot />
             <div v-if="html" :is="{template: html}" />
             <template v-for="(row,index) in komponents">
-                <component v-bind="$_attributes(row)" />
+                <component 
+                    v-bind="$_attributes(row)" 
+                    @closeModal="closeModal"
+                />
             </template>
         </transition>
         
@@ -60,6 +63,9 @@ export default {
         },
         close(){
             this.reset()
+        },
+        closeModal(){
+            this.$emit('closeModal')
         },
         $_attachEvents(){
             this.$_vlOn('vlFillPanel' + this.id, (response, included) => {

@@ -1,6 +1,10 @@
 <template>
 
-    <vl-query v-bind="$_attributes" @click.stop="$_clickAction" />
+    <vl-query 
+        v-bind="$_attributes" 
+        @click.stop="$_clickAction"
+        @closeModal="closeModal"
+    />
 
 </template>
 
