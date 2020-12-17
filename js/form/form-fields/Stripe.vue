@@ -115,7 +115,8 @@ export default {
             data: {
                 noLabel: true
             },
-            name: this.cardholderName
+            name: this.cardholderName,
+            interactions: [],
         })
 
     }
