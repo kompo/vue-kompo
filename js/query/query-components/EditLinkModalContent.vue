@@ -25,8 +25,8 @@ export default {
         success(response, submitKomponent){
             this.$emit('refresh', this.index)
 
-            if(!this.keepModalOpen && !submitKomponent.$_keepModalOpen)
-                this.$emit('closeModal')
+            if (!this.keepModalOpen && (!submitKomponent || !submitKomponent.$_keepModalOpen))
+              this.$emit('closeModal')
         }
     }
 }
