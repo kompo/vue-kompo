@@ -9,14 +9,21 @@
                 <component v-if="topPagination" @browse="browseQuery" 
                     v-bind="paginationAttributes" />
 
-                <div v-if="isTableLayout" class="vlTableWrapper"><!-- TableWrapper useful for CSS, ex: border-radius -->
+                <div v-if="isTableLayout" 
+                    :class="cardWrapperClass"
+                    :style="cardWrapperStyle"
+                >
                     <table class="w-full table vlTable" :class="tableClass">
                         <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
                         <component v-bind="layoutAttributes" />
                     </table>
                 </div>
 
-                <component v-else v-bind="layoutAttributes" />
+                <component v-else 
+                    v-bind="layoutAttributes" 
+                    :class="cardWrapperClass"
+                    :style="cardWrapperStyle"
+                />
 
                 <component v-if="bottomPagination" @browse="browseQuery" 
                     v-bind="paginationAttributes" />
@@ -89,6 +96,15 @@ export default {
                 class: this.queryClass,
                 style: this.$_elementStyles
             }
+        },
+        cardWrapperClass(){
+            return this.$_classString([
+                this.isTableLayout ? 'vlTableWrapper' : '',
+                this.component.cardWrapperClass
+            ])
+        },
+        cardWrapperStyle(){
+            return this.component.cardWrapperStyle
         },
         layoutAttributes(){
             return {
