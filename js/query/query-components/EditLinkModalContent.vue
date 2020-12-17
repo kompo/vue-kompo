@@ -1,6 +1,6 @@
 <template>
 
-	<vl-form :vkompo="editForm"  @success="success" />
+	<vl-form :vkompo="editForm"  @success="success" @closeModal="closeModal" />
 
 </template>
 
@@ -26,7 +26,10 @@ export default {
             this.$emit('refresh', this.index)
 
             if(!this.keepModalOpen && !submitKomponent.$_keepModalOpen)
-                this.$emit('closeModal')
+                this.closeModal()
+        },
+        closeModal(){
+            this.$emit('closeModal')
         }
     }
 }
