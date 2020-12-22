@@ -181,7 +181,7 @@ export default class Action {
         )
     }
     fillPanelAction(response, parentAction){
-        this.vue.$kompo.vlFillPanel(this.$_data('panelId'), response.data, parentAction.$_data('included'))
+        this.vue.$kompo.vlFillPanel(this.$_data('panelId'), response.data, this.$_data('included') || parentAction.$_data('included'))
     }
     fillSlidingPanelAction(response){
         this.vue.$kompo.vlFillSlidingPanel(response)

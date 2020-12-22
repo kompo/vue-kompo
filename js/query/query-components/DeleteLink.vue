@@ -32,7 +32,7 @@ export default {
         confirmDelete(){
             this.$kompo.vlModalInsert(
                 this.kompoid, {
-                    vkompo: this.vkompo,
+                    vkompo: Object.assign(this.vkompo, {class: '', style: ''}), //TODO make configurable
                     is: this.$options.name+ 'ModalContent',
                     index: this.index,
                     kompoid: this.kompoid

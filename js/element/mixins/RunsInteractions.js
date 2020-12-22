@@ -4,16 +4,20 @@ export default {
 
     computed: {
         $_debounce(){ return this.$_data('debounce') || 0 },
+
         //hack to make debounce work... need to write my own debounce function in $_runTrigger
         debouncedSubmitOnInput(){ return _.debounce(this.submitOnInput, this.$_debounce) },
         debouncedFilterOnInput(){ return _.debounce(this.filterOnInput, this.$_debounce) },
+        debouncedAxiosOnInput(){ return _.debounce(()=> {
+            this.$_runOwnInteractionsWithAction('input', 'axiosRequest')
+        }, this.$_debounce) },
 
         $_interactions(){ return this.vkompo.interactions },
 
         $_hasInteractions(){ return this.$_interactions && this.$_interactions.length }
     },
 
-    methods: {
+    methods: {        
         //hack continued... this had to be a method...
         submitOnInput(){ this.$_runOwnInteractionsWithAction('input', 'submitForm') },
         filterOnInput(){ this.$_runOwnInteractionsWithAction('input', 'browseQuery') },

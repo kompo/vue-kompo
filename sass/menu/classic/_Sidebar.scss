@@ -14,4 +14,8 @@
 		}
 	}
 }
-
+@include media-breakpoint-down(md) {
+	.vl-sidebar-l, .vl-sidebar-r{
+		padding-bottom: 1rem; //because of the bottom toolbar of mobile browsers
+	}
+}

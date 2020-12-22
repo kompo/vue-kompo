@@ -20,20 +20,22 @@
                 <i :class="appendIcon"/>
             </template>
         </vlTaggableInput>
-        <div v-if="filteredOptions.length" class="vlOptions" :key="optionsKey">
-            <div v-for="(option,key) in filteredOptions" :key="key"
-                class="vlOption"
-                :class="{
-                    'vlSelected' : isSelected(option),
-                    'vlHoveredOption' : key == hoveredOption
-                }"
-                @click.stop="select(option)"
-                @mouseover="setHoveredOption(key)">
-                <vlCustomLabel :vkompo="option.label" :kompoid="kompoid" />
-            </div>
-        </div>
-        <div v-else class="vlOptions">
-            <div class="vlOption" v-html="optionsMessage" />
+        <div class="vlOptions" :key="optionsKey">
+            <template v-if="filteredOptions.length">
+                <div v-for="(option,key) in filteredOptions" :key="key"
+                    class="vlOption"
+                    :class="{
+                        'vlSelected' : isSelected(option),
+                        'vlHoveredOption' : key == hoveredOption
+                    }"
+                    @click.stop="select(option)"
+                    @mouseover="setHoveredOption(key)">
+                    <vlCustomLabel :vkompo="option.label" :kompoid="kompoid" />
+                </div>
+            </template>
+            <template v-else>
+                <div class="vlOption" v-html="optionsMessage" />
+            </template>
         </div>
 
         <template v-slot:after>

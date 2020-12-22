@@ -40,12 +40,12 @@ export default {
             
             //TODO: append or replace komponents...
             
-            if(!_.isArray(komponents) || !_.isObject(komponents))
+            if(!_.isArray(komponents) && !_.isObject(komponents))
                 return //should be object or array. If not, it's dump most probably
 
             komponents = _.isArray(komponents) ? komponents : [komponents]
 
-            this.komponents = komponents
+            this.komponents.push(... komponents) //set reactively
         },
         revertPanel(){
             this.$_togglesForm(this.hidesOnLoad)
