@@ -1,6 +1,36 @@
+.vlQuery{
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+}
+
 .vlFiltersLeft{
-	margin-right: $query-filters-spacing;
+	grid-column: 1;
+  	grid-row: 1 / 6;
+  	margin-right: $query-filters-spacing;
 }
 .vlFiltersRight{
-	margin-left: $query-filters-spacing;
+	grid-column: 3;
+  	grid-row: 1 / 6;
+  	margin-left: $query-filters-spacing;
+}
+.vlFiltersTop{
+	grid-column: 2;
+  	grid-row: 1;
+}
+.vlFiltersBottom{
+	grid-column: 2;
+  	grid-row: 5;
+}
+.vlPaginationT{
+	grid-column: 2;
+  	grid-row: 2;	
+}
+.vlPaginationB{
+	grid-column: 2;
+  	grid-row: 4;	
+}
+.vlQueryWrapper{
+	grid-column: 2;
+  	grid-row: 3;
 }

@@ -3,31 +3,33 @@
 
         <vl-filters v-bind="filtersAttributes('Left')" />
 
-        <vl-filters v-bind="filtersAttributes('Top')" />
+        <div :class="queryWrapperClass">
+            <vl-filters v-bind="filtersAttributes('Top')" />
+            <div class="vlQueryInner">
+                <component v-if="topPagination" @browse="browseQuery" 
+                    v-bind="paginationAttributes" />
 
-        <component v-if="topPagination" @browse="browseQuery" 
-            v-bind="paginationAttributes" />
+                <div v-if="isTableLayout" 
+                    :class="cardWrapperClass"
+                    :style="cardWrapperStyle"
+                >
+                    <table class="w-full table vlTable" :class="tableClass">
+                        <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
+                        <component v-bind="layoutAttributes" />
+                    </table>
+                </div>
 
-        <div class="vlQueryWrapper"
-            :class="cardWrapperClass"
-            :style="cardWrapperStyle">
+                <component v-else 
+                    v-bind="layoutAttributes" 
+                    :class="cardWrapperClass"
+                    :style="cardWrapperStyle"
+                />
 
-            <div v-if="isTableLayout">
-                <table class="w-full table vlTable" :class="tableClass">
-                    <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
-                    <component v-bind="layoutAttributes" />
-                </table>
+                <component v-if="bottomPagination" @browse="browseQuery" 
+                    v-bind="paginationAttributes" />
             </div>
-
-            <component v-else 
-                v-bind="layoutAttributes"
-            />
+            <vl-filters v-bind="filtersAttributes('Bottom')" />
         </div>
-
-        <component v-if="bottomPagination" @browse="browseQuery" 
-            v-bind="paginationAttributes" />
-
-        <vl-filters v-bind="filtersAttributes('Bottom')" />
 
         <vl-filters v-bind="filtersAttributes('Right')" />
 
@@ -78,8 +80,14 @@ export default {
         queryClass(){
             return this.$_classString([
                 'vlQuery',
-
+                this.hasSideFilters ? 'vlFlex' : '',
                 this.$_phpClasses
+            ])
+        },
+        queryWrapperClass(){
+            return this.$_classString([
+                'vlQueryWrapper',
+                this.hasSideFilters ? 'vlFlex1' : ''
             ])
         },
         queryAttributes(){

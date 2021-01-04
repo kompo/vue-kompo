@@ -1,8 +1,9 @@
 import Element from '../../element/mixins/Element'
+import HashesObjects from '../../element/mixins/HashesObjects'
 import DoesAxiosRequests from '../../form/mixins/DoesAxiosRequests'
 
 export default {
-    mixins: [ Element, DoesAxiosRequests ],
+    mixins: [ Element, HashesObjects, DoesAxiosRequests ],
     props: {
         cards: { type: Array, required: true},
         kompoid: { type: String, required: true }
@@ -17,7 +18,6 @@ export default {
         this.items = this.cards
     },
     computed:{
-        $_orderingUrl(){ return this.$_data('orderingUrl') },
         $_hasItems(){ return this.items.length > 0 },
         $_orderable(){ return this.component.orderable },
         $_dragHandle(){ return this.component.dragHandle },
@@ -51,24 +51,11 @@ export default {
         },
         itemRender(item){ return item.render },
         itemAttributes(item){ return item.attributes },
-        itemKey(item){ 
-            //Attempt to get a unique key for the item 
-            //not perfect to review but works 99% of the time 
-            //and the user has nothing to do on his side
-            
+        itemKey(item){             
             if(this.itemAttributes(item) && this.itemAttributes(item).id)
                 return this.itemAttributes(item).id
 
-            return 'vl'+this.hashCode(JSON.stringify(item).substr(0, 500)) //creating a uniqid from the object
-        },
-        hashCode(str){
-            var hash = 0, i, chr;
-            for (i = 0; i < str.length; i++) {
-              chr   = str.charCodeAt(i);
-              hash  = ((hash << 5) - hash) + chr;
-              hash |= 0; // Convert to 32bit integer
-            }
-            return hash;
+            return 'vl'+this.hashCode(item) //creating a uniqid from the object
         },
         activate(index){
             this.activeIndex = (index == this.activeIndex) ? null : index

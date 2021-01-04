@@ -59,6 +59,7 @@ export default class Action {
         this.vue.$_state({ loading: true })
 
         this.getAsArray(this.$_data('kompoid'), this.vue.kompoid).forEach(kompoid => {
+
             this.vue.$kompo.vlRefreshKomposer(
                 kompoid, 
                 this.$_data('route'), 

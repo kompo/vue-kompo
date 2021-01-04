@@ -69,10 +69,9 @@ export default class KompoAxios{
     }
 
     /******* Komponents *********/
-    //$_browseQuery(page, sort, addStore){  //TODO: delete I think this is an abandoned experiment
     $_browseQuery(page, sort){
         return this.$_axios({
-            url: this.$_komponent.queryUrl, 
+            url: this.$_kompoRoute, 
             method: 'POST',
             data: this.$_komponent.preparedFormData(),
             headers: {
@@ -80,18 +79,29 @@ export default class KompoAxios{
                 'X-Kompo-Page': page,
                 'X-Kompo-Sort': sort,
                 'X-Kompo-Action': 'browse-items',
-                //'X-Kompo-Store': JSON.stringify(addStore) //TODO: delete I think this is an abandoned experiment
             }
         })
     }
     $_orderQuery(newOrder){
         return this.$_axiosWithErrorHandling({
-            url: this.$_komponent.$_orderingUrl, 
+            url: this.$_kompoRoute, 
             method: 'POST',
             data: {order: newOrder},
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
                 'X-Kompo-Action': 'order-items'
+            }
+        })
+    }
+    $_selfPostQuery(payload){
+        return this.$_axiosWithErrorHandling({
+            url: this.$_kompoRoute, 
+            method: 'POST',
+            data: payload,
+            headers: {
+                'X-Kompo-Info': this.$_getKompoInfo(),
+                'X-Kompo-Action': 'self-method',
+                'X-Kompo-Target': this.$_kompoTarget,
             }
         })
     }

@@ -11,7 +11,7 @@
                 style="width: 100%"
                 @click.stop="$emit('click')">
                 <div v-for="(selection, index) in selections" 
-                    :key="index"
+                    :key="uniqueKey(selection)"
                     class="vlCustomLabel"
                     @click.stop="$emit('click', selection)">
                     <i v-if="!readonly"
@@ -34,7 +34,10 @@
 </template>
 
 <script>
+import HashesObjects from '../../element/mixins/HashesObjects'
+
 export default {
+    mixins: [ HashesObjects ],
     props: {
         selections: {type: Array, required: true},
         kompoid: { type: String, required: false },
@@ -66,6 +69,9 @@ export default {
                 return
             this.contentWidth = 'auto' //necessary cuz content depends in the width of it's contents...
             this.$nextTick(()=> {this.contentWidth = parseInt(this.$refs.content.clientWidth - 32) + 'px'})
+        },
+        uniqueKey(selection){
+            return this.hashCode(selection)
         }
     }
 }
