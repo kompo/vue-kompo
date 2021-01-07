@@ -1,10 +1,11 @@
 <template>
     <div class="w-full overflow-x-auto">
-        <div class="flex">
+        <div class="flex space-x-4">
             <div
               v-for="(title, status) in columns"
               :key="status"
-              class="mr-4"
+              :class="columnClass"
+              :style="columnStyle"
             >
                 <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
                     v-html="title"/>
@@ -13,11 +14,11 @@
                     :list="sortedItems[status]" group="column" :animation="200" ghost-class="VlGhostCard"
                     @change="changed(status, $event)">
 
-                    <template v-for="(item, index) in sortedItems[status]">
-
-                        <component v-bind="$_attributes(item, index)" />
-
-                    </template>
+                    <component 
+                        v-for="(item, index) in sortedItems[status]"
+                        :key="itemKey(item)"
+                        v-bind="$_attributes(item, index)" 
+                    />
 
                 </draggable>
             </div>
@@ -39,34 +40,58 @@ export default {
     },
     methods: {
         changed(status, item){
-            if(item.added)
+
+            if(item.added){  
+                this.fixEmptyColumn(status)
                 this.changeStatus({
                     id: this.itemAttributes(item.added.element).id,
                     status: status
                 })
+            }
+
+            if(item.removed)            
+                this.fixEmptyColumn(status)
+
+            if(item.moved)
+                this.changeOrder(this.sortedItems[status])
         },
         changeStatus(payload){
             this.$_kAxios.$_selfPostQuery(payload).then(r => {
-                //this.groupItems()
+                if(this.sortedItems[payload.status].length > 1)
+                    this.changeOrder(this.sortedItems[payload.status])
             })
         },
         groupItems(){
-            this.sortedItems = _.groupBy(this.items, (item) => this.itemAttributes(item).status )
+            this.sortedItems = _.groupBy(
+                _.sortBy(this.items, (item) => this.itemRender(item).data.item_order), 
+                (item) => this.itemAttributes(item).status 
+            )
+        },
+        fixEmptyColumn(status){
+            //remove empty column component
+            if(this.sortedItems[status])
+                this.sortedItems[status].forEach((item, key) => {
+                    if(this.itemAttributes(item).id == 'empty-column')
+                        this.sortedItems[status].splice(key, 1)
+                })
 
-            //set inexisting statuses to empty array
-            Object.keys(this.columns).forEach((status) => { 
-                if(!this.sortedItems[status])
-                    this.sortedItems[status] = [] 
-            })
+            //set inexisting statuses to empty column component
+            if(!this.sortedItems[status] || !this.sortedItems[status].length)
+                this.$set(this.sortedItems, status, [this.emptyColumn]) 
         }
     },
     computed: {
-        columns(){
-            return this.component.columns
-        }
+        columns(){ return this.component.columns },
+        columnClass(){ return this.component.columnClass },
+        columnStyle(){ return this.component.columnStyle },
+        emptyColumn(){ return this.createItemFromRender(this.component.emptyColumn, {id: 'empty-column'}) },
     },
-    mounted(){
+    created(){
         this.groupItems()
+
+        Object.keys(this.columns).forEach((status) => { 
+            this.fixEmptyColumn(status)
+        })
     }
 }
 </script>

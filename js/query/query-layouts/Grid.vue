@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-        <template v-for="(item, index) in items">
-            <component
-                v-bind="$_attributes(item, index)"
-            />
-        </template>
+    	<component 
+            v-for="(item, index) in items"
+            :key="itemKey(item)"
+            v-bind="$_attributes(item, index)" 
+        />
     </div>
 </template>
 

@@ -1,11 +1,11 @@
 <template>
     <tbody>
-        <template v-for="(item, index) in items">
-            <component
-                v-bind="$_attributes(item, index)"
-                @activate="activate"
-            />
-        </template>
+    	<component 
+            v-for="(item, index) in items"
+            :key="itemKey(item)"
+            v-bind="$_attributes(item, index)" 
+            @activate="activate"
+        />
     </tbody>
 </template>
 

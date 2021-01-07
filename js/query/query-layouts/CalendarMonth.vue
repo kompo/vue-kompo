@@ -5,10 +5,13 @@
         	<template v-for="(events, eventsDate) in sortedItems">
                 <div class="font-bold text-xs text-gray-500 pb-2 pt-4" 
                 	:id="dateId(eventsDate)"
-                	v-html="eventsDate"/>
-                <template v-for="(event, index) in events">
-                	<component v-bind="$_attributes(event, eventsDate+(index+1))" />
-                </template>
+                	v-html="eventsDate"
+                />
+                <component 
+                    v-for="(event, index) in events"
+                    :key="itemKey(event)"
+                    v-bind="$_attributes(event, eventsDate+(index+1))" 
+                />
             </template>
         </div>
     </div>

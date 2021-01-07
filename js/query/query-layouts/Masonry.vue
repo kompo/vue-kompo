@@ -1,13 +1,13 @@
 <template>
     <div class="vlMasonry">
         <div v-masonry transition-duration="0.3s" item-selector=".item">
-            <template v-for="(item, index) in items">
-                <component
-                    v-masonry-tile 
-                    class="item"
-                    v-bind="$_attributes(item, index)"
-                />
-            </template>
+            <component 
+                v-for="(item, index) in items"
+                :key="itemKey(item)"
+                v-bind="$_attributes(item, index)" 
+                v-masonry-tile 
+                class="item"
+            />
         </div>
     </div>
 </template>

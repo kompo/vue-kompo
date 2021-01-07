@@ -23,7 +23,7 @@ export default {
         $_dragHandle(){ return this.component.dragHandle },
         $_sortingAttributes(){
             return Object.assign({
-                    disabled: this.sortingDisabled,
+                    disabled: this.sortingDisabled || !this.$_orderable,
                     list: this.items
                 }, this.$_dragHandle ? {
                     handle: this.$_dragHandle
@@ -32,7 +32,7 @@ export default {
         },
         $_sortingEvents(){
             return {
-                change: this.change
+                change: this.defaultChangeOrder
             }
         }
     },
@@ -40,7 +40,7 @@ export default {
         $_attributes(item, index) { return this.$_defaultLayoutAttributes(item, index) },
         $_defaultLayoutAttributes(item, index) {
             return {
-                key: this.itemKey(item),
+                //key: this.itemKey(item), //EXPLICITELY set on <component/> cuz Vue emits a warning otherwise...
                 index: parseInt(index),
                 active: this.activeIndex == index,
                 is: this.$_vueTag(this.itemRender(item)),
@@ -51,6 +51,12 @@ export default {
         },
         itemRender(item){ return item.render },
         itemAttributes(item){ return item.attributes },
+        createItemFromRender(render, attr){
+            return {
+                attributes: attr,
+                render: render
+            }
+        },
         itemKey(item){             
             if(this.itemAttributes(item) && this.itemAttributes(item).id)
                 return this.itemAttributes(item).id
@@ -60,12 +66,15 @@ export default {
         activate(index){
             this.activeIndex = (index == this.activeIndex) ? null : index
         },
-        change(event){
+        defaultChangeOrder(){
+            this.changeOrder(this.items)
+        },
+        changeOrder(items){
             if(this.$_orderable){
 
-                const minOrderItem = _.minBy(this.items, (item) => this.itemRender(item).data.item_order ) || this.items[0]
+                const minOrderItem = _.minBy(items, (item) => this.itemRender(item).data.item_order ) || items[0]
 
-                const newOrder = _.map(this.items, (item, k) => {
+                const newOrder = _.map(items, (item, k) => {
                     return {
                         item_id: this.itemRender(item).data.item_id,
                         item_order: this.itemRender(minOrderItem).data.item_order + k

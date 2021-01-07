@@ -5,12 +5,14 @@
 
         <vl-filters v-bind="filtersAttributes('Top')" />
 
-        <component v-if="topPagination" @browse="browseQuery" 
+        <component v-if="showTopPagination" @browse="browseQuery" 
             v-bind="paginationAttributes" />
 
         <div class="vlQueryWrapper"
             :class="cardWrapperClass"
-            :style="cardWrapperStyle">
+            :style="cardWrapperStyle"
+            ref="vlQueryWrapper"
+            @scroll="onScroll">
 
             <div v-if="isTableLayout">
                 <table class="w-full table vlTable" :class="tableClass">
@@ -24,7 +26,7 @@
             />
         </div>
 
-        <component v-if="bottomPagination" @browse="browseQuery" 
+        <component v-if="showBottomPagination" @browse="browseQuery" 
             v-bind="paginationAttributes" />
 
         <vl-filters v-bind="filtersAttributes('Bottom')" />
@@ -68,6 +70,10 @@ export default {
         this.cards = this.getCards(this.component)
         this.pagination = this.getPagination(this.component)
         this.headers = this.component.headers
+    },
+    mounted() {
+        if(this.isScrollPagination && this.topPagination)
+            this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight;
     },
     computed: {
 
@@ -115,17 +121,19 @@ export default {
                 class: this.paginationClass
             }
         },
-        queryUrl(){ return this.$_data('browseUrl') },
+        isScrollPagination() { return this.component.paginationStyle == 'Scroll' },
         tableClass() { return this.component.tableClass },
-        hasPagination() { return this.component.hasPagination },
-        topPagination(){ return this.hasPagination && this.component.topPagination },
-        bottomPagination(){ return this.hasPagination && this.component.bottomPagination },
+        hasPagination() { return this.component.hasPagination && !this.isScrollPagination },
+        topPagination(){ return this.component.topPagination },
+        bottomPagination(){ return this.component.bottomPagination },
+        showTopPagination(){ return this.hasPagination && this.topPagination },
+        showBottomPagination(){ return this.hasPagination && this.bottomPagination },
         leftPagination(){ return this.hasPagination && this.component.leftPagination },
         paginationStyle() { return 'VlPagination' + this.component.paginationStyle },
         paginationClass(){ return this.$_classString(
             [this.leftPagination ? '' : 'vlJustifyEnd']
-            .concat([this.topPagination ? 'vlPaginationT' : ''])
-            .concat([this.bottomPagination ? 'vlPaginationB' : ''])
+            .concat([this.showTopPagination ? 'vlPaginationT' : ''])
+            .concat([this.showBottomPagination ? 'vlPaginationB' : ''])
         ) },
         layoutComponent(){ 
             if(this.component.layout == 'CalendarMonth')
@@ -172,14 +180,32 @@ export default {
         previewNext(){
             this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
+        onScroll({ target: { scrollTop, clientHeight, scrollHeight }}){
+            if(!this.isScrollPagination)
+                return
+
+            if(this.pagination.current_page == this.pagination.last_page)
+                return
+
+            if(this.bottomPagination)
+                if (scrollTop + clientHeight >= scrollHeight)
+                    this.browseQuery(this.currentPage + 1)
+
+            if(this.topPagination)
+                if (scrollTop == 0)
+                    this.browseQuery(this.currentPage + 1)
+        },
         browseQuery(page) {
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 this.$_state({ loading: false })
 
-                //Replacing queries
                 this.pagination = r.data
-                Vue.set(this, 'cards', r.data.data)
+                Vue.set(this, 'cards', 
+                    this.isScrollPagination ? 
+                        (this.topPagination ? r.data.data.concat(this.cards) : this.cards.concat(r.data.data)) : 
+                        r.data.data
+                )
                 this.cardsKey += 1 //to re-render cards
             })
             .catch(e => {

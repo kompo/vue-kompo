@@ -1,25 +1,15 @@
 <template>
-    <div>
-        <div v-if="!component.orderable">
+    <draggable 
+        v-bind="$_sortingAttributes" 
+        v-on="$_sortingEvents">
 
-            <template v-for="(item, index) in items">
-                <component v-bind="$_attributes(item, index)" />
-            </template>
+        <component 
+            v-for="(item, index) in items"
+            :key="itemKey(item)"
+            v-bind="$_attributes(item, index)" 
+        />
 
-        </div>
-
-        <draggable v-else
-            v-bind="$_sortingAttributes" 
-            v-on="$_sortingEvents">
-
-            <template v-for="(item, index) in items">
-
-                <component v-bind="$_attributes(item, index)" />
-
-            </template>
-
-        </draggable>
-    </div>
+    </draggable>
 </template>
 
 <script>
