@@ -1,10 +1,12 @@
 <template>
-    <component v-bind="formAttributes">
-        <template v-for="component in komponents">
-            <component v-bind="$_attributes(component)"/>
-        </template>
+    <div v-bind="formAttributes" class="vlForm">
+        <form>
+            <template v-for="component in komponents">
+                <component v-bind="$_attributes(component)"/>
+            </template>
+        </form>
         <vl-support-modal :kompoid="$_elKompoId" />
-    </component>
+    </div>
 </template>
 
 <script>
@@ -27,12 +29,8 @@ export default {
         formAttributes(){
             return {
                 ...this.$_defaultElementAttributes,
-                is: this.$_komposerTag(this.component) == 'vl-form' ? 'form' : 'div',
-                class: this.$_classString([
-                    this.$_phpClasses,
-                    this.$_komposerTag(this.component) == 'vl-form' ? 'vlForm' : 'vlView',
-                ]),
-                style: this.$_elementStyles,
+                class: this.$_phpClasses,
+                style: this.$_elementStyles
             }
         },
 

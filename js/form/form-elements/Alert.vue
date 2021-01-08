@@ -1,6 +1,6 @@
 <template>
 
-    <vl-alert v-bind="$_attributes" v-show="!$_hidden" />
+    <vl-alert-plain v-bind="$_attributes" v-show="!$_hidden" />
 
 </template>
 

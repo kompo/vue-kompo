@@ -51,17 +51,15 @@ export default {
         },
         itemRender(item){ return item.render },
         itemAttributes(item){ return item.attributes },
+        defaultKey(item){ return this.itemAttributes(item)?.id || null },
         createItemFromRender(render, attr){
             return {
                 attributes: attr,
                 render: render
             }
         },
-        itemKey(item){             
-            if(this.itemAttributes(item) && this.itemAttributes(item).id)
-                return this.itemAttributes(item).id
-
-            return 'vl'+this.hashCode(item) //creating a uniqid from the object
+        itemKey(item){
+            return this.defaultKey(item) || 'vl'+this.hashCode(item) //creating a uniqid from the object
         },
         activate(index){
             this.activeIndex = (index == this.activeIndex) ? null : index

@@ -4,7 +4,7 @@
         <div class="vlAlertWrapper" v-if="alerts.length" 
             :style="{'z-index': zIndex - 2 }">
 
-            <vl-alert v-for="(alert, key) in alerts"
+            <vl-alert-plain v-for="(alert, key) in alerts"
                 :message="alert.message"
                 :icon="alert.icon"
                 :alertclass="alert.alertClass"

@@ -14,12 +14,10 @@
             ref="vlQueryWrapper"
             @scroll="onScroll">
 
-            <div v-if="isTableLayout">
-                <table class="w-full table vlTable" :class="tableClass">
-                    <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
-                    <component v-bind="layoutAttributes" />
-                </table>
-            </div>
+            <table v-if="isTableLayout" class="w-full table vlTable" :class="tableClass">
+                <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
+                <component v-bind="layoutAttributes" />
+            </table>
 
             <component v-else 
                 v-bind="layoutAttributes"
@@ -73,7 +71,7 @@ export default {
     },
     mounted() {
         if(this.isScrollPagination && this.topPagination)
-            this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight;
+            this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
     },
     computed: {
 
@@ -111,7 +109,9 @@ export default {
                 kompoid: this.$_elKompoId,
                 cards: this.cards,
                 key: this.cardsKey,
-                initial: this.initialFilters
+                initial: this.initialFilters,
+                class: (this.isScrollPagination && this.topPagination && this.component.layout == 'Horizontal') ? 
+                            'flex flex-col-reverse' : ''
             }
         },
         paginationAttributes(){
@@ -180,6 +180,14 @@ export default {
         previewNext(){
             this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
+        fixTopPaginationScroll(scrollHeightBefore){
+            if(this.isScrollPagination && this.topPagination){
+                scrollHeightBefore = scrollHeightBefore || 0
+                this.$nextTick( () => {
+                    this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight - scrollHeightBefore
+                })
+            }
+        },
         onScroll({ target: { scrollTop, clientHeight, scrollHeight }}){
             if(!this.isScrollPagination)
                 return
@@ -203,10 +211,12 @@ export default {
                 this.pagination = r.data
                 Vue.set(this, 'cards', 
                     this.isScrollPagination ? 
-                        (this.topPagination ? r.data.data.concat(this.cards) : this.cards.concat(r.data.data)) : 
+                        this.cards.concat(r.data.data) : 
                         r.data.data
                 )
                 this.cardsKey += 1 //to re-render cards
+
+                this.fixTopPaginationScroll(this.$refs.vlQueryWrapper.scrollHeight)
             })
             .catch(e => {
                 if (e.response.status == 422){
@@ -233,6 +243,9 @@ export default {
                 this.browseQuery()
             })
             this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
+                
+                payload = Object.assign(payload || {}, this.initialFilters || {})
+
                 this.$_kAxios.$_refreshSelf(url, payload).then(r => {
                     this.component = r.data
 

@@ -5,7 +5,6 @@ export default class TurboClick {
 
         this.url = url
 
-
 	}
     getMainVueOptionsRecursively(element){
         return element.$parent ? 

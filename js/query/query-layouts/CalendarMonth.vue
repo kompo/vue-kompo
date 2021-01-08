@@ -33,6 +33,7 @@ export default {
     	}
     },
     methods: {
+        defaultKey(item){ return (this.itemAttributes(item).event_class + this.itemAttributes(item).id) || null },
     	dateId(dateStr){
     		return 'date-'+dateStr
     	},
@@ -56,12 +57,6 @@ export default {
                 year: instance.currentYear,
                 selectedDate: this.selectedDate
             })
-        },
-        $_attributes(item, index) { 
-            return {
-                ...this.$_defaultLayoutAttributes(item, index),
-                key: this.itemAttributes(item).event_class + this.itemAttributes(item).id //in case of multiple models with same id
-            }
         },
         scrollToDate() {
             this.$nextTick(() => {
@@ -94,6 +89,8 @@ export default {
     },
     created(){   
         var VueScrollTo = require('vue-scrollto')
+
+        console.log(this.initial)
 
         this.selectedDate = _.isEmpty(this.initial) ? 
                                 this.formatDate(new Date()) : //today

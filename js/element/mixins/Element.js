@@ -86,7 +86,7 @@ export default {
             if(!this.$_elKompoId)
                 return
 
-            this.$_vlOn('vlDeliverFormInfo'+this.$_elKompoId, (formInfo) => { //for submit TODO: merge with below
+            this.$_vlOn('vlDeliverFormInfo'+this.$_elKompoId, (formInfo) => { //for submit 
                 this.formInfo = formInfo
             })
             this.$_vlOn('vlDeliverKompoInfo'+this.$_elKompoId, (kompoInfo) => { //for any axios request

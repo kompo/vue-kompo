@@ -32,7 +32,7 @@ export default {
         },
         insertFromResponse(){
             this.component = this.obj
-            this.partial = this.$_getKomposerTemplate(this.obj)
+            this.partial = this.$_komposerTag(this.obj)
         }
     },
     created(){

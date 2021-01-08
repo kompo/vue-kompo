@@ -136,9 +136,3 @@ const Kompo = {
 export default Kompo
 
 Vue.use(Kompo)
-/* TODO 
-if(window.Vue){
-	window.Vue.use(Kompo)
-}else{
-	Vue.use(Kompo)
-}*/
