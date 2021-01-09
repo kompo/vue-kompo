@@ -63,7 +63,7 @@ export default {
         },
         groupItems(){
             this.sortedItems = _.groupBy(
-                _.sortBy(this.items, (item) => this.itemRender(item).data.item_order), 
+                _.sortBy(this.items, (item) => this.$_config('item_order', this.itemRender(item))), 
                 (item) => this.itemAttributes(item).status 
             )
         },

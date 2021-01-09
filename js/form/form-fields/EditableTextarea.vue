@@ -37,7 +37,7 @@ export default {
             }
         },
         rows(){
-            return this.$_data('rows') || 
+            return this.$_config('rows') || 
                 Math.min(3, this.$_value ? (parseInt(this.$_value.toString().length/20) + 1) : 2 )
         }
     },

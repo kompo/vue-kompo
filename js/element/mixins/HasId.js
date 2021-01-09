@@ -5,7 +5,7 @@ export default {
         	return key => this.component.id ? (this.component.id + ( key || '' )) : null 
         },
         $_elKompoId() {
-        	return this.$_data('X-Kompo-Id')
+        	return this.$_config('X-Kompo-Id')
         }
     }
 }

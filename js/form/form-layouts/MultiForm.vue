@@ -28,8 +28,8 @@
         <a v-if="!noAdding" 
             href="javascript:void(0)" 
             @click.stop="addRow"
-            :class="$_data('addLabelClass')"
-            v-html="$_data('addLabel')" />
+            :class="$_config('addLabelClass')"
+            v-html="$_config('addLabel')" />
     </div>
 </template>
 

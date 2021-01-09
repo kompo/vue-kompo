@@ -31,13 +31,13 @@ export default {
     },
     computed:{
         deleteTitle(){
-            return this.vkompo.data.deleteTitle
+            return this.$_config('deleteTitle')
         },
     	confirmMessage(){
-    		return this.vkompo.data.confirmMessage
+    		return this.$_config('confirmMessage')
     	},
     	cancelMessage(){
-    		return this.vkompo.data.cancelMessage
+    		return this.$_config('cancelMessage')
     	}
     },
     methods: {

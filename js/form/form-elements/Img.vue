@@ -23,7 +23,7 @@ export default {
     mixins: [Other],
     computed: {
     	bgCover(){
-    		return this.$_data('backgroundCover')
+    		return this.$_config('backgroundCover')
     	},
     	$_attributes() {
             return Object.assign(

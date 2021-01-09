@@ -3,7 +3,7 @@ import Action from '../../core/Action'
 export default {
 
     computed: {
-        $_debounce(){ return this.$_data('debounce') || 0 },
+        $_debounce(){ return this.$_config('debounce') || 0 },
 
         //hack to make debounce work... need to write my own debounce function in $_runTrigger
         debouncedSubmitOnInput(){ return _.debounce(this.submitOnInput, this.$_debounce) },

@@ -3,11 +3,11 @@ import EmitsEvents from './EmitsEvents'
 import HasId from './HasId'
 import HasClasses from './HasClasses'
 import HasStyles from './HasStyles'
-import HasData from './HasData'
+import HasConfig from './HasConfig'
 import RunsInteractions from './RunsInteractions'
 
 export default {
-    mixins: [ HasVueComponent, EmitsEvents, HasId, HasClasses, HasStyles, HasData, RunsInteractions],
+    mixins: [ HasVueComponent, EmitsEvents, HasId, HasClasses, HasStyles, HasConfig, RunsInteractions],
     props: {
         vkompo: { type: Object, required: true }
     },
@@ -25,10 +25,10 @@ export default {
         $_hasError(){ return this.$_state('hasError') },
         $_isSuccess(){ return this.$_state('isSuccess') },
         $_hidden(){ return this.$_state('vlHidden') },
-        $_displayNone(){ return this.$_data('displayNone') },
+        $_displayNone(){ return this.$_config('displayNone') },
 
-        $_icon() { return this.$_data('icon') },
-        $_rIcon() { return this.$_data('rIcon') },
+        $_icon() { return this.$_config('icon') },
+        $_rIcon() { return this.$_config('rIcon') },
         $_pureLabel() { return this.component.label },
         $_label() { 
             return [this.$_icon, this.$_pureLabel, this.$_rIcon]
@@ -44,13 +44,13 @@ export default {
         $_defaultElementAttributes() {
 
             return Object.assign(
-                this.$_data('attrs') || {},
+                this.$_config('attrs') || {},
                 this.$_elementId() ? { id: this.$_elementId() } : {}
             )
         },
         
-        $_toggleId(){ return this.$_data('toggleId') },
-        $_toggleOnLoad(){ return this.$_data('toggleOnLoad') }
+        $_toggleId(){ return this.$_config('toggleId') },
+        $_toggleOnLoad(){ return this.$_config('toggleOnLoad') }
 
     },
     methods: {
@@ -103,7 +103,7 @@ export default {
         }
     },
     created(){
-        this.vkompo.$_data = this.$_data
+        this.vkompo.$_config = this.$_config
         this.vkompo.$_state = this.$_state
         this.vkompo.$_validate = this.$_validate
         this.vkompo.$_getErrors = this.$_getErrors

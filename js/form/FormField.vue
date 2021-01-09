@@ -28,7 +28,7 @@ export default {
             return this.errors && this.errors.length
         },
         $_hasLeftIcon(){
-            return this.component.$_data('icon')
+            return this.component.$_config('icon')
         },
         $_hidden(){
             return this.component.$_state('vlHidden')
@@ -39,7 +39,7 @@ export default {
                 this.$_wrapperStyle ? {style: this.$_wrapperStyle} : {}
             )
         },
-        $_noMargins(){ return this.component.$_data('noMargins') }, 
+        $_noMargins(){ return this.component.$_config('noMargins') }, 
         $_wrapperClass(){
             return [ 
                 this.component.class || '',
@@ -56,10 +56,10 @@ export default {
             return this.component.style || ''
         },
         $_noInputWrapper(){
-            return this.component.$_data('noInputWrapper')
+            return this.component.$_config('noInputWrapper')
         },
         $_readOnly(){
-            return this.component.$_data('readOnly')
+            return this.component.$_config('readOnly')
         }
     }
 }

@@ -81,15 +81,15 @@ export default {
                 is: {template: this.$_icon}
             }
         },
-        appendIcon(){ return this.$_data('searchInput') ? null : 
+        appendIcon(){ return this.$_config('searchInput') ? null : 
             (this.$_state('focusedField') ? 'icon-up' : 'icon-down') },
-        noOptionsFound(){ return this.$_data('noOptionsFound')},
-        enterMoreCharacters(){ return this.$_data('enterMoreCharacters')},
+        noOptionsFound(){ return this.$_config('noOptionsFound')},
+        enterMoreCharacters(){ return this.$_config('enterMoreCharacters')},
         $_pristine() { return this.$_value.length === 0 },
         $_emptyValue() { return [] },
-        ajaxOptions(){ return this.$_data('ajaxOptions') },
-        ajaxMinSearchLength(){ return this.$_data('ajaxMinSearchLength') },
-        ajaxOptionsFromField(){ return this.$_data('ajaxOptionsFromField') },
+        ajaxOptions(){ return this.$_config('ajaxOptions') },
+        ajaxMinSearchLength(){ return this.$_config('ajaxMinSearchLength') },
+        ajaxOptionsFromField(){ return this.$_config('ajaxOptionsFromField') },
         debouncedAjaxFunction(){ return _.debounce(this.loadOptionsByAjax, 300)}
     },
     methods: {

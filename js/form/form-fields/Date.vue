@@ -37,21 +37,21 @@ export default {
         this.dateCheck = this.$_value //to emit accurate change events
     },
     computed: {
-        $_enableTime(){ return this.$_data('enableTime') || false },
-        $_noCalendar(){ return this.$_data('noCalendar') || false },
-        $_dateMode(){ return this.$_data('dateMode') || false },
+        $_enableTime(){ return this.$_config('enableTime') || false },
+        $_noCalendar(){ return this.$_config('noCalendar') || false },
+        $_dateMode(){ return this.$_config('dateMode') || false },
         $_attributes(){
             return {
                 ...this.$_defaultFieldAttributes,
                 config: Object.assign({
                     wrap: true,
-                    dateFormat: this.$_data('dateFormat'),
+                    dateFormat: this.$_config('dateFormat'),
                     enableTime: this.$_enableTime,
                     noCalendar: this.$_noCalendar,
                     allowInput: true,
                     altInput: true,
                     altInputClass: 'vlFormControl',
-                    altFormat: this.$_data('altFormat'),
+                    altFormat: this.$_config('altFormat'),
                     time_24hr: true
                 }, 
                     this.$_dateMode ? {mode: this.$_dateMode} : {}

@@ -36,10 +36,10 @@ export default {
                     ''
         },
         thumbHeight(){
-            return this.$_data('thumbHeight')
+            return this.$_config('thumbHeight')
         },
         previewable(){
-            return !this.$_data('thumbPreviewDisabled')
+            return !this.$_config('thumbPreviewDisabled')
         }
     },
     methods: {

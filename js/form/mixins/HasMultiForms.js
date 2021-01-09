@@ -5,7 +5,7 @@ export default {
         })
     },
     computed: {
-        noAdding(){ return this.$_data('noAdding') }
+        noAdding(){ return this.$_config('noAdding') }
     },
     methods:{
         getRandomKey(){

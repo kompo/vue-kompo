@@ -52,7 +52,7 @@ export default {
 
     computed:{
 
-        valueLabel(){ return this.$_data('valueLabel')},
+        valueLabel(){ return this.$_config('valueLabel')},
 
         $_attributes() {
             return {

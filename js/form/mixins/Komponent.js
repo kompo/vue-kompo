@@ -10,17 +10,17 @@ export default {
 
         $_kompoInfo() { return this.kompoinfo }, //coming from blade menu
 
-        $_submitsOnInput(){ return this.$_data('submitsOnInput') },
-        $_hideIndicators(){ return this.$_data('hideIndicators') },
+        $_submitsOnInput(){ return this.$_config('submitsOnInput') },
+        $_hideIndicators(){ return this.$_config('hideIndicators') },
 
-        $_keepModalOpen(){ return this.$_data('keepModalOpen') },
-        $_getFreshForm(){ return this.$_data('getFreshForm') },
+        $_keepModalOpen(){ return this.$_config('keepModalOpen') },
+        $_getFreshForm(){ return this.$_config('getFreshForm') },
 
-        $_sortsQuery(){ return this.$_data('sortsQuery') },
+        $_sortsQuery(){ return this.$_config('sortsQuery') },
         $_sortValue(){ return this.$_sortsQuery }, //overriden in Field and Th
 
-        $_revertsPanel(){ return this.$_data('revertsPanel') },
-        $_revertsFormRow(){ return this.$_data('revertsFormRow') },
+        $_revertsPanel(){ return this.$_config('revertsPanel') },
+        $_revertsFormRow(){ return this.$_config('revertsFormRow') },
         
         $_debouncedSubmit(){ return _.debounce(this.$_submit, this.$_submitsOnInput)}
 

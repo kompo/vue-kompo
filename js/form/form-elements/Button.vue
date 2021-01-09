@@ -38,11 +38,11 @@ export default {
         },
         btnClass(){
             return 'vlBtn' + 
-                (this.$_data('btnOutlined') ? ' vlBtnOutlined' : '') +
-                (this.$_data('btnPlain') ? ' vlBtnPlain' : '') +
-                (this.$_data('btnInline') ? ' vlBtnInline' : '') +
-                (this.$_data('btnBlock') ? ' vlBtnBlock' : '') +
-                (this.$_data('secondary') ? ' vlSecondary' : '')
+                (this.$_config('btnOutlined') ? ' vlBtnOutlined' : '') +
+                (this.$_config('btnPlain') ? ' vlBtnPlain' : '') +
+                (this.$_config('btnInline') ? ' vlBtnInline' : '') +
+                (this.$_config('btnBlock') ? ' vlBtnBlock' : '') +
+                (this.$_config('secondary') ? ' vlSecondary' : '')
         }
     }
 }

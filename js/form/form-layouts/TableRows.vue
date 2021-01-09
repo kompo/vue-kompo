@@ -19,7 +19,7 @@ export default {
     mixins: [Layout],
     methods: {
         tdClass(row){
-            return this.$_data('tdClass', row)
+            return this.$_config('tdClass', row)
         }
     }
 }

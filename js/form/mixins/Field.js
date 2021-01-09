@@ -14,9 +14,9 @@ export default {
 
         $_placeholder() { return this.component.placeholder },
 
-        $_readOnly(){ return this.$_data('readOnly') },
-        $_noAutocomplete(){ return this.$_data('noAutocomplete') },
-        $_doesNotFill(){ return this.$_data('doesNotFill') },
+        $_readOnly(){ return this.$_config('readOnly') },
+        $_noAutocomplete(){ return this.$_config('noAutocomplete') },
+        $_doesNotFill(){ return this.$_config('doesNotFill') },
 
         $_emptyValue() { return '' },
 
@@ -39,8 +39,8 @@ export default {
             id: this.$_elementId() || this.$_elKompoId,
             name: this.$_name,
             placeholder: this.$_placeholder,
-            style: this.$_data('inputStyle') || '',
-            class: this.$_data('inputClass') || '',
+            style: this.$_config('inputStyle') || '',
+            class: this.$_config('inputClass') || '',
             readonly: this.$_readOnly,
             autocomplete: this.$_noAutocomplete ? 'off' : ''
         }},
@@ -82,7 +82,7 @@ export default {
             
             this.$_runOwnInteractions('keyup')
             if(key.code === 'Enter'){
-                if(this.$_data('noSubmitOnEnter')){
+                if(this.$_config('noSubmitOnEnter')){
                     this.$_runOwnInteractionsWithoutActions('enter', ['submitForm'])
                 }else{
                     this.$_runOwnInteractions('enter')

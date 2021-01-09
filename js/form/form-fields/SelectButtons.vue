@@ -28,16 +28,16 @@ export default {
     computed:{
         containerClass(){ 
             return this.$_classString([
-                this.$_data('containerClass'),
-                this.$_data('guttersClass') 
+                this.$_config('containerClass'),
+                this.$_config('guttersClass') 
             ])
         },
-        optionClass(){ return this.$_data('optionClass') },
+        optionClass(){ return this.$_config('optionClass') },
         options(){ return this.component.options }
     },
     methods: {
         optionInnerClass(option, key){ 
-            return this.$_data('optionInnerClass') +
+            return this.$_config('optionInnerClass') +
                 (option.selected ? ' vlSelected' : '') 
         },
         $_setInitialValue(){

@@ -18,8 +18,8 @@ export default {
     computed:{
         $_customClassArray(){
             return [
-                this.$_data('justifyClass'),
-                this.$_data('alignClass') 
+                this.$_config('justifyClass'),
+                this.$_config('alignClass') 
             ]
         },
         $_customLayoutAttributes(){

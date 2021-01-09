@@ -1,7 +1,7 @@
 export default {
 	computed: {
 
-        $_kompoInfo() { return this.$_data('X-Kompo-Info') },
+        $_kompoInfo() { return this.$_config('X-Kompo-Info') },
 
         $_deliverKompoInfoOff() { return 'vlGetKomposerInfo'+this.$_elKompoId }
 

@@ -6,8 +6,8 @@
                 <a class="vlFormComment" 
                     href="javascript:void(0)" 
                     @click.stop="loadUpdateForm"
-                    :class="$_data('addLabelClass')"
-                    v-html="$_data('addLabel')" />
+                    :class="$_config('addLabelClass')"
+                    v-html="$_config('addLabel')" />
             </template>
         </component>
 
@@ -49,9 +49,9 @@ export default {
             this.option = r.data.option //The user has to set a public option property on the Form
             this.optionValue = Object.keys(this.option)[0]
 
-          this.$_data({
-            ajaxPayload: Object.assign({id: this.optionValue}, this.$_data('ajaxPayload')),
-          })
+            this.$_config({
+                ajaxPayload: Object.assign({id: this.optionValue}, this.$_config('ajaxPayload')),
+            })
                 
             var newSelect = this.komponents[0]
 
@@ -64,7 +64,7 @@ export default {
             this.komponents.splice(0, 1, newSelect)
             this.renderKey += 1
 
-            if(!this.$_data('keepModalOpen'))
+            if(!this.$_config('keepModalOpen'))
                 this.$kompo.vlModalClose('modal'+this.$_elKompoId)
         }
     }

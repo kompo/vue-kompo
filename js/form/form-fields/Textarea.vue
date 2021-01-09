@@ -18,7 +18,7 @@ export default {
         $_attributes(){
             return {
                 ...this.$_defaultFieldAttributes,
-                rows: this.$_data('rows') || 3
+                rows: this.$_config('rows') || 3
             }
         }
     }

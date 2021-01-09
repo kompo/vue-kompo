@@ -1,7 +1,7 @@
 export default {
     data(){
         return {
-            activeLocale: this.vkompo.data.locales[0],
+            activeLocale: this.vkompo.config.locales[0],
             currentTranslation: ''
         }
     },
@@ -9,14 +9,14 @@ export default {
         $_attributes(){
             return {
                 ...this.$_defaultFieldAttributes,
-                rows: this.$_data('rows') || 3
+                rows: this.$_config('rows') || 3
             }
         },
         locales(){
-            return this.$_data('locales')
+            return this.$_config('locales')
         },
         currentLocale(){
-            return this.$_data('currentLocale')
+            return this.$_config('currentLocale')
         },
         $_pristine() {
             return !this.currentTranslation

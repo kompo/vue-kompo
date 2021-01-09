@@ -13,7 +13,7 @@ export default {
             }
         },
         $_customClassArray() { return [
-            this.$_data('active')
+            this.$_config('active')
         ] },
 	}
 

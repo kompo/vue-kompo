@@ -1,7 +1,7 @@
 export default {
     computed: {
-        $_emptyValue() { return this.$_data('emptyValue') },
-        keyLabel(){ return this.$_data('keyLabel')},
+        $_emptyValue() { return this.$_config('emptyValue') },
+        keyLabel(){ return this.$_config('keyLabel')},
     },
     methods: {
 

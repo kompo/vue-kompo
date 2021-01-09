@@ -3,8 +3,8 @@ export default {
         $_customClassArray(){
             return [
                 'row',
-                this.$_data('alignClass'),
-                this.$_data('guttersClass')
+                this.$_config('alignClass'),
+                this.$_config('guttersClass')
             ]
         },
         numOfColumns(){
@@ -16,7 +16,7 @@ export default {
                 'col'
         },
         breakpoint(){
-            return this.$_data('breakpoint')
+            return this.$_config('breakpoint')
         }
     },
     methods:{
@@ -26,7 +26,7 @@ export default {
             ])
         },
         colClass(col){
-            return this.$_data('col', col) || this.equalColumnClass
+            return this.$_config('col', col) || this.equalColumnClass
         }
     }
 }

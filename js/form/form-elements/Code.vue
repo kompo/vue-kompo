@@ -11,7 +11,7 @@ import Other from '../mixins/Other'
 export default {
     mixins: [Other],
     computed: {
-        tabSize(){ return this.$_data('tabSize') || 4 }
+        tabSize(){ return this.$_config('tabSize') || 4 }
     }
 }
 </script>

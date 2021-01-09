@@ -70,12 +70,12 @@ export default {
         changeOrder(items){
             if(this.$_orderable){
 
-                const minOrderItem = _.minBy(items, (item) => this.itemRender(item).data.item_order ) || items[0]
+                const minOrderItem = _.minBy(items, (item) => this.$_config('item_order', this.itemRender(item)) ) || items[0]
 
                 const newOrder = _.map(items, (item, k) => {
                     return {
-                        item_id: this.itemRender(item).data.item_id,
-                        item_order: this.itemRender(minOrderItem).data.item_order + k
+                        item_id: this.$_config('item_id', this.itemRender(item)),
+                        item_order: this.$_config('item_order', this.itemRender(minOrderItem)) + k
                     }
                 })
 

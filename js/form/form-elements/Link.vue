@@ -37,12 +37,12 @@ export default {
         },
         linkClass(){
             return this.$_classString([
-                this.$_data('btnStyle') ? 'vlBtn' : '',
-                this.$_data('btnOutlined') ? 'vlBtnOutlined' : '',
-                this.$_data('btnPlain') ? 'vlBtnPlain' : '',
-                this.$_data('secondary') ? 'vlSecondary' : '',
-                this.$_data('btnInline') ? 'vlBtnInline' : '',
-                this.$_data('btnBlock') ? 'vlBtnBlock' : '' //inline by default
+                this.$_config('btnStyle') ? 'vlBtn' : '',
+                this.$_config('btnOutlined') ? 'vlBtnOutlined' : '',
+                this.$_config('btnPlain') ? 'vlBtnPlain' : '',
+                this.$_config('secondary') ? 'vlSecondary' : '',
+                this.$_config('btnInline') ? 'vlBtnInline' : '',
+                this.$_config('btnBlock') ? 'vlBtnBlock' : '' //inline by default
             ])
         }
     }

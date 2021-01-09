@@ -49,7 +49,7 @@ export default {
     computed: {
 
         collapseOpen(){
-            return this.$_data('expandByDefault') || (this.$_data('expandIfActive') && this.$_data('active'))
+            return this.$_config('expandByDefault') || (this.$_config('expandIfActive') && this.$_config('active'))
         },
         togglerClass(){
             return this.open ? '' : 'vlTogglerClosed'

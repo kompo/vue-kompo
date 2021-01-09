@@ -10,18 +10,18 @@ export default class KompoAxios{
         this.$_komponent = element instanceof Action ? element.vue : element
         this.$_parentKompoId = this.$_komponent.kompoid
 
-        this.$_route = element.$_data('route')
-        this.$_routeMethod = element.$_data('routeMethod')
-        this.$_ajaxPayload = element.$_data('ajaxPayload')
+        this.$_route = element.$_config('route')
+        this.$_routeMethod = element.$_config('routeMethod')
+        this.$_ajaxPayload = element.$_config('ajaxPayload')
 
-        this.$_kompoAction = element.$_data('X-Kompo-Action')
-        this.$_kompoTarget = element.$_data('X-Kompo-Target')
+        this.$_kompoAction = element.$_config('X-Kompo-Action')
+        this.$_kompoTarget = element.$_config('X-Kompo-Target')
 
-        this.$_kompoRoute = element.$_data('kompoRoute')
+        this.$_kompoRoute = element.$_config('kompoRoute')
     
-        this.$_ajaxOptionsMethod = element.$_data('ajaxOptionsMethod') 
+        this.$_ajaxOptionsMethod = element.$_config('ajaxOptionsMethod') 
 
-        this.$_sessionTimeoutMessage = element.$_data('sessionTimeoutMessage')
+        this.$_sessionTimeoutMessage = element.$_config('sessionTimeoutMessage')
 
     }
 

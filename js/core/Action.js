@@ -4,7 +4,7 @@ import Alert from './Alert'
 export default class Action {
 	constructor(action, vue){
 
-        this.actionData = action.data
+        this.actionConfig = action.config
 		this.vue = vue
         
         this.warningConfirmed = false
@@ -15,8 +15,8 @@ export default class Action {
         this.$_kAxios = new KompoAxios(this)
 
 	}
-    $_data(key){
-        return this.actionData[key] || null
+    $_config(key){
+        return this.actionConfig[key] || null
     }
 	run(parameters){
         if(!this.actionType)
@@ -52,17 +52,17 @@ export default class Action {
     }
     browseQueryAction(){
         this.vue.$_state({ loading: true })
-        this.vue.$kompo.vlBrowseQuery(this.$_data('kompoid') || this.vue.kompoid, this.$_data('page'))
+        this.vue.$kompo.vlBrowseQuery(this.$_config('kompoid') || this.vue.kompoid, this.$_config('page'))
     }
     refreshKomposerAction(r, pa, payload){
 
         this.vue.$_state({ loading: true })
 
-        this.getAsArray(this.$_data('kompoid'), this.vue.kompoid).forEach(kompoid => {
+        this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
 
             this.vue.$kompo.vlRefreshKomposer(
                 kompoid, 
-                this.$_data('route'), 
+                this.$_config('route'), 
                 payload, 
                 // The komposer here is loading, but now we are about to leave the realm of this komposer
                 // And go to the context of the komposer being refreshed
@@ -128,25 +128,25 @@ export default class Action {
         this.vue.$kompo.vlSort(this.vue.kompoid, this.vue.$_sortValue, this.vue.$_elKompoId)
     }
     emitFromAction(response){
-        this.vue.$_vlEmitFrom(this.$_data('event'), Object.assign(
-            this.$_data('emitPayload') || {}, 
+        this.vue.$_vlEmitFrom(this.$_config('event'), Object.assign(
+            this.$_config('emitPayload') || {}, 
             this.vue.$_getJsonValue || {} 
         ))
     }
     emitDirectAction(response){
-    	this.vue.$emit(this.$_data('event'), response ? response.data : null)
+    	this.vue.$emit(this.$_config('event'), response ? response.data : null)
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     toggleElementAction(){
-        if(this.$_data('toggleId'))
-            this.vue.$kompo.vlToggle(this.vue.kompoid, this.$_data('toggleId'))
+        if(this.$_config('toggleId'))
+            this.vue.$kompo.vlToggle(this.vue.kompoid, this.$_config('toggleId'))
     }
     hideSelfAction(){
         this.vue.$_toggleSelf()
     }
     runJsAction(response){
-        const jsFunction = this.$_data('jsFunction')
+        const jsFunction = this.$_config('jsFunction')
         this.vue.$nextTick(() => { //yep, run it if you find it
             
             if(window[jsFunction])
@@ -157,10 +157,10 @@ export default class Action {
         })
     }
     fillModalAction(response){
-    	var modalName = this.$_data('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
-        var panelId = this.$_data('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
+    	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
+        var panelId = this.$_config('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
-        this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_data('warnBeforeClose'))
+        this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_config('warnBeforeClose'))
 
         this.vue.$nextTick( () => {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)
@@ -174,33 +174,33 @@ export default class Action {
                 is: 'VlEditLinkModalContent',
                 index: this.vue.index,
                 kompoid: this.vue.kompoid,
-                keepModalOpen: this.vue.$_data('keepModalOpen')
+                keepModalOpen: this.vue.$_config('keepModalOpen')
             }, 
             {
-                warn: this.vue.$_data('warnBeforeClose')
+                warn: this.vue.$_config('warnBeforeClose')
             }
         )
     }
     fillPanelAction(response, parentAction){
-        this.vue.$kompo.vlFillPanel(this.$_data('panelId'), response.data, this.$_data('included') || parentAction.$_data('included'))
+        this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, this.$_config('included') || parentAction.$_config('included'))
     }
     fillSlidingPanelAction(response){
         this.vue.$kompo.vlFillSlidingPanel(response)
     }
     addAlertAction(){
-        new Alert().asObject(this.$_data('alert')).emitFrom(this.vue)
+        new Alert().asObject(this.$_config('alert')).emitFrom(this.vue)
     }
     fillAlertAction(response){
         new Alert().asObject({
-            ...this.$_data('alert'),
+            ...this.$_config('alert'),
             message: response.data
         }).emitFrom(this.vue)
     }
     redirectAction(response){
-    	if(this.$_data('redirectUrl') === true){
+    	if(this.$_config('redirectUrl') === true){
             setTimeout( () => { this.redirect(response.request.responseURL) }, 300)
-        }else if(this.$_data('redirectUrl')){
-            setTimeout( () => { this.redirect(this.$_data('redirectUrl')) }, 300)
+        }else if(this.$_config('redirectUrl')){
+            setTimeout( () => { this.redirect(this.$_config('redirectUrl')) }, 300)
         }
     }
 
@@ -210,7 +210,7 @@ export default class Action {
     }
     getPayloadForStore() {
         return Object.assign(
-            this.$_data('ajaxPayload') || {}, 
+            this.$_config('ajaxPayload') || {}, 
             this.vue.$_getJsonValue || {} 
         )
     }

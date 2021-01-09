@@ -36,15 +36,15 @@ export default {
             }
         },
 
-        emitFormData(){ return this.$_data('emitFormData') },
+        emitFormData(){ return this.$_config('emitFormData') },
 
-        formUrl(){ return this.$_data('submitUrl') },
-        formMethod(){ return this.$_data('submitMethod') },
-        validationErrorAlert(){ return this.$_data('validationErrorAlert') },
-        submitAction(){ return this.$_data('submitAction') },
+        formUrl(){ return this.$_config('submitUrl') },
+        formMethod(){ return this.$_config('submitMethod') },
+        validationErrorAlert(){ return this.$_config('validationErrorAlert') },
+        submitAction(){ return this.$_config('submitAction') },
 
-        redirectUrl(){ return this.$_data('redirectUrl') },
-        redirectMessage(){ return this.$_data('redirectMessage') }
+        redirectUrl(){ return this.$_config('redirectUrl') },
+        redirectMessage(){ return this.$_config('redirectMessage') }
     },
 
     methods: {

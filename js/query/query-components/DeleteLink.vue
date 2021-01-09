@@ -19,7 +19,7 @@ export default {
         }
     },
     computed:{
-        deleteTitle(){ return this.$_data('deleteTitle') },
+        deleteTitle(){ return this.$_config('deleteTitle') },
         $_attributes(){
             return {
                 vkompo: Object.assign({}, this.confirmComponent), 

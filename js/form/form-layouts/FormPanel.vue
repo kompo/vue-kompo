@@ -22,13 +22,13 @@ export default {
     computed:{
         $_customLayoutAttributes(){
             return {
-                transition: this.$_data('transition'),
-                mode: this.$_data('transitionMode'),
-                closable: this.$_data('closable'),
+                transition: this.$_config('transition'),
+                mode: this.$_config('transitionMode'),
+                closable: this.$_config('closable'),
             }
         },
         hidesOnLoad(){
-            return this.component.$_data('hidesOnLoad') // this.$_data(...) not working... ??
+            return this.component.$_config('hidesOnLoad') // this.$_config(...) not working... ??
         }
     },
     methods:{

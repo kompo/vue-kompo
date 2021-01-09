@@ -10,7 +10,7 @@ export default {
     props: ['component'],
     computed: {
         comment(){
-            return this.component.$_data('comment')
+            return this.component.$_config('comment')
         }
     }
 }

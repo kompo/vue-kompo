@@ -25,7 +25,7 @@ export default {
             if(!this.$_isMobile())
                 return 
 
-            this.$kompo.vlToggleSidebar(this.$_data('toggleSidebar'), this.$_elKompoId)
+            this.$kompo.vlToggleSidebar(this.$_config('toggleSidebar'), this.$_elKompoId)
         },
         $_attachEvents(){
             this.$_vlOn('vlToggleSidebarToggler'+this.$_elKompoId, () => {

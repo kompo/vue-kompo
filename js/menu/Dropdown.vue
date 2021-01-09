@@ -52,7 +52,7 @@ export default {
         menuClass(){
             return this.$_classString([
                 this.open ? '' : 'vlMenuClosed',
-                this.$_data('dropdownPosition')
+                this.$_config('dropdownPosition')
             ])
         }
 

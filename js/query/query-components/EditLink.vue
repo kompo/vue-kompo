@@ -18,8 +18,8 @@ export default {
     },
     computed:{
        	linkTag(){ return this.component.linkTag },
-        keepModalOpen(){ return this.$_data('keepModalOpen') },
-        warnBeforeClose(){ return this.$_data('warnBeforeClose') },
+        keepModalOpen(){ return this.$_config('keepModalOpen') },
+        warnBeforeClose(){ return this.$_config('warnBeforeClose') },
         $_attributes(){
             return {
                 //...this.$_defaultTriggerAttributes, //not needed since the vlLink or vlButton will add them

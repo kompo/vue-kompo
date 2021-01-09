@@ -21,10 +21,10 @@
 <script>
 
 import HasId from '../element/mixins/HasId'
-import HasData from '../element/mixins/HasData'
+import HasConfig from '../element/mixins/HasConfig'
 
 export default {
-    mixins: [ HasId, HasData],
+    mixins: [ HasId, HasConfig],
     props: {
         component: { type: Object, required: true }
     },
@@ -33,13 +33,13 @@ export default {
             return 'vlFormLabel' + (this.labelClass ? ' '+this.labelClass : '')
         },
         required(){
-            return this.$_data('required')
+            return this.$_config('required')
         },
         labelClass(){
-            return this.$_data('labelClass')
+            return this.$_config('labelClass')
         },
         noLabel(){
-            return this.$_data('noLabel') || !this.component.label
+            return this.$_config('noLabel') || !this.component.label
         },
         loading(){
             return this.component.$_state('loading')

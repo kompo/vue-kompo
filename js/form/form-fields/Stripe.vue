@@ -31,9 +31,9 @@ export default {
     },
     computed: {
         cardholderId(){ return this.$_elementId()+'_name' },
-        cardholderLabel(){ return this.$_data('cardholderLabel') },
+        cardholderLabel(){ return this.$_config('cardholderLabel') },
         cardholderName(){ return 'cardholder-name' },
-        cardholderError(){ return this.$_data('cardholderError') },
+        cardholderError(){ return this.$_config('cardholderError') },
         withCardholder(){
             return this.chComponent && this.cardholderLabel
         }
@@ -62,7 +62,7 @@ export default {
             }
 
             const { setupIntent, error } = await this.stripe.handleCardSetup(
-                this.component.$_data('intent'), this.card, payment_method_data
+                this.component.$_config('intent'), this.card, payment_method_data
             )
 
             this.loading = false
@@ -93,10 +93,10 @@ export default {
             this.stripe = typeof Stripe !== 'undefined' ? Stripe(process.env.MIX_STRIPE_KEY) : undefined
             
             this.elements = this.stripe.elements({
-                fonts: this.$_data('fontSrc') ? [ {cssSrc: this.$_data('fontSrc')}] : []
+                fonts: this.$_config('fontSrc') ? [ {cssSrc: this.$_config('fontSrc')}] : []
             })
             
-            this.card = this.elements.create('card', { style: { base:this.$_data('styles') }})
+            this.card = this.elements.create('card', { style: { base:this.$_config('styles') }})
             
             this.card.mount(this.$refs.card)
 
@@ -112,7 +112,7 @@ export default {
         this.chComponent = Object.assign({}, this.vkompo, {
             placeholder: this.cardholderLabel,
             id: this.cardholderId,
-            data: {
+            config: {
                 noLabel: true
             },
             name: this.cardholderName,

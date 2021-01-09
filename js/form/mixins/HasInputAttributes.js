@@ -8,11 +8,11 @@ export default {
             pattern: this.$_inputPattern,
             maxlength: this.$_inputMaxlength
         }},
-        $_inputType(){return this.$_data('inputType')},
-        $_inputMin(){return this.$_data('inputMin')},
-        $_inputMax(){return this.$_data('inpuMax')},
-        $_inputStep(){return this.$_data('inputStep')},
-        $_inputPattern(){return this.$_data('inputPattern')},
-        $_inputMaxlength(){return this.$_data('inputMaxlength')}
+        $_inputType(){return this.$_config('inputType')},
+        $_inputMin(){return this.$_config('inputMin')},
+        $_inputMax(){return this.$_config('inpuMax')},
+        $_inputStep(){return this.$_config('inputStep')},
+        $_inputPattern(){return this.$_config('inputPattern')},
+        $_inputMaxlength(){return this.$_config('inputMaxlength')}
     }
 }

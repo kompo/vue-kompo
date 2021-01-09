@@ -15,16 +15,16 @@ export default {
     props: ['component'],
     computed: {
         info(){
-            return this.component.$_data('info')
+            return this.component.$_config('info')
         },
         placement(){
-            return this.component.$_data('infoPlacement') || 'up'
+            return this.component.$_config('infoPlacement') || 'up'
         },
         length(){
-            return this.component.$_data('infoLength') || 'medium'
+            return this.component.$_config('infoLength') || 'medium'
         },
         infoIcon(){
-            return this.component.$_data('infoIcon') || '<i class="icon-question-circle"></i>'
+            return this.component.$_config('infoIcon') || '<i class="icon-question-circle"></i>'
         }
     }
 }
