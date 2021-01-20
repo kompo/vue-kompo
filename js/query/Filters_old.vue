@@ -1,11 +1,13 @@
 <template>
-    <component 
-        v-if="filters.length" 
-        :class="'vlFilters'+placement"
-        :is="$_vueTag(filters[0])"
-        :vkompo="filters[0]"
-        :kompoid="kompoid"
-    />
+    <div v-if="filters.length" :class="'vlFilters'+placement">
+        <template v-for="filter in filters">
+            <component
+                :is="$_vueTag(filter)"
+                :vkompo="filter"
+                :kompoid="kompoid"
+            />
+        </template>
+    </div>
 </template>
 
 <script>

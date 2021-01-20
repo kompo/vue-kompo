@@ -133,6 +133,6 @@ const Kompo = {
 
 	}
 }
-export default Kompo
+export default Kompo;
 
 Vue.use(Kompo)

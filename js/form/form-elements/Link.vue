@@ -1,20 +1,13 @@
 <template>
     <a
-        v-if="!$_displayNone" v-show="!$_hidden"
+        v-if="!$_displayNone" 
+        v-show="!$_hidden"
         v-bind="$_attributes" 
         v-turbo-click="component.turbo"
-        @click.stop="$_clickAction">
-
-        <label v-if="!$slots.default" v-html="$_label" />
-
-        <slot />
-
-        <span v-if="!$_hideIndicators">
-            <vl-spinner-icon :loading="showSpinner" />
-            <vl-success-icon :success="showCheckmark" />
-            <vl-error-icon :error="showError" />
-        </span>
-            
+        @click.stop="$_clickAction"
+        v-html="$_btnLinkHtml" 
+    >
+        <slot></slot>
     </a>
 </template>
 

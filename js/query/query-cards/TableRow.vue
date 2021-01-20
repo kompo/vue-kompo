@@ -16,12 +16,6 @@
 import Card from '../mixins/Card'
 
 export default {
-    mixins: [Card],
-    computed: {
-        $_activeClass(){ return this.active ? 'vlActive' : '' },
-        $_customClassArray() { return [
-            this.$_activeClass
-        ] },
-    }
+    mixins: [Card]
 }
 </script>

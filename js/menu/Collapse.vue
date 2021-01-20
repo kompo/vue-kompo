@@ -3,12 +3,12 @@
 
         <div 
             class="vlCollapseToggler"
-            :class="togglerClass" 
-            @click="toggle">
+            :class="togglerClass"
+            @click="toggle"
+            >
             
+            <span v-if="!$slots.default" v-html="$_label" />
             <slot />
-
-            <label v-if="!$slots.default" v-html="$_label" />
 
         </div>
 

@@ -4,7 +4,12 @@
 	.vlDropdownToggler{
 		display: flex;
 		justify-content: space-between;
-		align-items: center;		
+		align-items: center;
+        width: 100%;
+        >a{            
+			display: flex;
+			align-items: center;
+        }	
 	}
 	.icon-down{
 		font-size: 70%;

@@ -90,8 +90,6 @@ export default {
     created(){   
         var VueScrollTo = require('vue-scrollto')
 
-        console.log(this.initial)
-
         this.selectedDate = _.isEmpty(this.initial) ? 
                                 this.formatDate(new Date()) : //today
                                 this.initial.selectedDate

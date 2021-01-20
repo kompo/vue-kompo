@@ -1,6 +1,7 @@
 .vl-nav-item{
 	display: flex;
+	align-items: center;
 	white-space: nowrap;
 	flex-direction: row;
-	align-items: center;
+	transition: all 0.2s ease-in-out;
 }

@@ -43,6 +43,7 @@ export default {
         kompoid: { type: String, required: false },
         multiple: {type: Boolean, default: false },
         labelKey: {type: String, default: 'label'},
+        valueKey: {type: String, default: 'value'},
         readonly: {type: Boolean, default: false } 
     },
     data(){
@@ -71,7 +72,8 @@ export default {
             this.$nextTick(()=> {this.contentWidth = parseInt(this.$refs.content.clientWidth - 32) + 'px'})
         },
         uniqueKey(selection){
-            return this.hashCode(selection)
+            return selection[this.valueKey]
+            //return this.hashCode(selection)
         }
     }
 }

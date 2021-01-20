@@ -1,8 +1,10 @@
 <template>
 	
-	<vl-link v-bind="$_attributes" @click="confirmDelete">
-        <i v-if="!$_label" class="icon-trash" :title="deleteTitle" />
-    </vl-link>
+	<vl-link 
+        v-bind="$_attributes" 
+        @click="confirmDelete"
+        v-html="$_defaultLabel"
+    />
 
 </template>
 
@@ -26,6 +28,9 @@ export default {
                 title: this.deleteTitle,
                 kompoid: this.kompoid
             }
+        },
+        $_defaultLabel(){
+            return '<i class="icon-trash" title="'+this.deleteTitle+'"></i>'
         }
     },
     methods: {

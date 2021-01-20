@@ -25,6 +25,10 @@ export default {
                 this.$_customCardWrapperAttributes
             )
         },
+        $_activeClass(){ return this.active ? 'vlActive' : '' },
+        $_customClassArray() { return [
+            this.$_activeClass
+        ] },
 	},
 	methods:{
         $_clickAction(){

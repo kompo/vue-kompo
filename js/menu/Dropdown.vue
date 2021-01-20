@@ -1,16 +1,14 @@
 <template>
     <div v-bind="$_attributes">
 
-        <div 
+        <component 
             class="vlDropdownToggler"
             :class="togglerClass" 
-            @click="toggle">
+            v-bind="$_togglerAttributes">
             
             <slot />
 
-            <label v-if="!$slots.default" v-html="$_label" />
-
-        </div>
+        </component>
 
         <transition name="slideDown">
 

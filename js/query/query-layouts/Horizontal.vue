@@ -6,7 +6,7 @@
         <component 
             v-for="(item, index) in items"
             :key="itemKey(item)"
-            v-bind="$_attributes(item, index)" 
+            v-bind="$_attributes(item, index)"
         />
 
     </draggable>

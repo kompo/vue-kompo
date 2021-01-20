@@ -1,11 +1,10 @@
 <template>
 
-    <div 
-        v-if="!$_displayNone" 
+    <i 
+        v-bind="$_attributes" 
         v-show="!$_hidden" 
-        v-bind="$_attributes"
-        v-html="$_label"
-   />
+        v-html="$_pureLabel" 
+    />
 
 </template>
 

@@ -197,20 +197,20 @@ export default {
 
             if(this.bottomPagination)
                 if (scrollTop + clientHeight >= scrollHeight)
-                    this.browseQuery(this.currentPage + 1)
+                    this.browseQuery(this.currentPage + 1, true)
 
             if(this.topPagination)
                 if (scrollTop == 0)
-                    this.browseQuery(this.currentPage + 1)
+                    this.browseQuery(this.currentPage + 1, true)
         },
-        browseQuery(page) {
+        browseQuery(page, additive) {
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 this.$_state({ loading: false })
 
                 this.pagination = r.data
                 Vue.set(this, 'cards', 
-                    this.isScrollPagination ? 
+                    additive ? 
                         this.cards.concat(r.data.data) : 
                         r.data.data
                 )

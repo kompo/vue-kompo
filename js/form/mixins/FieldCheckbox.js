@@ -31,6 +31,9 @@ export default {
             this.component.value = !this.checked
             this.changed()
         },
+        $_fill(jsonFormData){
+            jsonFormData[this.$_name] = this.$_value ? 1 : 0
+        },
         changed(){
             setTimeout(() => { //when label is clicked somehow we need to wait before $_value is set...
                 this.$_changeAction()

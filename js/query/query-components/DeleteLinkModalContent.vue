@@ -5,7 +5,9 @@
 		    <vl-button class="vlBtn vlBtnBlock" 
 		    	:vkompo="vkompo"
                 :kompoid="kompoid"
-		    	@deleted="deleted">{{ confirmMessage }}</vl-button>
+		    	@deleted="deleted"
+                v-html="confirmMessage"
+            />
 		    <button 
                 type="button" 
                 class="vlBtn vlBtnOutlined" 

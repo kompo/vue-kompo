@@ -1,9 +1,10 @@
 <template>
 
-    <th v-bind="$_attributes" @click.stop="$_clickAction">
-    	<span v-html="$_label" />
-    	<i :class="iconClass" />
-    </th>
+    <th 
+        v-bind="$_attributes" 
+        @click.stop="$_clickAction"
+        v-html="thLabel"
+    />
 
 </template>
 
@@ -37,6 +38,9 @@ export default {
         },
         sortingDesc(){ return this.activeSort && this.sortDirection == 'DESC' },
         sortingAsc(){ return this.activeSort && this.sortDirection == 'ASC' },
+        thLabel(){
+            return this.$_label + '<i class="' + this.iconClass + '"></i>'
+        },
         iconClass(){
         	return this.sortingDesc ? 'icon-down' : (this.sortingAsc ? 'icon-up' : '')
         },

@@ -1,7 +1,7 @@
 <template>
 
     <pre v-if="!$_displayNone" v-show="!$_hidden" v-bind="$_attributes"
-    ><code :style="{tabSize: tabSize}" class="language-php" v-html="$_label" /></pre>
+    ><code :style="{tabSize: tabSize}" class="language-php" v-html="$_pureLabel" /></pre>
 
 </template>
 

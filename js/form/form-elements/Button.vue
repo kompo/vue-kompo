@@ -1,25 +1,17 @@
 <template>
     <button 
         type="button"
-        v-if="!$_displayNone" v-show="!$_hidden"
+        v-if="!$_displayNone" 
+        v-show="!$_hidden"
         v-bind="$_attributes"
-        @click="$_clickAction">
-
-        <label v-if="!$slots.default" v-html="$_label" />
-
-        <slot />
-
-        <span v-if="!$_hideIndicators">
-            <vl-spinner-icon :loading="showSpinner" />
-            <vl-success-icon :success="showCheckmark" />
-            <vl-error-icon :error="showError" />
-        </span>
-
-    </button>
+        @click.stop="$_clickAction"
+        v-html="$_btnLinkHtml" 
+    />
 </template>
 
 <script>
 import Trigger from '../mixins/Trigger'
+
 export default {
     mixins: [Trigger],
     computed:{
@@ -27,8 +19,8 @@ export default {
             return {
                 ...this.$_defaultTriggerAttributes,
                 vkompo: Object.assign({}, this.vkompo), //otherwise $_state wasn't rendering...
-                disabled: this.showSpinner,
-                kompoid: this.kompoid
+                disabled: this.$_loading,
+                kompoid: this.kompoid,
             }
         },
         $_customClassArray(){

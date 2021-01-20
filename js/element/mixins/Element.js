@@ -30,15 +30,12 @@ export default {
         $_icon() { return this.$_config('icon') },
         $_rIcon() { return this.$_config('rIcon') },
         $_pureLabel() { return this.component.label },
+
+        $_hasIcons(){ return this.$_icon || this.$_rIcon },
+
         $_label() { 
             return [this.$_icon, this.$_pureLabel, this.$_rIcon]
-                        .filter(n => !_.isNil(n) && n !== '').join('&nbsp;')
-
-            if(this.$_icon && this.$_rIcon)
-                return this.$_icon + (this.$_pureLabel)
-            return (this.$_icon ? (this.$_icon + '&nbsp;') : '') + 
-                this.$_pureLabel + 
-                (this.$_rIcon ? ('&nbsp;' + this.$_rIcon) : '')
+                    .filter(n => !_.isNil(n) && n !== '').join('&nbsp;')
         },
 
         $_defaultElementAttributes() {

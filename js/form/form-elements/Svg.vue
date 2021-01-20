@@ -1,10 +1,10 @@
 <template>
 
-    <h1 
+    <svg 
     	v-bind="$_attributes" 
-    	v-show="!$_hidden"
-        v-html="$_label"
-   />
+    	v-show="!$_hidden" 
+    	v-html="$_pureLabel" 
+    />
 
 </template>
 

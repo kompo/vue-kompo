@@ -4,7 +4,8 @@
         :is="heading" 
         v-bind="$_attributes" 
         v-show="!$_hidden"
-        v-html="$_label" />
+        v-html="$_label"
+   />
 
 </template>
 

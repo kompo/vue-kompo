@@ -1,3 +1,15 @@
+/* Adding tailwind shortcuts in case user does not want to use it */
+.flex{
+	display: flex;
+}
+
+.flex-col-reverse{
+	flex-direction: column-reverse;
+}
+
+
+
+/* OLD APPROACH TO MERGE WITH TAILWIND CLASSES */
 .vlAbsoluteInset{
 	position: absolute;
 	top: 0;

@@ -4,7 +4,7 @@
         <div 
             class="vlFormField vlEditableText cursor-pointer" 
             v-if="!editing" 
-            v-html="$_value || $_label" 
+            v-html="$_value || $_pureLabel" 
             @click.stop="startEditing"/>
         
         <vl-form-field v-if="editing" v-bind="$_wrapperAttributes">
