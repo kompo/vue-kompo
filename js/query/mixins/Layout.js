@@ -51,7 +51,7 @@ export default {
         },
         itemRender(item){ return item.render },
         itemAttributes(item){ return item.attributes },
-        defaultKey(item){ return this.itemAttributes(item)?.id || null },
+        defaultKey(item){ return this.itemAttributes(item) ? this.itemAttributes(item).id : null },
         createItemFromRender(render, attr){
             return {
                 attributes: attr,
