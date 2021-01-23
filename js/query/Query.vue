@@ -1,9 +1,9 @@
 <template>
     <div v-bind="queryAttributes" :class="queryClass">
 
-        <vl-filters v-bind="filtersAttributes('Left')" />
+        <component v-bind="filtersAttributes('Left')" />
 
-        <vl-filters v-bind="filtersAttributes('Top')" />
+        <component v-bind="filtersAttributes('Top')" />
 
         <component v-if="showTopPagination" @browse="browseQuery" 
             v-bind="paginationAttributes" />
@@ -27,9 +27,9 @@
         <component v-if="showBottomPagination" @browse="browseQuery" 
             v-bind="paginationAttributes" />
 
-        <vl-filters v-bind="filtersAttributes('Bottom')" />
+        <component v-bind="filtersAttributes('Bottom')" />
 
-        <vl-filters v-bind="filtersAttributes('Right')" />
+        <component v-bind="filtersAttributes('Right')" />
 
         <vl-support-modal 
             :kompoid="$_elKompoId" 
@@ -150,6 +150,7 @@ export default {
         getPagination(query){ return query.query },
         filtersAttributes(placement){
             return {
+                is: this.filters[placement.toLowerCase()].length > 1 ? 'VlFilters' : 'VlFiltersSingle',
                 filters: this.filters[placement.toLowerCase()],
                 placement: placement,
                 kompoid: this.$_elKompoId,
