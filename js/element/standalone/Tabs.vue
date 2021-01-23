@@ -25,7 +25,7 @@
 <script>
     export default {
         props: {
-            activeTab: { type: Number, default: 0}
+            activeTab: { type: Number|String, default: 0}
         },
         watch: { 
             activeTab: function(newVal, oldVal) { 
@@ -40,7 +40,7 @@
         },
         mounted() {
             if (this.tabs.length)
-                this.selectTab(0)
+                this.selectTab(this.activeTab || 0)
         },
         methods: {
             selectTab(index) {

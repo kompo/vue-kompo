@@ -30,7 +30,7 @@ export default {
             }
         },
         $_defaultLabel(){
-            return '<i class="icon-trash" title="'+this.deleteTitle+'"></i>'
+            return this.$_label || '<i class="icon-trash" title="'+this.deleteTitle+'"></i>'
         }
     },
     methods: {

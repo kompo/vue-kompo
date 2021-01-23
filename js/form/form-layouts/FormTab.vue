@@ -2,7 +2,9 @@
     <vl-tab 
         :name="$_label" 
         :active="isActive"
-        :style="$_elementStyles">
+        :isDisabled="isDisabled"
+        v-bind="$_layoutWrapperAttributes"
+    >
         <component v-bind="$_attributes(tab)"
             v-for="(tab,index) in komponents"
             :key="index" />
@@ -20,6 +22,9 @@ export default {
     computed: {
         header() {
             return this.$_label
+        },
+        isDisabled(){
+            return this.$_config('tabDisabled')
         }
     }
 }

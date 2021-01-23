@@ -21,6 +21,11 @@ export default {
     		activeTab: 0
     	}
     },
+    computed: {
+        defaultActiveTab(){
+            return this.$_config('activeTab')
+        }
+    },
     methods:{
         $_validate(errors) {
             Layout.methods.$_validate.call(this, errors)
@@ -31,6 +36,10 @@ export default {
                     this.activeTab = index
             })
         }
+    },
+    created(){
+        if(this.defaultActiveTab)
+            this.activeTab = this.defaultActiveTab
     }
 
 }

@@ -1,6 +1,8 @@
 import {VueMasonryPlugin} from 'vue-masonry'
 import TurboClick from './js/core/TurboClick'
 
+require('./js/core/bootstrap')
+
 const Kompo = {
   	install (Vue, options = {}) {
 
@@ -130,6 +132,29 @@ const Kompo = {
 				el.removeEventListener('click', el.turboClickEvent)
 			}
 		})
+
+		//intercept laravel dd()
+		window.axios.interceptors.response.use(function (response) {
+			// Status code within the range of 2xx
+
+			let r = response.data
+
+		    if(_.isString(r) && !!r.match(/<script>Sfdump\(".+"\)<\/script>/)){
+				
+		        Kompo.events.$kompo.vlModalShowFill(
+		        	'vlDefaultModal', 
+		        	'<iframe height="600" width="768" srcdoc="'+r.replace(/"/g, '&quot;')+'"></iframe>'
+		        )
+
+		        throw new axios.Cancel('Operation canceled by dump.')
+
+		    }else{
+				return response;
+		    }
+		}, function (error) {
+			// Status codes outside the range of 2xx
+			return Promise.reject(error);
+		});
 
 	}
 }

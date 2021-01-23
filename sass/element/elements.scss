@@ -1,6 +1,9 @@
 @import 'icons';
 @import 'icons-svg';
 
+@import "./balloon-css/balloon";
+[aria-label][data-balloon-pos]:after {font-family: inherit;} //disable font-family set in balloon
+
 $primary: #31475e !default;
 $secondary: #359678 !default;
 $box-shadow-focused: 0 0 0.1rem 0.25rem mix($primary, #fff, 35) !default;

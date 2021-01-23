@@ -6,9 +6,6 @@ $table-color: $primary !default;
 $modal-header-bg: mix($primary, white, 30%) !default;
 $modal-header-h1-color: mix($primary, black, 50%) !default;
 
-@import "~balloon-css/src/balloon";
-[aria-label][data-balloon-pos]:after {font-family: inherit;} //disable font-family set in balloon
-
 /***** CSS ********/
 
 body, html {

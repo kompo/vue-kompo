@@ -171,6 +171,12 @@ export default class KompoAxios{
         return axios(axiosRequest)
     }
     $_handleAjaxError(e){
+
+        console.log(e)
+
+        if(e.__CANCEL__) //to catch throw axios.Cancel
+            return
+
         if(e.response.status !== 419)
             return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
 
