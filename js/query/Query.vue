@@ -68,6 +68,13 @@ export default {
         this.cards = this.getCards(this.component)
         this.pagination = this.getPagination(this.component)
         this.headers = this.component.headers
+
+        if(this.component.pusherRefresh)
+            Object.keys(this.component.pusherRefresh).forEach((key) => {
+                Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
+                    this.browseQuery()
+                })
+            })
     },
     mounted() {
         if(this.isScrollPagination && this.topPagination)

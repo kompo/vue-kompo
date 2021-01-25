@@ -1,14 +1,16 @@
 <template>
-    <div v-bind="$_attributes">
+    <div v-bind="$_attributes" ref="dropdown">
 
-        <component 
+        <div 
             class="vlDropdownToggler"
             :class="togglerClass" 
-            v-bind="$_togglerAttributes">
+            @click="checkClickable"
+            @mouseleave="closeSubmenu">
             
+            <span v-if="!$slots.default" v-html="$_label" />
             <slot />
 
-        </component>
+        </div>
 
         <transition name="slideDown">
 
@@ -40,25 +42,54 @@ export default {
     mixins: [MenuItem, HasSubmenu],
     data(){
         return {
-            open: false
+            open: false,
+            navItemClass: ''
         }
     },
     computed: {
+        $_customClassArray(){
+            return [
+                (this.openOnClick && !this.open) ? '' : 'vlOpenOnHover',
+                this.$_config('active'),
+                this.navItemClass
+            ]
+        },
         togglerClass(){
-            return this.open ? '' : 'vlTogglerClosed'
+            return 'vlTogglerClosed'
         },
         menuClass(){
             return this.$_classString([
-                this.open ? '' : 'vlMenuClosed',
+                'vlMenuClosed',
                 this.$_config('dropdownPosition')
             ])
+        },
+        openOnClick(){
+            return this.$_config('openOnClick')
         }
 
     },
     methods:{
-        toggle(){
-            this.open = !this.open
+        checkClickable(){
+            if(this.openOnClick){
+                this.open = true
+                this.overwriteBladeClasses()
+            }
+        },
+        closeSubmenu(){
+            if(this.openOnClick){
+                this.open = false
+                this.overwriteBladeClasses()
+            }
+        },
+        overwriteBladeClasses(){
+            this.$refs.dropdown.classList.value = this.$_classes
         }
+    },
+    mounted(){
+        if(this.$refs.dropdown.classList.contains('vl-nav-item'))
+            this.navItemClass = 'vl-nav-item'
+
+        this.overwriteBladeClasses()
     }
 }
 </script>

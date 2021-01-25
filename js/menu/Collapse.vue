@@ -10,6 +10,8 @@
             <span v-if="!$slots.default" v-html="$_label" />
             <slot />
 
+            <i v-if="komponents.length" class="icon-down-dir"></i>
+
         </div>
 
         <transition name="slideDown">
@@ -62,6 +64,8 @@ export default {
     methods:{
         toggle(){
             this.open = !this.open
+            
+            this.$_runOwnInteractions('click')
         },
 
     },

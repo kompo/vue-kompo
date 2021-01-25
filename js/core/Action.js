@@ -1,5 +1,6 @@
 import KompoAxios from './KompoAxios'
 import Alert from './Alert'
+import TurboClick from './TurboClick'
 
 export default class Action {
 	constructor(action, vue){
@@ -206,7 +207,11 @@ export default class Action {
 
     /* internal */
     redirect(url){
-        window.location.href = url
+        if(this.vue.component && this.vue.component.turbo){
+            new TurboClick(this.vue.$vnode, url).trigger()
+        }else{
+            window.location.href = url
+        }
     }
     getPayloadForStore() {
         return Object.assign(
