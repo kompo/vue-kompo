@@ -3,8 +3,16 @@
 	display: flex;
 }
 
+.flex-col{
+	flex-direction: column;
+}
+
 .flex-col-reverse{
 	flex-direction: column-reverse;
+}
+
+.justify-between{
+	justify-content: space-between;
 }
 
 

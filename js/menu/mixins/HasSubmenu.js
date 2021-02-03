@@ -10,7 +10,13 @@ export default {
                 vkompo: component,
                 kompoid: this.kompoid || this.$_elKompoId //this.$_elKompoId is for FormInner or FormPanel outside a form,
             }
+        },
+        $_overwriteBladeClasses(){
+            this.$refs.wrapper.classList.value = this.$_classes
         }
+    },
+    mounted(){
+        this.$nextTick(() => this.$_overwriteBladeClasses())
     },
     created() {
         this.komponents = this.component.komponents

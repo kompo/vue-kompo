@@ -17,7 +17,7 @@
     transform: translate3d(0, 0, 0);
 }
 .slideLeft-enter-active{
-    transition: all .3s ease;
+    transition: transform .3s ease, opacity .5s ease;
 }
 .slideLeft-leave{
     opacity: 1;
@@ -28,7 +28,7 @@
     transform: translate3d(-300px, 0, 0);
 }
 .slideLeft-leave-active{
-    transition: all 0.3s ease;
+    transition: transform .3s ease, opacity .5s ease;
 }
 
 /*********** slideRight ************/

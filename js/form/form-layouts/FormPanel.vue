@@ -59,7 +59,6 @@ export default {
             })
         }
     },
-
     created() {
 
         this.komponents = this.komponents || [] //when called in Vue directly (not through a PHP Form)

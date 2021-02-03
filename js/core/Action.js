@@ -157,6 +157,24 @@ export default class Action {
                 this.vue[jsFunction](response) 
         })
     }
+    scrollToAction(){
+        var VueScrollTo = require('vue-scrollto')
+        setTimeout(() => this.vue.$scrollTo(
+            this.$_config('scrollSelector'), 
+            this.$_config('scrollDuration'), 
+            this.$_config('scrollOptions'), 
+        ), 1000)
+    }
+    toggleClassAction(){
+        this.vue.$_toggleClass(this.$_config('toggleClass'))
+    }
+    setHistoryAction(){
+        let historyUrl = this.$_config('setHistory')
+        window.history.pushState({url: historyUrl}, "", historyUrl)
+        window.onpopstate = function(e) {location.reload()} //for back button
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
     fillModalAction(response){
     	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_config('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
@@ -187,6 +205,9 @@ export default class Action {
     }
     fillSlidingPanelAction(response){
         this.vue.$kompo.vlFillSlidingPanel(response)
+    }
+    fillPopupAction(response){
+        this.vue.$kompo.vlFillPopup(response)
     }
     addAlertAction(){
         new Alert().asObject(this.$_config('alert')).emitFrom(this.vue)

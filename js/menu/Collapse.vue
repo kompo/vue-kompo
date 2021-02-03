@@ -1,5 +1,5 @@
 <template>
-    <div v-bind="$_attributes">
+    <div v-bind="$_attributes" ref="wrapper">
 
         <div 
             class="vlCollapseToggler"
@@ -10,7 +10,7 @@
             <span v-if="!$slots.default" v-html="$_label" />
             <slot />
 
-            <i v-if="komponents.length" class="icon-down-dir"></i>
+            <i v-if="komponents.length && !noCaret" class="icon-down-dir"></i>
 
         </div>
 
@@ -58,13 +58,21 @@ export default {
         },
         menuClass(){
             return this.open ? '' : 'vlMenuClosed'
+        },
+        noCaret(){
+            return this.$_config('noCaret')
+        },
+        $_customClassArray(){
+            return [
+                'flex-col'
+            ]
         }
 
     },
     methods:{
         toggle(){
             this.open = !this.open
-            
+
             this.$_runOwnInteractions('click')
         },
 

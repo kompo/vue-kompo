@@ -8,8 +8,11 @@
             <option 
                 v-for="(option,key) in options" 
                 :key="option.value"
-                :value="option.value"
-                v-html="option.label" />
+                :value="option.value || null"
+                v-html="option.label"
+                :disabled="!option.value"
+                :selected="$_placeholder && !option.value && !$_value"
+                :hidden="!option.value" />
         </select>
     </vl-form-field>
 </template>
@@ -20,7 +23,9 @@ import Field from '../mixins/Field'
 export default {
     mixins: [Field],
     computed: {
-        options(){ return this.component.options },
+        options(){ 
+            return this.component.options
+        },
         $_attributes() { 
             return Object.assign(this.$_defaultFieldAttributes, 
                 this.$_multiple ? {

@@ -69,12 +69,7 @@ export default {
         this.pagination = this.getPagination(this.component)
         this.headers = this.component.headers
 
-        if(this.component.pusherRefresh)
-            Object.keys(this.component.pusherRefresh).forEach((key) => {
-                Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
-                    this.browseQuery()
-                })
-            })
+        this.configureEcho()
     },
     mounted() {
         if(this.isScrollPagination && this.topPagination)
@@ -188,6 +183,27 @@ export default {
         previewNext(){
             this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
+        configureEcho(){
+            if(this.component.pusherRefresh)
+                Object.keys(this.component.pusherRefresh).forEach((key) => {
+                    Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
+                        if(!this.$refs.vlQueryWrapper) //only way I found 2 check komposer still exists/rendered
+                            return
+
+                        if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
+                            return
+
+                        console.log('browsing', this.$_elKompoId)
+                        this.browseQuery()
+                    })
+                })
+        },
+        destroyEcho(){ //this did not work. If multiple komposers listening to same channel, they will cancel each other
+            if(this.component.pusherRefresh)
+                Object.keys(this.component.pusherRefresh).forEach((key) => {
+                    Echo.private(key).stopListening(this.component.pusherRefresh[key])
+                })
+        },
         fixTopPaginationScroll(scrollHeightBefore){
             if(this.isScrollPagination && this.topPagination){
                 scrollHeightBefore = scrollHeightBefore || 0
@@ -224,9 +240,12 @@ export default {
                 )
                 this.cardsKey += 1 //to re-render cards
 
-                this.fixTopPaginationScroll(this.$refs.vlQueryWrapper.scrollHeight)
+                this.fixTopPaginationScroll(
+                    additive ? this.$refs.vlQueryWrapper.scrollHeight : 0
+                )
             })
             .catch(e => {
+                console.log('Error in Query.vue', e)
                 if (e.response.status == 422){
                     this.$_validate(e.response.data.errors)
                 }else{
@@ -237,6 +256,7 @@ export default {
             })
         },
         $_attachEvents(){
+
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
                 this.$emit(eventName, eventPayload)
 
@@ -266,6 +286,8 @@ export default {
                     this.filtersKey += 1
 
                     successFunc && successFunc()
+
+                    this.fixTopPaginationScroll()
                 })
             })
 
@@ -284,6 +306,7 @@ export default {
             this.$_deliverKompoInfoOn()
         },
         $_destroyEvents(){
+
             this.$_vlOff([
                 'vlEmit'+this.$_elKompoId,
                 'vlBrowseQuery'+this.$_elKompoId,

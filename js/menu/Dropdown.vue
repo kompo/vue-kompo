@@ -1,11 +1,14 @@
 <template>
-    <div v-bind="$_attributes" ref="dropdown">
+    <div 
+        v-bind="$_attributes" 
+        ref="wrapper"
+        @mouseleave="closeSubmenu"
+    >
 
         <div 
             class="vlDropdownToggler"
             :class="togglerClass" 
-            @click="checkClickable"
-            @mouseleave="closeSubmenu">
+            @click="checkClickable">
             
             <span v-if="!$slots.default" v-html="$_label" />
             <slot />
@@ -72,24 +75,19 @@ export default {
         checkClickable(){
             if(this.openOnClick){
                 this.open = true
-                this.overwriteBladeClasses()
+                this.$_overwriteBladeClasses()
             }
         },
         closeSubmenu(){
             if(this.openOnClick){
                 this.open = false
-                this.overwriteBladeClasses()
+                this.$_overwriteBladeClasses()
             }
-        },
-        overwriteBladeClasses(){
-            this.$refs.dropdown.classList.value = this.$_classes
         }
     },
     mounted(){
-        if(this.$refs.dropdown.classList.contains('vl-nav-item'))
+        if(this.$refs.wrapper.classList.contains('vl-nav-item'))
             this.navItemClass = 'vl-nav-item'
-
-        this.overwriteBladeClasses()
     }
 }
 </script>

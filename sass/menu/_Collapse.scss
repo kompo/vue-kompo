@@ -1,9 +1,10 @@
 .vlCollapse{
     display: flex;
-    flex-direction: column;
+    //flex-direction: column; //moved to Vue for display bug
     .vlCollapseToggler{
         display: flex;
-        justify-content: space-between;
+        justify-content: space-between; //moved to Vue for display bug
+        text-align: left;
         align-items: center;        
         width: 100%;
         cursor: pointer;
