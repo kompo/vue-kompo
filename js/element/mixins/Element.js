@@ -9,7 +9,8 @@ import RunsInteractions from './RunsInteractions'
 export default {
     mixins: [ HasVueComponent, EmitsEvents, HasId, HasClasses, HasStyles, HasConfig, RunsInteractions],
     props: {
-        vkompo: { type: Object, required: true }
+        vkompo: { type: Object, required: true },
+        index: { type: Number },
     },
     data(){
         return{

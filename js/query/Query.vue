@@ -291,6 +291,10 @@ export default {
                 })
             })
 
+            this.$_vlOn('vlRemoveItem'+this.$_elKompoId, (index) => {
+                this.cards.splice(index, 1)
+            })
+
             this.$_vlOn('vlSort'+this.$_elKompoId, (sortValue, emitterId) => {
                 this.currentSort = sortValue == this.currentSort ? '' : sortValue
                 this.currentPage = 1
@@ -311,6 +315,7 @@ export default {
                 'vlEmit'+this.$_elKompoId,
                 'vlBrowseQuery'+this.$_elKompoId,
                 'vlRefreshKomposer'+this.$_elKompoId,
+                'vlRemoveItem'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,
                 'vlToggle'+this.$_elKompoId,
                 'vlPreview'+this.$_elKompoId,

@@ -35,6 +35,9 @@ const Kompo = {
 			vlBrowseQuery(kompoid, page, initialFilter){
 	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
 	    	},
+			vlRemoveItem(kompoid, index){
+	    		Kompo.events.$emit('vlRemoveItem'+kompoid, index)
+	    	},
 	    	vlRefreshKomposer(kompoid, url, payload, successFunc){
 	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, url, payload, successFunc)
 	    	},
