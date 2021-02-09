@@ -116,6 +116,8 @@ export default {
                 return
             
             this.$_updateFieldState(true)
+
+            this.$_runOwnInteractions('focus')
         },
         $_blurAction(){
             this.$_updateFieldState()

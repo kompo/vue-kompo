@@ -163,7 +163,7 @@ export default class Action {
             this.$_config('scrollSelector'), 
             this.$_config('scrollDuration'), 
             this.$_config('scrollOptions'), 
-        ), 1000)
+        ), this.$_config('timeoutDuration') || 500)
     }
     toggleClassAction(){
         this.vue.$_toggleClass(this.$_config('toggleClass'))
