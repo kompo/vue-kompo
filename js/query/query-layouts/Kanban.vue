@@ -12,7 +12,8 @@
 
                 <draggable
                     :list="sortedItems[status]" group="column" :animation="200" ghost-class="VlGhostCard"
-                    @change="changed(status, $event)">
+                    @change="changed(status, $event)"
+                    :move="checkConfirm">
 
                     <component 
                         v-for="(item, index) in sortedItems[status]"
@@ -42,7 +43,13 @@ export default {
         changed(status, item){
 
             if(item.added){  
-                this.fixEmptyColumn(status)
+                if(!this.checkConfirm(status, item)){
+                    this.$emit('refresh')
+                    return
+                }
+
+                this.fixEmptyColumn(status)                
+
                 this.changeStatus({
                     id: this.itemAttributes(item.added.element).id,
                     status: status
@@ -54,6 +61,21 @@ export default {
 
             if(item.moved)
                 this.changeOrder(this.sortedItems[status])
+        },
+        checkConfirm(status, item){
+            let confirmBefore = this.component.confirmBefore
+            if(confirmBefore){
+
+                if(
+                    (confirmBefore.status == status) && 
+                    this.itemAttributes(item.added.element)[confirmBefore.attribute] &&
+                    !confirm(confirmBefore.message)
+                )
+                    return false
+
+            }
+            return true
+
         },
         changeStatus(payload){
             this.$_kAxios.$_selfPostQuery(payload).then(r => {

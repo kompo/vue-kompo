@@ -5,6 +5,7 @@
 		    <vl-button class="vlBtn vlBtnBlock" 
 		    	:vkompo="vkompo"
                 :kompoid="kompoid"
+                :index="index"
 		    	@deleted="deleted"
                 v-html="confirmMessage"
             />
@@ -47,7 +48,7 @@ export default {
     		this.$emit('closeModal')
     	},
         deleted(){
-            this.$emit('refresh', this.index) //emit to parent support modal
+            //this.$emit('refresh', this.index) //-> discontinued... now we remove item in Front-end only
             this.$kompo.vlEmitFrom(this.$_elKompoId, 'deleted') //emit to DeleteLink
             this.closeModal()
         }

@@ -21,6 +21,7 @@
 
             <component v-else 
                 v-bind="layoutAttributes"
+                @refresh="browseQuery"
             />
         </div>
 
@@ -216,7 +217,7 @@ export default {
             if(!this.isScrollPagination)
                 return
 
-            if(this.pagination.current_page == this.pagination.last_page)
+            if(this.pagination.current_page >= this.pagination.last_page) //>= was necessary because when we delete, the height is smaller and below gets triggered
                 return
 
             if(this.bottomPagination)
