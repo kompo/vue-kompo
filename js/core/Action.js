@@ -53,7 +53,12 @@ export default class Action {
     }
     browseQueryAction(){
         this.vue.$_state({ loading: true })
-        this.vue.$kompo.vlBrowseQuery(this.$_config('kompoid') || this.vue.kompoid, this.$_config('page'))
+
+        this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
+
+            this.vue.$kompo.vlBrowseQuery(kompoid, this.$_config('page'))
+
+        })
     }
     refreshKomposerAction(r, pa, payload){
 
