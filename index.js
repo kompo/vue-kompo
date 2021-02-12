@@ -32,8 +32,8 @@ const Kompo = {
 			vlSubmitError(kompoid, error){
 	    		Kompo.events.$emit('vlSubmitError'+kompoid, error)
 	    	},
-			vlBrowseQuery(kompoid, page, initialFilter){
-	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
+			vlBrowseQuery(kompoid, page, initialFilter, successFunc){
+	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter, successFunc)
 	    	},
 			vlRemoveItem(kompoid, index){
 	    		Kompo.events.$emit('vlRemoveItem'+kompoid, index)

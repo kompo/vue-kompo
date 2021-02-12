@@ -228,7 +228,7 @@ export default {
                 if (scrollTop == 0)
                     this.browseQuery(this.currentPage + 1, true)
         },
-        browseQuery(page, additive) {
+        browseQuery(page, additive, successFunc) {
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 this.$_state({ loading: false })
@@ -244,6 +244,8 @@ export default {
                 this.fixTopPaginationScroll(
                     additive ? this.$refs.vlQueryWrapper.scrollHeight : 0
                 )
+
+                successFunc && successFunc()
             })
             .catch(e => {
                 console.log('Error in Query.vue', e)
@@ -265,11 +267,11 @@ export default {
                     payload: eventPayload
                 })
             })
-            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters) => {
+            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters, successFunc) => {
                 this.currentPage = page ? page : this.currentPage
                 this.initialFilters = initialFilters ? initialFilters : this.initialFilters //first introduced to get month, year from CalendarMonth
 
-                this.browseQuery()
+                this.browseQuery(null, null, successFunc)
             })
             this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
                 

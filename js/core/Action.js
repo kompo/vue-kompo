@@ -56,7 +56,14 @@ export default class Action {
 
         this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
 
-            this.vue.$kompo.vlBrowseQuery(kompoid, this.$_config('page'))
+            this.vue.$kompo.vlBrowseQuery(
+                kompoid, 
+                this.$_config('page'), 
+                null,
+                // The komposer here is loading, but now we are about to leave the realm of this komposer
+                // And go to the context of the komposer being refreshed
+                () => this.vue.$_state({ loading: false }) //It's amazing that this executes "this" context in another file...
+            )
 
         })
     }
