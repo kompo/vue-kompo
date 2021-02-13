@@ -66,9 +66,15 @@ export default {
             this.$_vlOn('vlFillSlidingPanel', (response) => {
                 this.addSlidingPanel(response.data)
             })
+            this.$_vlOn('vlCloseSlidingPanel', () => {
+                this.closeByIndex(this.slides.length-1)
+            })
         },
         $_destroyEvents(){
-            this.$_vlOff(['vlFillSlidingPanel'])
+            this.$_vlOff([
+              'vlFillSlidingPanel',
+              'vlCloseSlidingPanel'
+            ])
         }
 
     },

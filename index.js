@@ -59,6 +59,9 @@ const Kompo = {
 	    	vlFillSlidingPanel(response){
 	    		Kompo.events.$emit('vlFillSlidingPanel', response)
 	    	},
+	    	vlCloseSlidingPanel(){
+	    		Kompo.events.$emit('vlCloseSlidingPanel')
+	    	},
 	    	vlFillPopup(response){
 	    		Kompo.events.$emit('vlFillPopup', response)
 	    	},

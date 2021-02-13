@@ -221,6 +221,9 @@ export default class Action {
     fillSlidingPanelAction(response){
         this.vue.$kompo.vlFillSlidingPanel(response)
     }
+    closeSlidingPanelAction(){
+        this.vue.$kompo.vlCloseSlidingPanel()
+    }
     fillPopupAction(response){
         this.vue.$kompo.vlFillPopup(response)
     }
