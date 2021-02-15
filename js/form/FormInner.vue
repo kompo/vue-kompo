@@ -22,6 +22,9 @@ export default {
             jsonFormData: null
         }
     },
+    created() {
+        this.configureEcho()
+    },
 
     computed: {
         formAttributes(){
@@ -97,6 +100,17 @@ export default {
         },
         redirect(url) {
             window.location.href = url
+        },
+        configureEcho(){
+            if(this.component.pusherRefresh)
+                Object.keys(this.component.pusherRefresh).forEach((key) => {
+                    Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
+                        this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
+                            this.$_destroyEvents()
+                            this.$emit('refreshForm', r.data)
+                        })
+                    })
+                })
         },
 
         $_attachEvents(){

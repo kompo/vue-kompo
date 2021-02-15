@@ -194,15 +194,8 @@ export default {
                         if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
                             return
 
-                        console.log('browsing', this.$_elKompoId)
                         this.browseQuery()
                     })
-                })
-        },
-        destroyEcho(){ //this did not work. If multiple komposers listening to same channel, they will cancel each other
-            if(this.component.pusherRefresh)
-                Object.keys(this.component.pusherRefresh).forEach((key) => {
-                    Echo.private(key).stopListening(this.component.pusherRefresh[key])
                 })
         },
         fixTopPaginationScroll(scrollHeightBefore){
