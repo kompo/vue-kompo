@@ -147,7 +147,7 @@ export default class Action {
         ))
     }
     emitDirectAction(response){
-    	this.vue.$emit(this.$_config('event'), response ? response.data : null)
+    	this.vue.$emit(this.$_config('event'), this.$_config('emitPayload') || (response ? response.data : null))
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }

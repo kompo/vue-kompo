@@ -38,6 +38,8 @@ export default {
             setTimeout(() => { //when label is clicked somehow we need to wait before $_value is set...
                 this.$_changeAction()
                 this.$_clearErrors()
+
+                this.$emit('changed', this.$_value)
             }, 50)
         },
         $_focusAction(){

@@ -10,6 +10,7 @@ export default {
     },
     data: () => ({
         activeIndex: null,
+        activeClass: 'vlActive',
         items: [],
         layoutKey: 1,
         sortingDisabled: false
@@ -43,10 +44,11 @@ export default {
                 //key: this.itemKey(item), //EXPLICITELY set on <component/> cuz Vue emits a warning otherwise...
                 index: parseInt(index),
                 active: this.activeIndex == index,
+                class: this.activeIndex == index ? this.activeClass : '',
                 is: this.$_vueTag(this.itemRender(item)),
                 vkompo: this.itemRender(item),
                 kompoid: this.kompoid,
-                layout: this.component.layout
+                layout: this.component.layout,
             }
         },
         itemRender(item){ return item.render },
@@ -61,7 +63,11 @@ export default {
         itemKey(item){
             return this.defaultKey(item) || 'vl'+this.hashCode(item) //creating a uniqid from the object
         },
-        activate(index){
+        activate(index, emitPayload){
+            
+            if(emitPayload.activeClass)
+                this.activeClass = emitPayload.activeClass
+
             this.activeIndex = (index == this.activeIndex) ? null : index
         },
         defaultChangeOrder(){
