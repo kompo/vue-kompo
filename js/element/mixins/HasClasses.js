@@ -18,15 +18,20 @@ export default {
             return 'vl'+(component || this.$_vueComponent())
         },
         $_toggleClass(className){
-            if(this.$_classes.split(' ').includes(className)){
-                this.component = Object.assign({}, this.component, {
-                    class: this.component.class.replace(className, '')
-                })
-            }else{
-                this.component = Object.assign({}, this.component, {
-                    class: this.component.class+' '+className
-                })
-            }
+
+            let classes = className.indexOf(' ') >= 0 ? className.split(' ') : [className]
+
+            classes.forEach( singleClass => {
+                if(this.$_classes.split(' ').includes(singleClass)){
+                    this.component = Object.assign({}, this.component, {
+                        class: this.component.class.replace(singleClass, '')
+                    })
+                }else{
+                    this.component = Object.assign({}, this.component, {
+                        class: this.component.class+' '+singleClass
+                    })
+                }
+            })
         }
     }
 }

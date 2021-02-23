@@ -179,9 +179,13 @@ export default class Action {
     }
     toggleClassAction(){
         this.vue.$_toggleClass(this.$_config('toggleClass'))
+        
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     removeSelfAction(){
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
+        
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     setHistoryAction(){
         let historyUrl = this.$_config('setHistory')
