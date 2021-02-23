@@ -70,7 +70,7 @@ export default {
         this.pagination = this.getPagination(this.component)
         this.headers = this.component.headers
 
-        this.configureEcho()
+        this.$_configureEcho()
     },
     mounted() {
         if(this.isScrollPagination && this.topPagination)
@@ -184,19 +184,14 @@ export default {
         previewNext(){
             this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
-        configureEcho(){
-            if(this.component.pusherRefresh)
-                Object.keys(this.component.pusherRefresh).forEach((key) => {
-                    Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
-                        if(!this.$refs.vlQueryWrapper) //only way I found 2 check komposer still exists/rendered
-                            return
+        $_echoTrigger(){
+            if(!this.$refs.vlQueryWrapper) //only way I found 2 check komposer still exists/rendered
+                return
 
-                        if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
-                            return
+            if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
+                return
 
-                        this.browseQuery()
-                    })
-                })
+            this.browseQuery()
         },
         fixTopPaginationScroll(scrollHeightBefore){
             if(this.isScrollPagination && this.topPagination){

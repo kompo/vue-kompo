@@ -19,11 +19,12 @@ export default {
     data(){
         return {
             canSubmit: true,
-            jsonFormData: null
+            jsonFormData: null,
+            refreshing: false,
         }
     },
     created() {
-        this.configureEcho()
+        this.$_configureEcho()
     },
 
     computed: {
@@ -101,16 +102,19 @@ export default {
         redirect(url) {
             window.location.href = url
         },
-        configureEcho(){
-            if(this.component.pusherRefresh)
-                Object.keys(this.component.pusherRefresh).forEach((key) => {
-                    Echo.private(key).listen(this.component.pusherRefresh[key], (e) => {
-                        this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
-                            this.$_destroyEvents()
-                            this.$emit('refreshForm', r.data)
-                        })
-                    })
-                })
+        $_echoTrigger(){
+            if(this.refreshing)
+                return
+
+            this.refreshing = true
+
+            this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
+                
+                this.$_destroyEvents()
+                this.$emit('refreshForm', r.data)
+                
+                this.refreshing = false
+            })
         },
 
         $_attachEvents(){
