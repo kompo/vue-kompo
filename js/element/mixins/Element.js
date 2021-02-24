@@ -17,7 +17,7 @@ export default {
             component: {},
             state: {},
             elementStore: {},
-            formInfo: {}
+            parentKomposerInfo: {}
         }
     },
 	computed: {
@@ -84,8 +84,12 @@ export default {
             if(!this.$_elKompoId)
                 return
 
-            this.$_vlOn('vlDeliverFormInfo'+this.$_elKompoId, (formInfo) => { //for submit 
-                this.formInfo = formInfo
+            this.$_vlOn('vlDeliverKomposerInfo'+this.$_elKompoId, (senderId, komposerInfo) => { //for submit 
+
+                this.parentKomposerInfo = Object.assign({}, this.parentKomposerInfo, {
+                    [senderId] : komposerInfo
+                })
+
             })
             this.$_vlOn('vlDeliverKompoInfo'+this.$_elKompoId, (kompoInfo) => { //for any axios request
 
@@ -95,7 +99,7 @@ export default {
         },
         $_destroyEvents(){
             this.$_vlOff([
-                'vlDeliverFormInfo'+this.$_elKompoId,
+                'vlDeliverKomposerInfo'+this.$_elKompoId,
                 'vlDeliverKompoInfo'+this.$_elKompoId
             ])
         }

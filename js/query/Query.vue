@@ -185,7 +185,11 @@ export default {
             this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
         $_echoTrigger(){
-            if(!this.$refs.vlQueryWrapper) //only way I found 2 check komposer still exists/rendered
+
+            if(!this.$_isVisible) //one way I found 2 check komposer still exists/rendered
+                return
+
+            if(!this.$refs.vlQueryWrapper) //first way I found 2 check komposer still exists/rendered
                 return
 
             if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
@@ -216,24 +220,12 @@ export default {
                 if (scrollTop == 0)
                     this.browseQuery(this.currentPage + 1, true)
         },
-        browseQuery(page, additive, successFunc) {
+        browseQuery(page, additive) {
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
-                this.$_state({ loading: false })
+                
+                this.loadItems(r.data, additive)
 
-                this.pagination = r.data
-                Vue.set(this, 'cards', 
-                    additive ? 
-                        this.cards.concat(r.data.data) : 
-                        r.data.data
-                )
-                this.cardsKey += 1 //to re-render cards
-
-                this.fixTopPaginationScroll(
-                    additive ? this.$refs.vlQueryWrapper.scrollHeight : 0
-                )
-
-                successFunc && successFunc()
             })
             .catch(e => {
                 console.log('Error in Query.vue', e)
@@ -246,6 +238,21 @@ export default {
                 this.$_state({ loading: false })
             })
         },
+        loadItems(responseData, additive){
+            this.$_state({ loading: false })
+
+            this.pagination = responseData
+            Vue.set(this, 'cards', 
+                additive ? 
+                    this.cards.concat(responseData.data) : 
+                    responseData.data
+            )
+            this.cardsKey += 1 //to re-render cards
+
+            this.fixTopPaginationScroll(
+                additive ? this.$refs.vlQueryWrapper.scrollHeight : 0
+            )
+        },
         $_attachEvents(){
 
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
@@ -255,31 +262,40 @@ export default {
                     payload: eventPayload
                 })
             })
-            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters, successFunc) => {
+            this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters) => {
                 this.currentPage = page ? page : this.currentPage
                 this.initialFilters = initialFilters ? initialFilters : this.initialFilters //first introduced to get month, year from CalendarMonth
 
-                this.browseQuery(null, null, successFunc)
+                this.browseQuery()
             })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
-                
-                payload = Object.assign(payload || {}, this.initialFilters || {})
+            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
 
-                this.$_kAxios.$_refreshSelf(url, payload).then(r => {
-                    this.component = r.data
+                if(!this.$_isVisible)
+                    return
 
-                    Vue.set(this, 'filters', this.component.filters)
-                    Vue.set(this, 'pagination', this.getPagination(this.component))
-                    Vue.set(this, 'cards', this.getCards(this.component))
-                    Vue.set(this, 'headers', this.component.headers)
-
-                    this.cardsKey += 1
-                    this.filtersKey += 1
-
-                    successFunc && successFunc()
-
-                    this.fixTopPaginationScroll()
+                this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
+                    kompoinfo: this.$_kompoInfo,
+                    data: this.preparedFormData(),
+                    page: this.currentPage,
+                    sort: this.currentSort,
                 })
+            })
+            this.$_vlOn('vlLoadItems'+this.$_elKompoId, (responseData) => {
+                this.loadItems(responseData)
+            })
+            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
+                
+                this.component = responseData
+
+                Vue.set(this, 'filters', this.component.filters)
+                Vue.set(this, 'pagination', this.getPagination(this.component))
+                Vue.set(this, 'cards', this.getCards(this.component))
+                Vue.set(this, 'headers', this.component.headers)
+
+                this.cardsKey += 1
+                this.filtersKey += 1
+
+                this.fixTopPaginationScroll()
             })
 
             this.$_vlOn('vlRemoveItem'+this.$_elKompoId, (index) => {
@@ -301,11 +317,12 @@ export default {
             this.$_deliverKompoInfoOn()
         },
         $_destroyEvents(){
-
             this.$_vlOff([
                 'vlEmit'+this.$_elKompoId,
                 'vlBrowseQuery'+this.$_elKompoId,
+                'vlRequestKomposerInfo'+this.$_elKompoId,
                 'vlRefreshKomposer'+this.$_elKompoId,
+                'vlLoadItems'+this.$_elKompoId,
                 'vlRemoveItem'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,
                 'vlToggle'+this.$_elKompoId,

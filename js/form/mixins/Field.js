@@ -91,15 +91,17 @@ export default {
         },
         $_changeAction(){
             this.$kompo.vlUpdateErrorState(this.kompoid)
-            
-            this.$_runOwnInteractionsWithAction('change', 'emitFrom')
 
-            this.$_runOwnInteractionsWithAction('change', 'axiosRequest')
-            
+            this.$_runOwnInteractions('change')
+
+            /* To delete: unless a justification is found
+            this.$_runOwnInteractionsWithAction('change', 'emitFrom')
+            this.$_runOwnInteractionsWithAction('change', 'axiosRequest')            
             this.$_runOwnInteractionsWithAction('change', 'submitForm')
             this.$_runOwnInteractionsWithAction('change', 'browseQuery')
             this.$_runOwnInteractionsWithAction('change', 'sortQuery')
             this.$_runOwnInteractionsWithAction('change', 'runJs')
+            */
 
             this.$_clearErrors()
         },
@@ -109,6 +111,7 @@ export default {
 
             this.debouncedAxiosOnInput()
 
+            //other actions are debounced
             this.$_runOwnInteractionsWithAction('input', 'runJs')
         },
         $_focusAction(){
@@ -165,7 +168,11 @@ export default {
         if(this.$_toggleOnLoad)
             this.$_togglesForm()        
 
+        this.$_runOwnInteractions('load')
+
+        /* To delete: unless a justification is found
         this.$_runOwnInteractionsWithAction('load', 'axiosRequest')
+        */
     },
     created() {
         this.$_setInitialValue()

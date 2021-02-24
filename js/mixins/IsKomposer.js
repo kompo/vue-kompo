@@ -7,6 +7,8 @@ export default {
 
         $_pusherRefresh(){ return this.component.pusherRefresh },
 
+        $_isVisible(){ return this.$el.clientHeight || this.$el.clientWidth },
+
     },
     methods:{
         $_deliverKompoInfoOn(){

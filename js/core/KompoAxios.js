@@ -48,17 +48,17 @@ export default class KompoAxios{
             )
         })
     }
-    $_submitFormAction(){
+    $_submitFormAction(url, method, action, jsonFormData){
         return this.$_axios({
-            url: this.$_komponent.formInfo.url, 
-            method: this.$_komponent.formInfo.method,
-            data: this.element.getFormData(),
+            url: url, 
+            method: method,
+            data: this.element.getFormData(jsonFormData),
             headers: Object.assign(
                 {
                     'X-Kompo-Info': this.$_getKompoInfo()
                 }, 
-                this.$_komponent.formInfo.action ? {
-                    'X-Kompo-Action': this.$_komponent.formInfo.action
+                action ? {
+                    'X-Kompo-Action': action
                 } : {},
                 this.$_kompoTarget ? {
                     'X-Kompo-Target': this.$_kompoTarget,
@@ -79,6 +79,16 @@ export default class KompoAxios{
                 'X-Kompo-Page': page,
                 'X-Kompo-Sort': sort,
                 'X-Kompo-Action': 'browse-items',
+            }
+        })
+    }
+    $_browseMany(url, specifications){
+        return this.$_axios({
+            url: url, 
+            method: 'POST',
+            data: specifications,
+            headers: {
+                'X-Kompo-Action': 'browse-many'
             }
         })
     }
@@ -126,6 +136,16 @@ export default class KompoAxios{
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
                 'X-Kompo-Action': 'refresh-self'
+            }
+        })
+    }
+    $_refreshMany(url, specifications){
+        return this.$_axios({
+            url: url, 
+            method: 'POST',
+            data: specifications,
+            headers: {
+                'X-Kompo-Action': 'refresh-many'
             }
         })
     }

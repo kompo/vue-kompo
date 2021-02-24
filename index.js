@@ -32,14 +32,17 @@ const Kompo = {
 			vlSubmitError(kompoid, error){
 	    		Kompo.events.$emit('vlSubmitError'+kompoid, error)
 	    	},
-			vlBrowseQuery(kompoid, page, initialFilter, successFunc){
-	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter, successFunc)
+			vlBrowseQuery(kompoid, page, initialFilter){
+	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
 	    	},
 			vlRemoveItem(kompoid, index){
 	    		Kompo.events.$emit('vlRemoveItem'+kompoid, index)
 	    	},
-	    	vlRefreshKomposer(kompoid, url, payload, successFunc){
-	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, url, payload, successFunc)
+	    	vlRefreshKomposer(kompoid, responseData){
+	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, responseData)
+	    	},
+	    	vlLoadItems(kompoid, responseData){
+	    		Kompo.events.$emit('vlLoadItems'+kompoid, responseData)
 	    	},
 	    	vlToggle(kompoid, toggleId){
 	    		Kompo.events.$emit('vlToggle'+kompoid, toggleId)
@@ -65,11 +68,11 @@ const Kompo = {
 	    	vlFillPopup(response){
 	    		Kompo.events.$emit('vlFillPopup', response)
 	    	},
-	    	vlRequestFormInfo(kompoid, askerId){
-	    		Kompo.events.$emit('vlRequestFormInfo'+kompoid, askerId)
+	    	vlRequestKomposerInfo(kompoid, askerId){
+	    		Kompo.events.$emit('vlRequestKomposerInfo'+kompoid, askerId)
 	    	},
-	    	vlDeliverFormInfo(askerId, formInfo){
-	    		Kompo.events.$emit('vlDeliverFormInfo'+askerId, formInfo)
+	    	vlDeliverKomposerInfo(askerId, senderId, komposerInfo){
+	    		Kompo.events.$emit('vlDeliverKomposerInfo'+askerId, senderId, komposerInfo)
 	    	},
 	    	vlGetKomposerInfo(komposerId, askerId){
 	    		Kompo.events.$emit('vlGetKomposerInfo'+komposerId, askerId)

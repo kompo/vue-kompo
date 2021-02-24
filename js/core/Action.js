@@ -51,57 +51,32 @@ export default class Action {
 
         })
     }
-    browseQueryAction(){
-        this.vue.$_state({ loading: true })
-
-        this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
-
-            this.vue.$kompo.vlBrowseQuery(
-                kompoid, 
-                this.$_config('page'), 
-                null,
-                // The komposer here is loading, but now we are about to leave the realm of this komposer
-                // And go to the context of the komposer being refreshed
-                () => this.vue.$_state({ loading: false }) //It's amazing that this executes "this" context in another file...
-            )
-
-        })
-    }
-    refreshKomposerAction(r, pa, payload){
-
-        this.vue.$_state({ loading: true })
-
-        this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
-
-            this.vue.$kompo.vlRefreshKomposer(
-                kompoid, 
-                this.$_config('route'), 
-                payload, 
-                // The komposer here is loading, but now we are about to leave the realm of this komposer
-                // And go to the context of the komposer being refreshed
-                () => this.vue.$_state({ loading: false }) //It's amazing that this executes "this" context in another file...
-            )
-        })
-    }
     submitFormAction(){
         
         this.vue.$_state({ loading: true })
         this.vue.$_state({ isSuccess: false })
         this.vue.$_state({ hasError: false })
 
-        this.vue.$kompo.vlRequestFormInfo(this.vue.kompoid, this.vue.$_elKompoId)
+        this.vue.$kompo.vlRequestKomposerInfo(this.vue.kompoid, this.vue.$_elKompoId)
 
-        if(!this.vue.formInfo.canSubmit){
+        let parentKomposerInfo = this.vue.parentKomposerInfo[this.vue.kompoid]
+
+        if(!parentKomposerInfo.canSubmit){
             setTimeout( () => { this.submitFormAction() }, 100)
             return
         }
 
         this.vue.$kompo.vlPreSubmit(this.vue.kompoid)
 
-        if(!this.vue.formInfo.url)
+        if(!parentKomposerInfo.url)
             return
         
-        this.$_kAxios.$_submitFormAction()
+        this.$_kAxios.$_submitFormAction(
+            parentKomposerInfo.url, 
+            parentKomposerInfo.method, 
+            parentKomposerInfo.action,
+            parentKomposerInfo.jsonFormData
+        )
         .then(r => {
 
             this.vue.$_state({ loading: false })
@@ -129,6 +104,12 @@ export default class Action {
             }
             
         })
+    }
+    browseQueryAction(){
+        this.runKompoInfoSpecifications('$_browseMany', 'vlLoadItems')
+    }
+    refreshKomposerAction(){
+        this.runKompoInfoSpecifications('$_refreshMany', 'vlRefreshKomposer')
     }
     sortQueryAction(){
         this.vue.$_state({ 
@@ -179,12 +160,12 @@ export default class Action {
     }
     toggleClassAction(){
         this.vue.$_toggleClass(this.$_config('toggleClass'))
-        
+
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     removeSelfAction(){
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
-        
+
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     setHistoryAction(){
@@ -262,8 +243,8 @@ export default class Action {
             this.vue.$_getJsonValue || {} 
         )
     }
-    getFormData() {
-        var formData = new FormData(), jsonFormData = this.vue.formInfo.jsonFormData
+    getFormData(jsonFormData) {
+        var formData = new FormData()
         for ( var key in jsonFormData ) {
             formData.append(key, jsonFormData[key])
         }
@@ -282,5 +263,55 @@ export default class Action {
     /* utils */
     getAsArray(data, fallback){
         return data ? (_.isArray(data) ? data : [data]) : [fallback]
+    }
+
+    getKompoInfoSpecifications(){
+
+        var specifications = []
+
+        this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
+
+            this.vue.$kompo.vlRequestKomposerInfo(kompoid, this.vue.$_elKompoId)
+
+            let parentKomposerInfo = this.vue.parentKomposerInfo[kompoid]
+
+            if(parentKomposerInfo)
+                specifications.push({
+                    kompoid: kompoid,
+                    data: parentKomposerInfo.data,
+                    kompoinfo: parentKomposerInfo.kompoinfo,
+                    page: parentKomposerInfo.page,
+                    sort: parentKomposerInfo.sort,
+                })
+        })
+
+        return specifications
+    }
+
+    runKompoInfoSpecifications(axiosRequestFunc, komposerFillFunc){
+
+        this.vue.$_state({ loading: true })
+
+        let specifications = this.getKompoInfoSpecifications()
+
+        if(!specifications.length)
+            return
+
+        this.$_kAxios[axiosRequestFunc](this.$_config('route'), specifications)
+            .then(r => {
+
+                this.vue.$_state({ loading: false })
+
+                Object.keys(r.data).forEach((kompoid) => {
+                    this.vue.$kompo[komposerFillFunc](kompoid, r.data[kompoid])
+                })
+
+            }).catch(e => {
+
+                this.vue.$_state({ loading: false })
+
+                this.handleErrorInteraction(e)
+
+            })
     }
 }

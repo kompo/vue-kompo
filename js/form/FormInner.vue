@@ -103,6 +103,7 @@ export default {
             window.location.href = url
         },
         $_echoTrigger(){
+
             if(this.refreshing)
                 return
 
@@ -140,23 +141,25 @@ export default {
             this.$_vlOn('vlToggleSubmit'+this.$_elKompoId, (canSubmit) => {
                 this.canSubmit = canSubmit
             })
-            this.$_vlOn('vlRequestFormInfo'+this.$_elKompoId, (askerId) => {
+            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
+
+                if(!this.$_isVisible)
+                    return
+
                 this.jsonFormData = this.getJsonFormData()
-                this.$kompo.vlDeliverFormInfo(askerId, {
+                this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
                     canSubmit: this.canSubmit,
                     jsonFormData: this.jsonFormData,
                     url: this.formUrl, 
                     method: this.formMethod,
-                    action: this.submitAction
+                    action: this.submitAction,
+                    kompoinfo: this.$_kompoInfo,
                 })
-            })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (url, payload, successFunc) => {
-                this.$_kAxios.$_refreshSelf(url, payload).then(r => {
-                    this.$_destroyEvents()
-                    this.$emit('refreshForm', r.data)
 
-                    successFunc && successFunc()
-                })
+            })
+            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
+                this.$_destroyEvents()
+                this.$emit('refreshForm', responseData)
             })
 
             this.$_deliverKompoInfoOn()
@@ -170,7 +173,7 @@ export default {
                 'vlUpdateErrorState'+this.$_elKompoId,
                 'vlDeliverJsonFormData'+this.$_elKompoId,
                 'vlToggleSubmit'+this.$_elKompoId,
-                'vlRequestFormInfo'+this.$_elKompoId,
+                'vlRequestKomposerInfo'+this.$_elKompoId,
                 'vlRefreshKomposer'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
