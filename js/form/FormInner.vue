@@ -12,6 +12,7 @@ import Layout from './mixins/Layout'
 import Alert from '../core/Alert'
 import IsKomposer from '../mixins/IsKomposer'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
+import TurboClick from '../core/TurboClick'
 
 export default {
     mixins: [Layout, IsKomposer, DoesAxiosRequests],
@@ -67,8 +68,10 @@ export default {
             }
             //redirect route coming from controller
             if(this.formUrl != r.request.responseURL){
-                this.setRedirecting()
-                setTimeout( () => {this.redirect(r.request.responseURL)}, 300)
+
+                new TurboClick(this.$vnode).displayResponse(r)
+
+                //setTimeout( () => {this.redirect(r.request.responseURL)}, 50)
             }
             //check responseInModal() helper
             if(r.data.inModal)

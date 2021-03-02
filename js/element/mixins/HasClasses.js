@@ -19,6 +19,9 @@ export default {
         },
         $_toggleClass(className){
 
+            if(!className)
+                return
+
             let classes = className.indexOf(' ') >= 0 ? className.split(' ') : [className]
 
             classes.forEach( singleClass => {
@@ -31,6 +34,34 @@ export default {
                         class: this.component.class+' '+singleClass
                     })
                 }
+            })
+        },
+        $_addClass(className){
+
+            if(!className)
+                return
+
+            let classes = className.indexOf(' ') >= 0 ? className.split(' ') : [className]
+
+            classes.forEach( singleClass => {
+                if(!this.$_classes.split(' ').includes(singleClass)){
+                    this.component = Object.assign({}, this.component, {
+                        class: this.component.class+' '+singleClass
+                    })
+                }
+            })
+        },
+        $_removeClass(className){
+
+            if(!this.component.class || !className)
+                return
+
+            let classes = className.indexOf(' ') >= 0 ? className.split(' ') : [className]
+
+            classes.forEach( singleClass => {
+                this.component = Object.assign({}, this.component, {
+                    class: this.component.class.replace(singleClass, '')
+                })
             })
         }
     }

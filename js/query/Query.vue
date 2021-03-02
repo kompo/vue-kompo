@@ -164,8 +164,13 @@ export default {
             this.$_fillRecursive(jsonFormData)
             return jsonFormData
         },
+        getJsonFormDataWithFilters(){
+            return this.getJsonFormData(Object.assign({}, this.initialFilters))
+        },
         preparedFormData(){
-            var formData = new FormData(), jsonFormData = this.getJsonFormData(Object.assign({}, this.initialFilters))
+            var formData = new FormData(), 
+                jsonFormData = this.getJsonFormDataWithFilters()
+                
             for ( var key in jsonFormData ) {
                 formData.append(key, jsonFormData[key])
             }
@@ -275,7 +280,7 @@ export default {
 
                 this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
                     kompoinfo: this.$_kompoInfo,
-                    data: this.preparedFormData(),
+                    data: this.getJsonFormDataWithFilters(),
                     page: this.currentPage,
                     sort: this.currentSort,
                 })

@@ -34,3 +34,18 @@
 	grid-column: 2;
   	grid-row: 3;
 }
+
+.vlQueryHorizontal{
+	.vlFiltersLeft{
+	  	grid-row: 2 / 5;
+	}
+	.vlFiltersRight{
+	  	grid-row: 2 / 5;
+	}
+	.vlFiltersTop{
+		grid-column: 1 / 4;
+	}
+	.vlFiltersBottom{
+		grid-column: 1 / 4;
+	}
+}

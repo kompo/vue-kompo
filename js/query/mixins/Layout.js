@@ -10,15 +10,18 @@ export default {
     },
     data: () => ({
         activeIndex: null,
-        activeClass: 'vlActive',
         items: [],
         layoutKey: 1,
         sortingDisabled: false
     }),
     created() {
         this.items = this.cards
+        
+        this.activeIndex = this.component.activeIndex || null
+
     },
     computed:{
+        $_activeClass(){ return this.component.activeClass || 'vlActive' },
         $_hasItems(){ return this.items.length > 0 },
         $_orderable(){ return this.component.orderable },
         $_dragHandle(){ return this.component.dragHandle },
@@ -44,7 +47,7 @@ export default {
                 //key: this.itemKey(item), //EXPLICITELY set on <component/> cuz Vue emits a warning otherwise...
                 index: parseInt(index),
                 active: this.activeIndex == index,
-                class: this.activeIndex == index ? this.activeClass : '',
+                class: this.activeIndex == index ? this.$_activeClass : '',
                 is: this.$_vueTag(this.itemRender(item)),
                 vkompo: this.itemRender(item),
                 kompoid: this.kompoid,
@@ -64,10 +67,6 @@ export default {
             return this.defaultKey(item) || 'vl'+this.hashCode(item) //creating a uniqid from the object
         },
         activate(index, emitPayload){
-            
-            if(emitPayload.activeClass)
-                this.activeClass = emitPayload.activeClass
-
             this.activeIndex = (index == this.activeIndex) ? null : index
         },
         defaultChangeOrder(){

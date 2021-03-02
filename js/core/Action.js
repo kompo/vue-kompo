@@ -163,6 +163,16 @@ export default class Action {
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
+    addClassAction(){
+        this.vue.$_addClass(this.$_config('addClass'))
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    removeClassAction(){
+        this.vue.$_removeClass(this.$_config('removeClass'))
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
     removeSelfAction(){
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
 
