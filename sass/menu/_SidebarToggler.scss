@@ -11,7 +11,7 @@
 		span:last-child{display: inline;}
 	}
 }
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down($sidebar-breakpoint) {
 	.vlSidebarToggler{
 		display: flex;
 		position: relative;

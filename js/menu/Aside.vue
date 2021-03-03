@@ -25,8 +25,6 @@ export default {
     },
     methods:{
         toggle(){
-            if(!this.$_isMobile())
-                return 
 
             this.sidebarClass = this.sidebarClass == '' ? 'vlOpen' : ''
 
@@ -35,7 +33,7 @@ export default {
             this.$kompo.vlToggleSidebarToggler(this.togglerKompoId)
         },
         close(){
-            if(!this.$_isMobile() || !this.open)
+            if(!this.open)
                 return 
 
             this.sidebarClass = ''

@@ -12,15 +12,6 @@
             display: flex;
             align-items: center;
         }
-
-        &.vlTogglerClosed .icon-down-dir{
-            display: block;
-            transform: rotate(90deg);
-            z-index: 0; // for somee reason, transform rotate adds z-index...
-            &:before{
-                margin-left: 4px; //re-centering the rotated icon
-            }
-        }
     }
     .vlCollapseMenu{
         display: flex;
@@ -29,5 +20,14 @@
         &.vlMenuClosed{
             display: none;
         }
+    }
+}
+
+.vlTogglerClosed .icon-down-dir{
+    display: block;
+    transform: rotate(90deg);
+    z-index: 0; // for somee reason, transform rotate adds z-index...
+    &:before{
+        margin-left: 4px; //re-centering the rotated icon
     }
 }

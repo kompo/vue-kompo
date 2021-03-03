@@ -10,7 +10,8 @@ export default {
                 selections: this.$_value || [], 
                 multiple: this.$_multiple || false,
                 readonly: this.$_readOnly,
-                kompoid: this.kompoid
+                kompoid: this.kompoid,
+                width: this.$_fixedWidth,
             }
         },
         $_taggableInputEvents(){
@@ -18,6 +19,9 @@ export default {
                 click: this.$_click,
                 remove: this.$_remove
             }
+        },
+        $_fixedWidth(){
+            return this.$_config('fixedWidth')
         }
     },
     methods: {

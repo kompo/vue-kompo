@@ -44,7 +44,8 @@ export default {
         multiple: {type: Boolean, default: false },
         labelKey: {type: String, default: 'label'},
         valueKey: {type: String, default: 'value'},
-        readonly: {type: Boolean, default: false } 
+        readonly: {type: Boolean, default: false },
+        width: { type: String, required: false }, 
     },
     data(){
         return {
@@ -66,6 +67,11 @@ export default {
     },
     methods: {
         setContentWidth(){
+            if(this.width){
+                this.contentWidth = this.width
+                return
+            }
+
             if(!this.$refs.content)
                 return
             this.contentWidth = 'auto' //necessary cuz content depends in the width of it's contents...

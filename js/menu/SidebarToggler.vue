@@ -1,6 +1,7 @@
 <template>
     <div ref="toggler"
         @click.stop="toggle"
+        @mouseover="hoverToggle"
         :class="toggleClass"
         aria-label="Open menu"
         aria-expanded="false">
@@ -20,16 +21,33 @@ export default {
             toggleClass: ''
         }
     },
+    computed: {
+        toggleOnHover(){ return this.$_config('toggleOnHover') },
+        openClass(){ 
+            return this.$_classString([
+                'vlOpen',
+                this.$_config('openClass')
+            ])
+        }
+    },
     methods:{
+        hoverToggle(){
+            if(this.toggleOnHover)
+                if(!this.toggleClass)
+                    this.toggle()
+        },
         toggle(){
-            if(!this.$_isMobile())
-                return 
-
             this.$kompo.vlToggleSidebar(this.$_config('toggleSidebar'), this.$_elKompoId)
+        },
+        changeToggleClass(){
+            this.toggleClass = this.toggleClass ? '' : this.openClass
         },
         $_attachEvents(){
             this.$_vlOn('vlToggleSidebarToggler'+this.$_elKompoId, () => {
-                this.toggleClass = this.toggleClass ? '' : 'vlOpen'
+                if(this.toggleClass && this.toggleOnHover)
+                    return setTimeout(this.changeToggleClass, 1000)
+
+                this.changeToggleClass()
             })
         },
         $_destroyEvents(){

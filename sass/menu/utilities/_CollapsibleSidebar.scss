@@ -1,0 +1,54 @@
+//Utilities to import (OPTIONAL - not loaded automatically!!)
+
+.vl-sidebar-l{
+	position: absolute;
+	transition: all 0.3s ease-in-out;
+	height: 100vh;
+	z-index: 100;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	svg{
+		flex-shrink: 0;
+	}
+}
+@include media-breakpoint-up($sidebar-breakpoint) {
+
+	#app{
+		padding-left: 3.5rem;
+	}
+
+	.vlCollapsible{
+		width: 3.5rem;
+
+		.hideOnLoad{
+			display: none;
+		}
+
+	    .vl-logo>span, .vl-nav-item>span, .vlCollapseToggler>a>span, .vlDropdownToggler>a>span{
+            display: none;
+            opacity: 0;
+        }
+        .vlCollapseToggler>.icon-down-dir, .icon-down{
+        	display: none;
+            opacity: 0;
+        }
+	}
+
+	.vlCollapsible:hover{
+		width: 15rem;
+
+		.hideOnLoad{
+			display: inline; 
+		}
+
+	    .vl-logo>span, .vl-nav-item>span, .vlCollapseToggler>a>span, .vlDropdownToggler>a>span{
+            display: inline;
+            opacity: 1;
+        }
+        .vlCollapseToggler>.icon-down-dir, .icon-down{
+        	display: block;
+            opacity: 1;
+        }
+	}
+}

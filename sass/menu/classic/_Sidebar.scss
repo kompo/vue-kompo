@@ -14,7 +14,7 @@
 		}
 	}
 }
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down($sidebar-breakpoint) {
 	.vl-sidebar-l, .vl-sidebar-r{
 		padding-bottom: 1rem; //because of the bottom toolbar of mobile browsers
 	}
