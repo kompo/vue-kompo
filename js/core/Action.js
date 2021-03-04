@@ -316,6 +316,8 @@ export default class Action {
                     this.vue.$kompo[komposerFillFunc](kompoid, r.data[kompoid])
                 })
 
+                this.vue.$_runInteractionsOfType(this, 'success')
+
             }).catch(e => {
 
                 this.vue.$_state({ loading: false })

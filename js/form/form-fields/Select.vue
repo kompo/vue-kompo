@@ -161,8 +161,8 @@ export default {
         },
         filterOptions(){
             this.filteredOptions = _.filter(this.options, (opt) => {
-                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().toLowerCase()
-                return searchable.indexOf(this.inputValue.toString().toLowerCase()) !== -1
+                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().normalize('NFD').toLowerCase()
+                return searchable.indexOf(this.inputValue.toString().normalize('NFD').toLowerCase()) !== -1
             })
         },
         add(option){
