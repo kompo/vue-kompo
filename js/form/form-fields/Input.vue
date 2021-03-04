@@ -18,6 +18,7 @@
             v-on="$_events"
             ref="input"
         />
+        <i v-if="clearable" class="vlClearable icon-times" @click="clearValue" />
         <div v-if="$_rIcon" class="vlInputGroup">
             <input
                 v-model="component.value"
@@ -43,11 +44,19 @@ export default {
                 ...this.$_defaultFieldAttributes,
                 ...this.$_defaultInputAttributes
             }
+        },
+        clearable(){
+            return this.$_config('clearable') && this.$_value
         }
     },
     methods: {
         focus(){
             this.$refs.input.focus()
+        },
+        clearValue(){
+            this.component.value = null
+            this.$_inputAction()
+            this.$_changeAction()
         }
     }
 }
