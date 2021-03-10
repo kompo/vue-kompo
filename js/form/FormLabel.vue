@@ -42,7 +42,7 @@ export default {
             return this.$_config('noLabel') || !this.component.label
         },
         loading(){
-            return this.component.$_state('loading')
+            return this.component.$_state && this.component.$_state('loading')
         },
         labelFor(){
             return this.$_elementId() || this.$_elKompoId

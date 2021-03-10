@@ -24,7 +24,15 @@ export default {
     	},
     	$_selectedValue(){
     		return this.$_config('selectedValue')
-    	}
+    	},
+        $_selectedClass(){
+            return this.$_config('selectedClass') || 'vlSelected'
+        },
+        $_customClassArray(){
+            return [
+                this.$_value ? this.$_selectedClass : null
+            ]
+        },
     },
     methods: {
         selectAndClick(){

@@ -11,20 +11,23 @@
 
 <script>
 
+import HasConfig from '../element/mixins/HasConfig'
+
 export default {
+    mixins: [ HasConfig],
     props: ['component'],
     computed: {
         info(){
-            return this.component.$_config('info')
+            return this.$_config('info')
         },
         placement(){
-            return this.component.$_config('infoPlacement') || 'up'
+            return this.$_config('infoPlacement') || 'up'
         },
         length(){
-            return this.component.$_config('infoLength') || 'medium'
+            return this.$_config('infoLength') || 'medium'
         },
         infoIcon(){
-            return this.component.$_config('infoIcon') || '<i class="icon-question-circle"></i>'
+            return this.$_config('infoIcon') || '<i class="icon-question-circle"></i>'
         }
     }
 }

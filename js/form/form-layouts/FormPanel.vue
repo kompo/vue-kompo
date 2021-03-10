@@ -5,7 +5,7 @@
         @includeObj="includeObject"
         @loaded="destroyPanel">
 
-        <div v-if="komponents.length"><!-- had to wrap in a div for transition -->
+        <div v-if="komponents.length" class="h-full"><!-- had to wrap in a div for transition -->
             <template v-for="(row,index) in komponents">
                 <component v-bind="$_attributes(row)" />
             </template>
