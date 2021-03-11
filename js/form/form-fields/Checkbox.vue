@@ -6,7 +6,7 @@
             role="checkbox"
             v-bind="$_attributes"
         />
-        <div v-on="$_events" class="vlToggleArea">
+        <div v-on="$_events" class="vlToggleArea" :class="checkedClass">
             <i class='icon-check'></i>
         </div>
     </vl-form-field>

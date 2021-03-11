@@ -8,13 +8,19 @@
             color: $form-control-bg;
         }
     }
-    input:checked ~ .vlToggleArea{
+    .vlChecked{
         background-color: $form-primary-color;
         >i {
             display: block;
-        }
+        }        
     }
 }
+.vlMultiCheckbox{
+    >.vlInputWrapper{
+        padding: $form-control-padding;
+    }
+}
+
 .vlToggle,.vlToggleInput {
     .vlInputWrapper:not(.vlOptionalInput){
         border-radius: 0.5*$form-toggle-height;

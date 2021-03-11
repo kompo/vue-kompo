@@ -17,7 +17,10 @@ export default {
         },
         checked() {
             return Boolean(this.$_value)
-        }
+        },
+        checkedClass(){
+            return this.checked ? 'vlChecked' : ''
+        },
     },
     methods: {
         toggle() {
