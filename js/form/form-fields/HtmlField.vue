@@ -12,8 +12,10 @@
 
 <script>
 import Field from '../mixins/Field'
+import HasSelectedClass from '../mixins/HasSelectedClass'
+
 export default {
-    mixins: [Field],
+    mixins: [Field, HasSelectedClass],
     computed: {
     	$_attributes() { 
     		return {
@@ -25,12 +27,9 @@ export default {
     	$_selectedValue(){
     		return this.$_config('selectedValue')
     	},
-        $_selectedClass(){
-            return this.$_config('selectedClass') || 'vlSelected'
-        },
         $_customClassArray(){
             return [
-                this.$_value ? this.$_selectedClass : null
+                this.$_value ? this.$_selectedClass : this.$_unselectedClass,
             ]
         },
     },

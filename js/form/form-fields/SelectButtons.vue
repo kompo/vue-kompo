@@ -22,9 +22,10 @@
 
 <script>
 import Field from '../mixins/Field'
+import HasSelectedClass from '../mixins/HasSelectedClass'
 
 export default {
-    mixins: [Field],
+    mixins: [Field, HasSelectedClass],
     computed:{
         containerClass(){ 
             return this.$_classString([
@@ -33,12 +34,14 @@ export default {
             ])
         },
         optionClass(){ return this.$_config('optionClass') },
-        options(){ return this.component.options }
+        options(){ return this.component.options },
     },
     methods: {
         optionInnerClass(option, key){ 
-            return this.$_config('optionInnerClass') +
-                (option.selected ? ' vlSelected' : '') 
+            return this.$_classString([
+                this.$_config('optionInnerClass'),
+                option.selected ? this.$_selectedClass : this.$_unselectedClass,
+            ])
         },
         $_setInitialValue(){
             this.component.options.forEach((option, key) => {
