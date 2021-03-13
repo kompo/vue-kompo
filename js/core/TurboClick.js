@@ -37,7 +37,11 @@ export default class TurboClick {
         document.title = doc.title
         document.getElementsByTagName('body')[0].innerHTML= doc.getElementsByTagName('body')[0].innerHTML
         
-        new Vue(this.getMainVueBootObject(this.vnode))
+        const newVue = new Vue(this.getMainVueBootObject(this.vnode))
+
+        //Reload last Popup if available
+        if(window.vlLastPopup)
+            newVue.$kompo.vlFillPopup(window.vlLastPopup)
 
         Array.from(doc.getElementsByClassName('komposer-script')).forEach((scriptString) => {
             let script = document.createElement('script')

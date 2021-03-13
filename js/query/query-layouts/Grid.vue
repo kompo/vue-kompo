@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" :class="rowClass">
     	<component 
             v-for="(item, index) in items"
             :key="itemKey(item)"
@@ -12,6 +12,9 @@
 import Layout from '../mixins/Layout'
 
 export default {
-    mixins: [Layout]
+    mixins: [Layout],
+    computed: {
+    	rowClass(){ return this.component.rowClass }
+    }
 }
 </script>

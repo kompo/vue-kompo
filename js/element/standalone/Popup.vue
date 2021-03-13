@@ -29,6 +29,7 @@ export default {
         closeMe(){
             this.component = null
             this.partial = null
+            window.vlLastPopup = null
         },
         insertFromResponse(obj){
             this.component = obj
@@ -36,6 +37,7 @@ export default {
         },
         $_attachEvents(){
             this.$_vlOn('vlFillPopup', (response) => {
+                window.vlLastPopup = response
                 this.insertFromResponse(response.data)
             })
         },
