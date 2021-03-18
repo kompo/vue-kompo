@@ -34,7 +34,9 @@ export default class Action {
     	this.vue.$_state({ loading: true })
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
-        this.$_kAxios.$_actionAxiosRequest(payload)
+        let additionalPayload = this.$_config('withAllFormValues') ? this.getParentKomposerInfo().jsonFormData : null
+
+        this.$_kAxios.$_actionAxiosRequest(payload, additionalPayload)
         .then(r => {
 
 			this.vue.$_state({ loading: false })
@@ -57,9 +59,7 @@ export default class Action {
         this.vue.$_state({ isSuccess: false })
         this.vue.$_state({ hasError: false })
 
-        this.vue.$kompo.vlRequestKomposerInfo(this.vue.kompoid, this.vue.$_elKompoId)
-
-        let parentKomposerInfo = this.vue.parentKomposerInfo[this.vue.kompoid]
+        let parentKomposerInfo = this.getParentKomposerInfo()
 
         if(!parentKomposerInfo.canSubmit){
             setTimeout( () => { this.submitFormAction() }, 100)
@@ -269,6 +269,14 @@ export default class Action {
            this.$_kAxios.$_handleAjaxError(e) 
         }
     }
+    getParentKomposerInfo(kompoid){
+
+        let usedKompoId = kompoid ||  this.vue.kompoid    
+
+        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId)
+
+        return this.vue.parentKomposerInfo[usedKompoId]
+    }
 
     /* utils */
     getAsArray(data, fallback){
@@ -281,9 +289,7 @@ export default class Action {
 
         this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
 
-            this.vue.$kompo.vlRequestKomposerInfo(kompoid, this.vue.$_elKompoId)
-
-            let parentKomposerInfo = this.vue.parentKomposerInfo[kompoid]
+            let parentKomposerInfo = this.getParentKomposerInfo(kompoid)
 
             if(parentKomposerInfo)
                 specifications.push({

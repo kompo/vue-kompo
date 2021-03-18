@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import Field from '../mixins/Field'
+import FieldSelect from '../mixins/FieldSelect'
 import HasTaggableInput from '../mixins/HasTaggableInput'
 import DoesAxiosRequests from '../mixins/DoesAxiosRequests'
 
 export default {
-    mixins: [Field, HasTaggableInput, DoesAxiosRequests],
+    mixins: [FieldSelect, HasTaggableInput, DoesAxiosRequests],
     data(){
         return {
             optionsMessage: '',
@@ -75,7 +75,6 @@ export default {
                 keydown: this.keyDown,
             }
         },
-        options(){ return this.component.options },
         prependIcon(){ 
             return {
                 is: {template: this.$_icon}
@@ -85,25 +84,12 @@ export default {
             (this.$_state('focusedField') ? 'icon-up' : 'icon-down') },
         noOptionsFound(){ return this.$_config('noOptionsFound')},
         enterMoreCharacters(){ return this.$_config('enterMoreCharacters')},
-        $_pristine() { return this.$_value.length === 0 },
-        $_emptyValue() { return [] },
         ajaxOptions(){ return this.$_config('ajaxOptions') },
         ajaxMinSearchLength(){ return this.$_config('ajaxMinSearchLength') },
         ajaxOptionsFromField(){ return this.$_config('ajaxOptionsFromField') },
         debouncedAjaxFunction(){ return _.debounce(this.loadOptionsByAjax, 300)}
     },
     methods: {
-        $_setInitialValue(){
-            this.component.value = this.getOptionFromValue() || this.$_emptyValue
-        },
-        getOptionFromValue(){
-            return this.$_multiple ? 
-                _.map(this.$_value, (val) => {
-                    var index = _.findIndex(this.options, (option) => { return val == option.value })
-                    return index !== -1 && this.options[index]
-                }): 
-                _.filter(this.options, (o) => {return o.value == this.$_value} )
-        },
         keyDown(key){
             if(key.code == 'Tab')
                 this.$_blurAction()

@@ -27,6 +27,7 @@ import HasSelectedClass from '../mixins/HasSelectedClass'
 export default {
     mixins: [Field, HasSelectedClass],
     computed:{
+        options(){ return this.component.options },
         containerClass(){ 
             return this.$_classString([
                 this.$_config('containerClass'),
@@ -34,7 +35,7 @@ export default {
             ])
         },
         optionClass(){ return this.$_config('optionClass') },
-        options(){ return this.component.options },
+        $_emptyValue() { return this.$_multiple ? [] : null },
     },
     methods: {
         optionInnerClass(option, key){ 
@@ -44,20 +45,44 @@ export default {
             ])
         },
         $_setInitialValue(){
+            this.component.value = this.$_value || this.$_emptyValue
+
             this.component.options.forEach((option, key) => {
-                option.selected = option.value == this.component.value ? true : false
+                if(this.$_multiple) {
+                    option.selected = this.$_value.includes(option.value) ? true : false
+                }else{
+                    option.selected = option.value == this.component.value ? true : false
+                }
             })
         },
         componentKey(key){ return this.$_elKompoId + key },
         setValue(selectedKey) {
-            var oldValue = this.component.value
-            this.component.value = null
-            this.component.options = _.map(this.component.options, (opt, key) => {
-                opt.selected = key == selectedKey && oldValue != opt.value ? true : false
-                if(opt.selected)
-                    this.component.value = opt.value
-                return opt
-            })
+
+            if(this.$_multiple){
+                let selectedOption = this.component.options[selectedKey]
+                let valueIndex = _.findIndex(this.$_value, (val) => { return val == selectedOption.value })
+
+                if(valueIndex == -1){
+                    this.component.value.push(selectedOption.value)
+                    selectedOption.selected = true
+                }else{
+                    this.component.value.splice(valueIndex, 1)
+                    selectedOption.selected = false
+                }
+
+
+            }else{
+
+                var oldValue = this.component.value
+                this.component.value = null
+                this.component.options = _.map(this.component.options, (opt, key) => {
+                    opt.selected = key == selectedKey && oldValue != opt.value ? true : false
+                    if(opt.selected)
+                        this.component.value = opt.value
+                    return opt
+                })
+
+            }
 
             this.$_focusAction()
             this.$_changeAction()

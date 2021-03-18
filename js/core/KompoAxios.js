@@ -26,12 +26,13 @@ export default class KompoAxios{
     }
 
     /****** Actions ******/ 
-    $_actionAxiosRequest(payload){
+    $_actionAxiosRequest(payload, additionalPayload){
 
         var route = this.$_route
         var data = Object.assign(
             this.element.getPayloadForStore(),
-            payload
+            payload,
+            additionalPayload || {}
         )
 
         if(this.$_routeMethod == 'GET')
