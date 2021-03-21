@@ -11,6 +11,7 @@
                 <component 
                     v-bind="$_attributes(row)" 
                     @closeModal="closeModal"
+                    @confirmModal="confirmModal"
                 />
             </template>
         </transition>
@@ -66,6 +67,9 @@ export default {
         },
         closeModal(){
             this.$emit('closeModal')
+        },
+        confirmModal(){
+            this.$emit('confirmModal')
         },
         $_attachEvents(){
             this.$_vlOn('vlFillPanel' + this.id, (response, included) => {

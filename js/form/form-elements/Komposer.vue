@@ -3,7 +3,8 @@
     <component
         v-bind="$_attributes" 
         @click.stop="$_clickAction" 
-        @closeModal="closeModal" 
+        @closeModal="closeModal"  
+        @confirmModal="confirmModal" 
     />
 
 </template>

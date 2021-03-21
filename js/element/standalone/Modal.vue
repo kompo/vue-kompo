@@ -38,6 +38,7 @@
                         v-show="ajaxContent"
                         :id="panelId"
                         @closeModal="closeAction"
+                        @confirmModal="confirmAction"
                     />
                 
                     <slot v-if="!ajaxContent" />
@@ -64,7 +65,8 @@ export default {
             ajaxContent: false,
             zIndex: 2000,
             panelId: '',
-            warnData: false
+            warnData: false,
+            confirmFunc: undefined
         }
     },
     computed: {
@@ -102,6 +104,10 @@ export default {
             this.opened = false
             this.$emit('closed')
         },
+        confirmAction(){
+            this.closeAction()
+            this.confirmFunc()
+        },
         open(ajaxContent){
             this.opened = true
             this.readyToClose = false
@@ -125,7 +131,8 @@ export default {
                 this.$emit('previous')
         },
         $_attachEvents(){
-            this.$_vlOn('vlModalShow'+this.name, (ajaxContent, warnbeforeclose) => {
+            this.$_vlOn('vlModalShow'+this.name, (ajaxContent, warnbeforeclose, confirmFunc) => {
+                this.confirmFunc = confirmFunc
                 this.warnData = warnbeforeclose || false
                 this.open(ajaxContent)
                 if(this.arrows)

@@ -17,7 +17,7 @@ export default {
     created() {
         this.items = this.cards
         
-        this.activeIndex = this.component.activeIndex || null
+        this.activeIndex = this.component.activeIndex //user can force it
 
     },
     computed:{

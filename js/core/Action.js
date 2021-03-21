@@ -92,9 +92,16 @@ export default class Action {
             this.vue.$_state({ hasError: true })
 
             if(e.response.status == 449){
-                if(confirm(e.response.data)){
-                    this.warningConfirmed = true
-                    this.submitFormAction()
+                if(_.isString(e.response.data)){
+                    if(confirm(e.response.data)){
+                        this.warningConfirmed = true
+                        this.submitFormAction()
+                    }
+                }else{
+                    this.fillModalAction(e.response, () => {
+                        this.warningConfirmed = true
+                        this.submitFormAction()
+                    })
                 }
             }else{
                 this.vue.$kompo.vlSubmitError(this.vue.kompoid, e)
@@ -126,6 +133,8 @@ export default class Action {
             this.$_config('emitPayload') || {}, 
             this.vue.$_getJsonValue || {} 
         ))
+
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     emitDirectAction(response){
     	this.vue.$emit(this.$_config('event'), this.$_config('emitPayload') || (response ? response.data : null))
@@ -133,8 +142,11 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     toggleElementAction(){
-        if(this.$_config('toggleId'))
+        if(this.$_config('toggleId')){
             this.vue.$kompo.vlToggle(this.vue.kompoid, this.$_config('toggleId'))
+        }
+        
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     hideSelfAction(){
         this.vue.$_toggleSelf()
@@ -185,11 +197,11 @@ export default class Action {
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
-    fillModalAction(response){
+    fillModalAction(response, confirmFunc){
     	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_config('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
-        this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_config('warnBeforeClose'))
+        this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_config('warnBeforeClose'), confirmFunc)
 
         this.vue.$nextTick( () => {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)

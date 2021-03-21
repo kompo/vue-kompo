@@ -86,8 +86,8 @@ const Kompo = {
 			vlToggleSidebarToggler(kompoid){
 				Kompo.events.$emit('vlToggleSidebarToggler'+kompoid)
 			},
-	    	vlModalShow(modal, ajaxContent, warnbeforeclose){
-	    		Kompo.events.$emit('vlModalShow' + modal, ajaxContent, warnbeforeclose)
+	    	vlModalShow(modal, ajaxContent, warnbeforeclose, confirmFunc){
+	    		Kompo.events.$emit('vlModalShow' + modal, ajaxContent, warnbeforeclose, confirmFunc)
 	    	},
 	    	vlModalClose(modal){
 	    		Kompo.events.$emit('vlModalClose' + modal)
