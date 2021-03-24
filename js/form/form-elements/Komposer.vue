@@ -17,10 +17,9 @@ export default {
     computed:{
         $_attributes(){
             return {
-                //...this.$_defaultOtherAttributes, //the child will have that
                 is: this.$_komposerTag(this.component),
                 vkompo: this.component,
-                kompoid: this.$_elKompoId || this.kompoid
+                kompoid: this.$_elKompoId || this.kompoid,
             }
         }
     }

@@ -3,6 +3,11 @@ import TurboClick from './js/core/TurboClick'
 
 require('./js/core/bootstrap')
 
+window._kompo = {
+    echo : [], //used to stop listeners on turboclick
+    komposers: [], //used to stop refreshing komposers
+}
+
 const Kompo = {
   	install (Vue, options = {}) {
 

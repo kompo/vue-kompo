@@ -71,6 +71,7 @@ export default {
         this.headers = this.component.headers
 
         this.$_configureEcho()
+        this.$_saveLiveKomposer()
     },
     mounted() {
         if(this.isScrollPagination && this.topPagination)
@@ -191,12 +192,6 @@ export default {
         },
         $_echoTrigger(){
 
-            if(!this.$_isVisible) //one way I found 2 check komposer still exists/rendered
-                return
-
-            if(!this.$refs.vlQueryWrapper) //first way I found 2 check komposer still exists/rendered
-                return
-
             if(this.currentPage != 1) //a current limitation.. TODO: handle when on other pages
                 return
 
@@ -259,7 +254,6 @@ export default {
             )
         },
         $_attachEvents(){
-
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
                 this.$emit(eventName, eventPayload)
 
@@ -275,7 +269,7 @@ export default {
             })
             this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
 
-                if(!this.$_isVisible)
+                if(!this.$_isLive)
                     return
 
                 this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {

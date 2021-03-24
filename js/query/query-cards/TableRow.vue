@@ -3,7 +3,7 @@
         v-bind="$_cardWrapperAttributes"
         @click="$_clickAction">
         <template v-for="(component,k) in $_props">
-            <td :key="k" v-if="$_vueTag(component)" >
+            <td :key="k" v-if="$_vueTag(component)" :class="tdClass(component)">
                 <component 
                 	v-bind="componentAttributes(component)"
                     @activate="activate" />
@@ -16,6 +16,11 @@
 import Card from '../mixins/Card'
 
 export default {
-    mixins: [Card]
+    mixins: [Card],
+    methods: {
+        tdClass(component){
+            return this.$_config('tdClass', component)
+        }
+    }
 }
 </script>

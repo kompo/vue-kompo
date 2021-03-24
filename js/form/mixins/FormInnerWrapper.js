@@ -61,6 +61,7 @@ export default {
         $_attachEvents(){
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
                 this.$emit(eventName, eventPayload)
+
                 if(this.kompoid)
                     this.$_vlEmitFrom(eventName, eventPayload)
             })

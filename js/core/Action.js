@@ -283,7 +283,7 @@ export default class Action {
     }
     getParentKomposerInfo(kompoid){
 
-        let usedKompoId = kompoid ||  this.vue.kompoid    
+        let usedKompoId = kompoid || this.vue.kompoid
 
         this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId)
 
@@ -306,7 +306,7 @@ export default class Action {
             if(parentKomposerInfo)
                 specifications.push({
                     kompoid: kompoid,
-                    data: parentKomposerInfo.data,
+                    data: Object.assign(parentKomposerInfo.data, this.$_config('ajaxPayload') || {}),
                     kompoinfo: parentKomposerInfo.kompoinfo,
                     page: parentKomposerInfo.page,
                     sort: parentKomposerInfo.sort,
@@ -322,8 +322,10 @@ export default class Action {
 
         let specifications = this.getKompoInfoSpecifications()
 
-        if(!specifications.length)
+        if(!specifications.length){
+            this.vue.$_state({ loading: false })
             return
+        }
 
         this.$_kAxios[axiosRequestFunc](this.$_config('route'), specifications)
             .then(r => {

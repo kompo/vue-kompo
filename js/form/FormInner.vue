@@ -26,6 +26,7 @@ export default {
     },
     created() {
         this.$_configureEcho()
+        this.$_saveLiveKomposer()
     },
 
     computed: {
@@ -146,7 +147,7 @@ export default {
             })
             this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
 
-                if(!this.$_isVisible)
+                if(!this.$_isLive)
                     return
 
                 this.jsonFormData = this.getJsonFormData()

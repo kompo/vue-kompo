@@ -36,8 +36,6 @@ export default {
     mounted(){
         let stripeScript = document.createElement('script')
 
-        console.log(process.env.MIX_STRIPE_KEY)
-
         stripeScript.onload = () => {
 
             this.stripe = typeof Stripe !== 'undefined' ? Stripe(process.env.MIX_STRIPE_KEY) : undefined

@@ -48,7 +48,7 @@ export default {
         },
         
         $_toggleId(){ return this.$_config('toggleId') },
-        $_toggleOnLoad(){ return this.$_config('toggleOnLoad') }
+        $_toggleOnLoad(){ return this.$_config('toggleOnLoad') },
 
     },
     methods: {

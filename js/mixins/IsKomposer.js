@@ -7,7 +7,7 @@ export default {
 
         $_pusherRefresh(){ return this.component.pusherRefresh },
 
-        $_isVisible(){ return this.$el.clientHeight || this.$el.clientWidth },
+        $_isLive(){ return window._kompo.komposers.includes(this.$_elKompoId) },
 
     },
     methods:{
@@ -27,6 +27,10 @@ export default {
 
                 this.$_pusherRefresh[key].forEach((message) => {
 
+                    window._kompo.echo.push({
+                        channel: key, message: message //saving specs for stopListening later
+                    })
+
                     Echo.private(key).listen(message, (e) => {
                         
                         this.$_echoTrigger()
@@ -36,6 +40,9 @@ export default {
                 })
             })
         },
+        $_saveLiveKomposer(){
+            window._kompo.komposers.push(this.$_elKompoId)       
+        },
         $_echoTrigger(){}, //to be overriden in Komposer
-    },
+    }
 }

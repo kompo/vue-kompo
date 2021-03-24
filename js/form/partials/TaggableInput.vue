@@ -1,11 +1,11 @@
 <template>
-    <div class="vlTaggableInput" ref="content">
+    <div class="vlTaggableInput">
 
         <div v-if="$slots.prepend" class="vlInputPrepend" @click.stop="$emit('click')">
             <slot name="prepend" />
         </div>
 
-        <div class="vlTaggableContent" :style="{width: contentWidth}">
+        <div class="vlTaggableContent">
             <div v-if="selections.length"
                 :class="{vlTags: multiple, vlSingle: !multiple}" 
                 style="width: 100%"
@@ -45,38 +45,8 @@ export default {
         labelKey: {type: String, default: 'label'},
         valueKey: {type: String, default: 'value'},
         readonly: {type: Boolean, default: false },
-        width: { type: String, required: false }, 
-    },
-    data(){
-        return {
-            contentWidth: 0
-        }
-    },
-    mounted(){
-        this.setContentWidth()
-        window.addEventListener('resize', this.setContentWidth)
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.setContentWidth)
-        this.$kompo.events.$off('vlTabChange')
-    },
-    created() {
-        this.$kompo.events.$on('vlTabChange', () => {
-            this.$nextTick(()=> { this.setContentWidth() }) //TODO: not on any tabchange... actually this contentwidth setting should be avoided in the first place
-        })
     },
     methods: {
-        setContentWidth(){
-            if(this.width){
-                this.contentWidth = this.width
-                return
-            }
-
-            if(!this.$refs.content)
-                return
-            this.contentWidth = 'auto' //necessary cuz content depends in the width of it's contents...
-            this.$nextTick(()=> {this.contentWidth = parseInt(this.$refs.content.clientWidth - 32) + 'px'})
-        },
         uniqueKey(selection){
             return selection[this.valueKey]
             //return this.hashCode(selection)

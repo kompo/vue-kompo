@@ -1,12 +1,15 @@
 .vlFile{
-	.vlTaggableInput{
-	    input{
-	    	opacity: 0;
-	    	position: absolute;
-		    cursor: pointer;
-		    z-index: 1;
-			line-height: 1.15; //not working on Firefox
-			width: 100%; //otherwise it was overflowing
+    input{
+    	opacity: 0;
+    	position: absolute;
+	    cursor: pointer;
+	    z-index: 1;
+		line-height: 1.15; //not working on Firefox
+		width: 100%; //otherwise it was overflowing
+	}
+	.vlCustomLabel{
+		.icon-times{
+			z-index: 2; //above the input
 		}
 	}
 }

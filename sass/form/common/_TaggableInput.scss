@@ -4,7 +4,7 @@
 	align-items: stretch;
 	.vlTaggableContent{
 		display: flex;
-		flex: 1;
+		flex: 1 1 auto;
 		min-width: 0; //important for a Firefox flex bug where children were overflowing the parent		
 		flex-wrap: wrap;
 		min-height: $form-control-min-height;
