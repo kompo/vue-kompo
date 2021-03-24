@@ -224,6 +224,8 @@ export default class Action {
     }
     fillPanelAction(response, parentAction){
         this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, this.$_config('included') || parentAction.$_config('included'))
+        
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     fillSlidingPanelAction(response){
         this.vue.$kompo.vlFillSlidingPanel(response)
@@ -306,7 +308,7 @@ export default class Action {
             if(parentKomposerInfo)
                 specifications.push({
                     kompoid: kompoid,
-                    data: Object.assign(parentKomposerInfo.data, this.$_config('ajaxPayload') || {}),
+                    data: Object.assign(parentKomposerInfo.data || {}, this.$_config('ajaxPayload') || {}),
                     kompoinfo: parentKomposerInfo.kompoinfo,
                     page: parentKomposerInfo.page,
                     sort: parentKomposerInfo.sort,
