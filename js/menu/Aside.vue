@@ -9,10 +9,12 @@
 
 <script>
 import EmitsEvents from '../element/mixins/EmitsEvents'
+import HasConfig from '../element/mixins/HasConfig'
 import IsMobile from './mixins/IsMobile'
+import IsKomposer from '../mixins/IsKomposer'
 
 export default {
-    mixins: [EmitsEvents, IsMobile],
+    mixins: [HasConfig, EmitsEvents, IsMobile, IsKomposer],
     props:{
         side: {type: String, required: true}
     },

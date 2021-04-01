@@ -4,6 +4,7 @@
         v-bind="$_attributes" 
         @click.stop="$_clickAction" 
         @closeModal="closeModal"  
+        @closePanel="closePanel"  
         @confirmModal="confirmModal" 
     />
 

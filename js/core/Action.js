@@ -303,6 +303,9 @@ export default class Action {
 
         this.getAsArray(this.$_config('kompoid'), this.vue.kompoid).forEach(kompoid => {
 
+            if(!kompoid)
+                return
+
             let parentKomposerInfo = this.getParentKomposerInfo(kompoid)
 
             if(parentKomposerInfo)

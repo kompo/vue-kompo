@@ -19,9 +19,7 @@ export default class KompoAxios{
 
         this.$_kompoRoute = element.$_config('kompoRoute')
     
-        this.$_ajaxOptionsMethod = element.$_config('ajaxOptionsMethod') 
-
-        this.$_sessionTimeoutMessage = element.$_config('sessionTimeoutMessage')
+        this.$_ajaxOptionsMethod = element.$_config('ajaxOptionsMethod')
 
     }
 
@@ -201,7 +199,7 @@ export default class KompoAxios{
         if(e.response.status !== 419)
             return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
 
-        if(confirm(this.$_sessionTimeoutMessage))
+        if(confirm(window._kompo.sessionTimeoutMessage))
             window.location.reload()
     }
 }

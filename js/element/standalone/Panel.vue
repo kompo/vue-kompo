@@ -11,6 +11,7 @@
                 <component 
                     v-bind="$_attributes(row)" 
                     @closeModal="closeModal"
+                    @closePanel="reset"
                     @confirmModal="confirmModal"
                 />
             </template>

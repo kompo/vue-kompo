@@ -17,6 +17,9 @@ export default {
         closeModal(){
             this.$emit('closeModal')
         },
+        closePanel(){
+            this.$emit('closePanel')
+        },
         confirmModal(){
             this.$emit('confirmModal')
         },

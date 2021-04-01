@@ -1,4 +1,7 @@
 export default {
+    created(){
+        window._kompo.sessionTimeoutMessage = this.$_config('sessionTimeoutMessage')
+    },
 	computed: {
 
         $_kompoInfo() { return this.$_config('X-Kompo-Info') },

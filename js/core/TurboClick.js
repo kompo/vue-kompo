@@ -27,6 +27,12 @@ export default class TurboClick {
             this.displayResponse(r)
 
         }).catch(e => {
+
+            if(e.response.status === 401)
+                if(confirm(window._kompo.sessionTimeoutMessage))
+                    window.location.reload()
+
+
             console.log('Error loading object in Panel:' + e)
         })
     }
