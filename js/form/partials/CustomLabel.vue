@@ -2,7 +2,8 @@
     <component 
     	:is="customLabel" 
     	:vkompo="component"
-    	:kompoid="kompoid" />
+    	:kompoid="kompoid"
+        @click="$emit('click')" />
 </template>
 
 <script>

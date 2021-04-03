@@ -17,7 +17,8 @@ export default {
             component: {},
             state: {},
             elementStore: {},
-            parentKomposerInfo: {}
+            parentKomposerInfo: {},
+            label2: false,
         }
     },
 	computed: {
@@ -30,7 +31,8 @@ export default {
 
         $_icon() { return this.$_config('icon') },
         $_rIcon() { return this.$_config('rIcon') },
-        $_pureLabel() { return this.component.label },
+        $_pureLabel() { return this.label2 ? this.$_label2 : this.component.label },
+        $_label2() { return this.component.label2 },
 
         $_hasIcons(){ return this.$_icon || this.$_rIcon },
 

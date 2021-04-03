@@ -1,6 +1,10 @@
 <template>
     <vl-form-field v-bind="$_wrapperAttributes">
 
+        <div v-if="checkAllActivated">
+            <vlCustomLabel :vkompo="checkAllActivated" @click="checkUncheckAll" />
+        </div>
+
         <div :class="containerClass" v-bind="$_attributes">
 
             <div :class="optionClass" @click.stop="setValue(key)"
@@ -36,8 +40,16 @@ export default {
         },
         optionClass(){ return this.$_config('optionClass') },
         $_emptyValue() { return this.$_multiple ? [] : null },
+        checkAllActivated(){ return this.$_multiple && this.$_config('checkAllActivated') }
     },
     methods: {
+        checkUncheckAll(){
+            this.component = Object.assign({}, this.component, {
+                value: this.$_value.length ? this.$_emptyValue : _.map(this.component.options, (opt) => opt.value)
+            })
+
+            this.$_setInitialValue()
+        },
         optionInnerClass(option, key){ 
             return this.$_classString([
                 this.$_config('optionInnerClass'),

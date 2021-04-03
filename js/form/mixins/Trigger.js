@@ -28,6 +28,9 @@ export default {
 	},
     methods:{
         $_clickAction(){
+            if(this.$_label2)
+                this.label2 = !this.label2
+
             this.$emit('click')
             
             this.$_runOwnInteractions('click')
