@@ -22,6 +22,7 @@
 import Field from '../mixins/Field'
 
 import flatPickr from 'vue-flatpickr-component'; 
+import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate'
 import 'flatpickr/dist/flatpickr.css';
 import 'flatpickr/dist/themes/airbnb.css';
 
@@ -47,6 +48,7 @@ export default {
                     wrap: true,
                     dateFormat: this.$_config('dateFormat'),
                     enableTime: this.$_enableTime,
+                    plugins: this.$_enableTime ? [new confirmDatePlugin({confirmIcon: ''})] : [],
                     noCalendar: this.$_noCalendar,
                     allowInput: true,
                     altInput: true,

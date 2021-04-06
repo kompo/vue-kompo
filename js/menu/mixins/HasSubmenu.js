@@ -8,7 +8,9 @@ export default {
                 key: component.id,
                 is: this.$_vueTag(component),
                 vkompo: component,
-                kompoid: this.kompoid || this.$_elKompoId //this.$_elKompoId is for FormInner or FormPanel outside a form,
+                kompoid: this.kompoid || this.$_elKompoId, //this.$_elKompoId is for FormInner or FormPanel outside a form,
+
+                index: this.index,
             }
         },
         $_overwriteBladeClasses(){
