@@ -287,7 +287,7 @@ export default class Action {
 
         let usedKompoId = kompoid || this.vue.kompoid
 
-        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId)
+        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId, this.$_config('page'))
 
         return this.vue.parentKomposerInfo[usedKompoId]
     }

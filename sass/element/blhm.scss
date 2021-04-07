@@ -74,9 +74,9 @@ a{
 
 $scroll-color: #a3aabb !default;
 
-.mini-scroll::-webkit-scrollbar { width: 6px;  }
-.mini-scroll::-webkit-scrollbar-track { background: #e7e9ec; }
-.mini-scroll::-webkit-scrollbar-thumb { background: $scroll-color; }
+.mini-scroll::-webkit-scrollbar { height: 6px; width: 6px;  }
+.mini-scroll::-webkit-scrollbar-track { background: #e7e9ec; border-radius: 5px; }
+.mini-scroll::-webkit-scrollbar-thumb { background: $scroll-color; border-radius: 5px; }
 
 .vl-sidebar-l, .vl-sidebar-r, .kompoScrollableContent{
     @extend .mini-scroll !optional;

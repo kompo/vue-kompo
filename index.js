@@ -74,8 +74,8 @@ const Kompo = {
 	    	vlFillPopup(response){
 	    		Kompo.events.$emit('vlFillPopup', response)
 	    	},
-	    	vlRequestKomposerInfo(kompoid, askerId){
-	    		Kompo.events.$emit('vlRequestKomposerInfo'+kompoid, askerId)
+	    	vlRequestKomposerInfo(kompoid, askerId, page){
+	    		Kompo.events.$emit('vlRequestKomposerInfo'+kompoid, askerId, page)
 	    	},
 	    	vlDeliverKomposerInfo(askerId, senderId, komposerInfo){
 	    		Kompo.events.$emit('vlDeliverKomposerInfo'+askerId, senderId, komposerInfo)

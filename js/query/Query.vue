@@ -267,7 +267,7 @@ export default {
 
                 this.browseQuery()
             })
-            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
+            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId, page) => {
 
                 if(!this.$_isLive)
                     return
@@ -275,7 +275,7 @@ export default {
                 this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
                     kompoinfo: this.$_kompoInfo,
                     data: this.getJsonFormDataWithFilters(),
-                    page: this.currentPage,
+                    page: page || this.currentPage,
                     sort: this.currentSort,
                 })
             })
