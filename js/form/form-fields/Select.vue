@@ -198,8 +198,14 @@ export default {
 
             if(this.ajaxOptionsFromField){
                 
+                /* Old way: we used to get the whole form data and retrieve the related key's value... ??
                 this.$kompo.vlDeliverJsonFormData(this.kompoid, this.$_elKompoId)
                 this.performAjax(this.$_getFromStore(this.ajaxOptionsFromField))
+                TODO: delete vlDeliverJsonFormData and recursive $_deliverJsonTo
+                */
+                /* new way emit to related field directly */
+                this.$kompo.vlRequestFieldValue(this.kompoid, this.ajaxOptionsFromField, this.$_elKompoId)
+                this.performAjax(this.$_getFromStore())
 
             }else{
 

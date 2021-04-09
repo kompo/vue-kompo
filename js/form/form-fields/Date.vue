@@ -10,8 +10,8 @@
                 v-bind="$_attributes"
                 v-on="$_events" 
                 autocomplete="off" />
-            <div class="vlInputAppend">
-                <i v-if="$_value && !$_readOnly" class="icon-times" @click.stop="clear" />
+            <div class="vlInputAppend" v-if="!$_readOnly">
+                <i v-if="$_value" class="icon-times" @click.stop="clear" />
             </div>
         </div>
 

@@ -104,7 +104,9 @@ export default {
                 'vlDeliverKomposerInfo'+this.$_elKompoId,
                 'vlDeliverKompoInfo'+this.$_elKompoId
             ])
-        }
+        },
+        $_attachCustomEvents(){}, //to be overriden
+        $_destroyCustomEvents(){}, //to be overriden
     },
     created(){
         this.vkompo.$_config = this.$_config
@@ -118,10 +120,14 @@ export default {
         this.component = this.vkompo
 
         this.$_destroyEvents()
+        this.$_destroyCustomEvents()
         this.$_attachEvents()
+        this.$_attachCustomEvents()
     },
     updated() {
         this.$_destroyEvents()
+        this.$_destroyCustomEvents()
         this.$_attachEvents()
+        this.$_attachCustomEvents()
     },
 }

@@ -56,7 +56,7 @@ export default {
             component: this.component,
             errors: this.errors,
             class: this.$_defaultCssClass()
-        }}
+        }},
     },
     methods: {
         $_fillRecursive(jsonFormData){
@@ -161,6 +161,22 @@ export default {
         },
         $_resetSortValue(){
             this.$_resetValue()
+        },
+        $_attachCustomEvents(){
+            this.$_vlOn('vlRequestFieldValue'+this.kompoid+this.$_name, (toComponentId) => {
+                const jsonFormData = {}
+                this.$_fill(jsonFormData)
+                this.$kompo.vlSetFieldValue(toComponentId, jsonFormData[this.$_name])
+            })
+            this.$_vlOn('vlSetFieldValue'+this.$_elKompoId, (value) => {
+                this.elementStore = value
+            })
+        },
+        $_destroyCustomEvents(){
+            this.$_vlOff([
+                'vlRequestFieldValue'+this.kompoid+this.$_name,
+                'vlSetFieldValue'+this.$_elKompoId,
+            ])
         },
     },
     mounted(){

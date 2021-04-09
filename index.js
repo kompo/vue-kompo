@@ -59,6 +59,12 @@ const Kompo = {
 	    	vlDeliverJsonFormData(kompoid, toComponentId){
 	    		Kompo.events.$emit('vlDeliverJsonFormData'+kompoid, toComponentId)
 	    	},
+	    	vlRequestFieldValue(kompoid, field_name, toComponentId){
+	    		Kompo.events.$emit('vlRequestFieldValue'+kompoid+field_name, toComponentId)
+	    	},
+	    	vlSetFieldValue(receiverId, value){
+	    		Kompo.events.$emit('vlSetFieldValue'+receiverId, value)
+	    	},
 	    	vlToggleSubmit(kompoid, canSubmit){
 	    		Kompo.events.$emit('vlToggleSubmit'+kompoid, canSubmit)
 	    	},
