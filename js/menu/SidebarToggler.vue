@@ -1,7 +1,7 @@
 <template>
     <div ref="toggler"
         @click.stop="toggle"
-        @mouseover="hoverToggle"
+        @mouseenter="hoverToggle"
         :class="toggleClass"
         aria-label="Open menu"
         aria-expanded="false">
@@ -22,7 +22,10 @@ export default {
         }
     },
     computed: {
-        toggleOnHover(){ return this.$_config('toggleOnHover') },
+        toggleOnHover(){ 
+            return this.$_config('toggleOnHover') && 
+                !window.matchMedia('(hover: none)').matches //checks if device can hover. If not, disable toggleOnHover
+        },
         openClass(){ 
             return this.$_classString([
                 'vlOpen',
