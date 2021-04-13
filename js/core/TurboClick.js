@@ -70,7 +70,17 @@ export default class TurboClick {
 
         //Change the browser's url and reload if back is pressed
         const responseURL = r.request.responseURL
-        window.history.pushState({url: responseURL}, "", responseURL)
-        window.onpopstate = function(e) {location.reload()} //for back button
+        window._kompo.history.push(responseURL)
+        window.history.pushState({url: window._kompo.history}, "", responseURL)
+        window.onpopstate = (e) => {
+
+            window._kompo.history.pop() //remove current url
+            let lastUrl = window._kompo.history.pop() //get previous url
+            if(!lastUrl) //if no more history from kompo, default to browser's list
+                return history.go(-1)
+
+            this.url = lastUrl //otherwise trigger a turbo click to previous url
+            this.trigger()
+        } //for back button
     }
 }

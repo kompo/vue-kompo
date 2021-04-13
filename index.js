@@ -6,7 +6,8 @@ require('./js/core/bootstrap')
 window._kompo = {
     echo : [], //used to stop listeners on turboclick
     komposers: [], //used to stop refreshing komposers
-    sessionTimeoutMessage: ''
+    sessionTimeoutMessage: '',
+    history: [window.location.href],
 }
 
 const Kompo = {

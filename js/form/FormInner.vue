@@ -70,9 +70,12 @@ export default {
             //redirect route coming from controller
             if(this.formUrl != r.request.responseURL){
 
-                new TurboClick(this.$vnode).displayResponse(r)
+                if(this.component.noTurbo) {
+                    setTimeout( () => {this.redirect(r.request.responseURL)}, 50)
 
-                //setTimeout( () => {this.redirect(r.request.responseURL)}, 50)
+                }else{
+                    new TurboClick(this.$vnode).displayResponse(r)
+                }
             }
             //check responseInModal() helper
             if(r.data.inModal)

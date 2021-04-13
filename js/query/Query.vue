@@ -74,8 +74,11 @@ export default {
         this.$_saveLiveKomposer()
     },
     mounted() {
-        if(this.isScrollPagination && this.topPagination)
-            this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
+        if(this.isScrollPagination && this.topPagination){
+            setTimeout(() => {
+                this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
+            }, 1000) //TODO: better solution
+        }
     },
     computed: {
 
