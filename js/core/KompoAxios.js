@@ -196,7 +196,7 @@ export default class KompoAxios{
         if(e.__CANCEL__) //to catch throw axios.Cancel
             return
 
-        if(e.response.status !== 419)
+        if(![419, 401].includes(e.response.status))
             return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
 
         if(confirm(window._kompo.sessionTimeoutMessage))
