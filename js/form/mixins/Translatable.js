@@ -34,12 +34,10 @@ export default {
             this.$nextTick(() => {
                 if (this.component.trix) {
                     this.$refs.content.update()
-                //} else if (this.$_vueComponent() == 'TranslatableEditor'){
-                    //this.$refs.content.instance.editing.view.focus()
                 } else {
                     this.$refs.content.focus ? 
                         this.$refs.content.focus():
-                        this.$refs.content.instance.editing.view.focus()         
+                        this.$refs.content.$_instance.editing.view.focus()         
                 }
             })
         },

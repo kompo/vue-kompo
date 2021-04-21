@@ -27,7 +27,9 @@
                     v-for="(col,index) in komponents"
                     :key="index">
                     <component 
-                        v-bind="$_defaultLayoutAttributes(col)" />
+                        v-bind="$_defaultLayoutAttributes(col)" 
+                        @click="$emit('click', col)"
+                    />
                 </div>
         
             </div>

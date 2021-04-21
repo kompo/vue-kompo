@@ -5,6 +5,16 @@
             :activeLocale="activeLocale"
             @changeLocale="changeTab"/>
         <textarea
+            v-if="asTextarea"
+            v-model="currentTranslation"
+            class="vlFormControl"
+            ref="content"
+
+            v-bind="$_attributes"
+            v-on="$_events"
+        />
+        <input
+            v-else
             v-model="currentTranslation"
             class="vlFormControl"
             ref="content"
@@ -19,7 +29,12 @@
 import Field from '../mixins/Field'
 import Translatable from '../mixins/Translatable'
 export default {
-    mixins: [Field, Translatable]
+    mixins: [Field, Translatable],
+    computed: {
+        asTextarea() {
+            return this.$_config('asTextarea')
+        }
+    }
 }
 </script>
 
