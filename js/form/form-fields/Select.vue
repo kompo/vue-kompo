@@ -141,6 +141,9 @@ export default {
             this.$_blurAction()            
         },
         select(option){
+            if(option.label && _.isObject(option.label) && option.label.$_config('disabled'))
+                return
+
             this.isSelected(option) ? this.$_remove(this.indexOf(option)) : this.add(option)
             this.reset()
             this.$_blurAction()
