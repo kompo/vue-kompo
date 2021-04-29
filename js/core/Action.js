@@ -35,8 +35,9 @@ export default class Action {
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
         let additionalPayload = this.$_config('withAllFormValues') ? this.getParentKomposerInfo().jsonFormData : null
+        let checkedItemIds = this.vue.$_config('withCheckedItemIds') ? this.getParentKomposerInfo().data : null
 
-        this.$_kAxios.$_actionAxiosRequest(payload, additionalPayload)
+        this.$_kAxios.$_actionAxiosRequest(payload, Object.assign(additionalPayload || {}, checkedItemIds || {}))
         .then(r => {
 
 			this.vue.$_state({ loading: false })

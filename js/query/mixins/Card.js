@@ -4,7 +4,7 @@ import TurboClick from '../../core/TurboClick'
 export default {
     mixins: [ Element ],
 	props: {
-		vkompo: { type: Object | Array,required: true }, //to override Object ony type in Elements
+		vkompo: { type: Object | Array, required: true }, //to override Object ony type in Elements
     	kompoid: { type: String, required: true },
 		index: { type: Number },
 		active: { type: Boolean },

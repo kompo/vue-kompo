@@ -5,14 +5,6 @@
 	background-color: $color;
 	color: #fff;
 	user-select: none;
-	@if variable-exists(btn-depth){
-		background-clip: padding-box;
-		border-bottom: 2*$btn-depth solid mix($color, black, 60%);
-		&:hover{
-			border-top: $btn-depth solid transparent;
-			border-bottom: $btn-depth solid mix($color, black, 60%);
-		}
-	}
 	&:hover{
 		background-color: mix($color, black, 85%);
 		color: #fff; //to remain white if it is a link with .vlBtn

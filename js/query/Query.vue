@@ -61,7 +61,8 @@ export default {
         headers: [],
         cardsKey: '',
         filtersKey: 1,
-        previewIndex: null
+        previewIndex: null,
+        checkedItemIds: [],
     }),
     created() {
         this.cardsKey = 'cards' + this.component.id
@@ -165,7 +166,13 @@ export default {
             return jsonFormData
         },
         getJsonFormDataWithFilters(){
-            return this.getJsonFormData(Object.assign({}, this.initialFilters))
+            return this.getJsonFormData(
+                Object.assign(
+                    {}, 
+                    this.initialFilters, 
+                    this.checkedItemIds.length ? {itemIds: this.checkedItemIds } : {}
+                )
+            )
         },
         preparedFormData(){
             var formData = new FormData(), 
@@ -254,6 +261,14 @@ export default {
         },
         $_attachEvents(){
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
+
+                if (eventName == 'checkItemId') {
+                    let itemId = eventPayload.id
+                    this.checkedItemIds.includes(itemId) ? 
+                        this.checkedItemIds.splice(this.checkedItemIds.indexOf(itemId), 1) : 
+                        this.checkedItemIds.push(itemId)
+                }
+
                 this.$emit(eventName, eventPayload)
 
                 this.$_runOwnInteractions('emit', {

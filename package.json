@@ -1,23 +1,52 @@
 {
+  "_args": [
+    [
+      "vue-kompo@1.2.6",
+      "/var/www/html/condoedge"
+    ]
+  ],
+  "_development": true,
+  "_from": "vue-kompo@1.2.6",
+  "_id": "vue-kompo@1.2.6",
+  "_inBundle": false,
+  "_integrity": "sha512-D/GNtCiyrObsjxjjQ9klLyLHMuGi46ShbPeISxv62xDsjSPHIm8mN+teL7+MMofPI+CEv6+7tngu+vMABUCH1g==",
+  "_location": "/vue-kompo",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "vue-kompo@1.2.6",
+    "name": "vue-kompo",
+    "escapedName": "vue-kompo",
+    "rawSpec": "1.2.6",
+    "saveSpec": null,
+    "fetchSpec": "1.2.6"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "/kompo-ckeditor",
+    "/kompo-googlemaps"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-kompo/-/vue-kompo-1.2.6.tgz",
+  "_spec": "1.2.6",
+  "_where": "/var/www/html/condoedge",
   "author": {
     "name": "Bass El Hachem",
     "email": "contact@kompo.io",
     "url": "https://kompo.io"
   },
-  "version": "1.2.4",
-  "bundleDependencies": false,
   "dependencies": {
-    "lodash": "^4.17.19",
     "axios": ">=0.21.1",
-    "vue": "^2.5.7",
-    "vue-template-compiler": "^2.6.10",
-    "vue-loader": "^15.9.6",
+    "lodash": "^4.17.19",
     "sass": "^1.32.2",
     "sass-loader": "^10.1.0",
+    "vue": "^2.5.7",
     "vue-flatpickr-component": "^8.1.5",
+    "vue-loader": "^15.9.6",
     "vue-masonry": "^0.11.7",
-    "vuedraggable": "^2.16.0",
-    "vue-scrollto": "^2.20.0"
+    "vue-scrollto": "^2.20.0",
+    "vue-template-compiler": "^2.6.10",
+    "vuedraggable": "^2.16.0"
   },
   "deprecated": false,
   "description": "Laravel Vue components for Rapid Application Development",
@@ -49,5 +78,6 @@
   "name": "vue-kompo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  }
+  },
+  "version": "1.2.6"
 }
