@@ -1,15 +1,19 @@
 
 /*** variables ****/
-$body-color: #434242 !default;
-$table-color: $primary !default;
-$modal-header-bg: mix($primary, white, 30%) !default;
-$modal-header-h1-color: mix($primary, black, 50%) !default;
+
+:root {
+	--scroll-color: #a3aabb;
+	--body-color: #434242;
+	--table-color: var(--primary);
+	--modal-header-bg: #a1cfde;
+	--modal-header-h1-color: var(--primary-darker);
+}
 
 /***** CSS ********/
 
 body, html {
     height: 100%;
-    color: $body-color;
+    color: var(--body-color);
     @extend .mini-scroll;
 }
 
@@ -26,12 +30,12 @@ a{
 }
 
 .vlModalHeader{
-	background-color: $modal-header-bg;
+	background-color: var(--modal-header-bg);
     margin-left: -1rem;
     margin-right: -1rem;
     padding: 1rem;
 	h1{
-        color: $modal-header-h1-color;
+        color: var(--modal-header-h1-color);
 		font-size: 1.5rem;
 	}
 }
@@ -47,7 +51,7 @@ a{
     border: 1px solid gainsboro;
     border-radius: 0.4rem;
 	thead th {
-		background-color: $table-color;
+		background-color: var(--table-color);
 		color: white;
 		&:first-child{
 			border-top-left-radius: 0.4rem;
@@ -58,7 +62,7 @@ a{
 	}
 }
 .page-item.active .page-link{
-	background-color: $table-color;
+	background-color: var(--table-color);
 }
 
 .vlTags, .vlTag{
@@ -71,11 +75,9 @@ a{
 
 /* SCROLL */
 
-$scroll-color: #a3aabb !default;
-
 .mini-scroll::-webkit-scrollbar { height: 6px; width: 6px;  }
 .mini-scroll::-webkit-scrollbar-track { background: #e7e9ec; border-radius: 5px; }
-.mini-scroll::-webkit-scrollbar-thumb { background: $scroll-color; border-radius: 5px; }
+.mini-scroll::-webkit-scrollbar-thumb { background: var(--scroll-color); border-radius: 5px; }
 
 .vl-sidebar-l, .vl-sidebar-r, .kompoScrollableContent{
     @extend .mini-scroll !optional;

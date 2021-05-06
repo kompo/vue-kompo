@@ -1,45 +1,4 @@
 /**
- * Mixins
- */
-@mixin btnInitial($color){
-	background-color: $color;
-	color: #fff;
-	user-select: none;
-	&:hover{
-		background-color: mix($color, black, 85%);
-		color: #fff; //to remain white if it is a link with .vlBtn
-	}
-}
-
-@mixin linkInitial($color){
-	color: $color;
-	&:hover{
-		color: mix($color, black, 85%);
-	}
-}
-
-@mixin btnOutline($color){
-	background-color: transparent;
-	border: 1px solid $color;
-	color: $color;
-	&:hover{
-		background-color: transparent;
-		color: mix($color, black, 80%);
-		border: 1px solid mix($color, black, 80%);
-	}
-}
-
-@mixin btnPlain($color){
-	background-color: transparent;
-	border: 0;
-	color: $color;
-	&:hover{
-		background-color: transparent;
-		color: mix($color, black, 80%);
-	}
-}
-
-/**
  * Display styles
  */
 .vlBtn, .vlLink{
@@ -47,23 +6,19 @@
 	display: inline-flex;
 	align-items: center;
 
-	@if variable-exists(btn-border-radius){
-		border-radius: $btn-border-radius;
-	}
+	border-radius: var(--btn-border-radius);
 }
 .vlBtn{
 	justify-content: center; //Only buttons are centered	
 }
 button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normalize adding outline
-	@if variable-exists(box-shadow-focused){
-		&:focus{
-			outline: 0;
-			box-shadow: $box-shadow-focused;
-		}
+	&:focus{
+		outline: 0;
+		box-shadow: var(--focus-box-shadow);
 	}
 }
 .vlBtn{ 
-	padding: $btn-padding-y $btn-padding-x;
+	padding: var(--btn-padding-y) var(--btn-padding-x);
 }
 .vlBtnBlock{
 	display: flex;
@@ -78,43 +33,87 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
  * Initial link styles
  */
 .vlLink{
-	@include linkInitial($primary);
+	color: var(--primary);
+	&:hover{
+		color: var(--primary-darker);
+	}
 }
 /**
  * Initial button styles
  */
 .vlBtn, a.vlBtn{
-	@include btnInitial($primary);
+	background-color: var(--primary);
+	color: #fff;
+	user-select: none;
+	&:hover{
+		background-color: var(--primary-darker);
+		color: #fff; //to remain white if it is a link with .vlBtn
+	}
 }
 
 /**
  * Outlined buttons
  */
 .vlBtnOutlined, a.vlBtnOutlined{
-	@include btnOutline($primary);
+	background-color: transparent;
+	border: 1px solid var(--primary);
+	color: var(--primary);
+	&:hover{
+		background-color: transparent;
+		color: var(--primary-darker);
+		border: 1px solid var(--primary-darker);
+	}
 }
 
 /**
  * Plain buttons
  */
 .vlBtnPlain, a.vlBtnPlain{
-	@include btnPlain($primary);
+	background-color: transparent;
+	border: 0;
+	color: var(--primary);
+	&:hover{
+		background-color: transparent;
+		color: var(--primary-darker);
+	}
 }
 
 /**
- * Secondary extension
+ * Secondary extension - TODO: probably deprecate - unnecessary
  */
 .vlLink.vlSecondary{
-	@include linkInitial($secondary);
+	color: var(--secondary);
+	&:hover{
+		color: var(--secondary-darker);
+	}
 }
 .vlBtn.vlSecondary, a.vlBtn.vlSecondary{
-	@include btnInitial($secondary);
+	background-color: var(--secondary);
+	color: #fff;
+	user-select: none;
+	&:hover{
+		background-color: var(--secondary-darker);
+		color: #fff; //to remain white if it is a link with .vlBtn
+	}
 }
 .vlBtnOutlined.vlSecondary, a.vlBtnOutlined.vlSecondary{
-	@include btnOutline($secondary);
+	background-color: transparent;
+	border: 1px solid var(--secondary);
+	color: var(--secondary);
+	&:hover{
+		background-color: transparent;
+		color: var(--secondary-darker);
+		border: 1px solid var(--secondary-darker);
+	}
 }
 .vlBtnPlain.vlSecondary, a.vlBtnPlain.vlSecondary{
-	@include btnPlain($secondary);
+	background-color: transparent;
+	border: 0;
+	color: var(--secondary);
+	&:hover{
+		background-color: transparent;
+		color: var(--secondary-darker);
+	}
 }
 
 /**

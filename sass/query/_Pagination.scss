@@ -8,8 +8,8 @@
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
-    background-color: $primary;
-    border-color: $primary;
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 .page-item{
     border: 1px solid #dee2e6;
@@ -28,5 +28,5 @@
 .page-link {
     display: block;
     padding: .25rem .5rem;
-    color: $primary;
+    color: var(--primary);
 }

@@ -1,7 +1,7 @@
 .vlImage{
 	.vlFormControl{
 	    height: 7.9rem;
-	    padding: $form-control-padding-t; //same padding everywhere for images
+	    padding: var(--form-control-padding-t); //same padding everywhere for images
 	    position: relative;
 
 	    input[type=file]{
@@ -22,7 +22,7 @@
 .vlImageMsg{
 	@extend .vlAbsoluteInset, .vlFlexCenter;
 	line-height: 1.1rem;
-	color: $form-control-placeholder-color;
+	color: var(--form-control-placeholder-color);
     i{
     	font-size: 2rem;
     }

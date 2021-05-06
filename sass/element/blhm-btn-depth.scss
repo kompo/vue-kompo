@@ -1,13 +1,14 @@
 /*** variables ****/
-$btn-depth: 1px !default;
-$primary: #31475e !default;
+:root {
+	--btn-depth: 1px;
+}
 
 /*** style ****/
 .vlBtn, a.vlBtn{
 	background-clip: padding-box;
-	border-bottom: 2*$btn-depth solid mix($primary, black, 60%);
+	border-bottom: calc(2 * var(--btn-depth)) solid var(--primary-darker);
 	&:hover{
-		border-top: $btn-depth solid transparent;
-		border-bottom: $btn-depth solid mix($primary, black, 60%);
+		border-top: var(--btn-depth) solid transparent;
+		border-bottom: var(--btn-depth) solid var(--primary-darker);
 	}
 }

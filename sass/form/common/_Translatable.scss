@@ -15,8 +15,8 @@
 			font-size: 80%;
 			&.vlSelected{
 				font-weight: bold;
-				border-bottom: 2px solid $form-primary-color;
-				color: $form-primary-color;
+				border-bottom: 2px solid var(--form-primary-color);
+				color: var(--form-primary-color);
 				opacity: 1;
 			}
 		}

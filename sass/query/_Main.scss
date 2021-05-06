@@ -7,12 +7,12 @@
 .vlFiltersLeft{
 	grid-column: 1;
   	grid-row: 1 / 6;
-  	margin-right: $query-filters-spacing;
+  	margin-right: var(--query-filters-spacing);
 }
 .vlFiltersRight{
 	grid-column: 3;
   	grid-row: 1 / 6;
-  	margin-left: $query-filters-spacing;
+  	margin-left: var(--query-filters-spacing);
 }
 .vlFiltersTop{
 	grid-column: 2;

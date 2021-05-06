@@ -1,15 +1,12 @@
 .vlInputWrapper{
 	display: block;
 	position: relative; //for absolute positiong the expanding border
-	background-color: $form-control-bg;
-	border: $form-control-border;
+	background-color: var(--form-control-bg);
+	border: var(--form-control-border);
+	border-radius: var(--form-control-border-radius);
 
 	@if variable-exists(form-control-box-sizing){
 		box-sizing: $form-control-box-sizing;
-	}
-
-	@if variable-exists(form-control-border-radius){
-		border-radius: $form-control-border-radius;
 	}
 
 	&:focus{
@@ -17,8 +14,8 @@
 	}
 	
 	&:focus-within{
-		border-color: $form-control-border-color-focused;
-		box-shadow: $form-control-box-shadow-focused;
+		border-color: var(--form-control-border-color-focused);
+		box-shadow: var(--focus-box-shadow);
 		@if variable-exists(form-control-border-width-focused){
 			border-width: $form-control-border-width-focused;
 		}
@@ -34,7 +31,7 @@
 			z-index: 4;
 			width: 100%;
 			height: $form-control-border-expanding;
-			background-color: $form-control-border-color-focused;
+			background-color: var(--form-control-border-color-focused);
 			opacity: 0;
 			transform: scaleX(0.1); 
 			transition: .2s ease;
@@ -58,27 +55,27 @@ input, textarea, select{
 }
 
 .vlFormControl{
-	padding: $form-control-padding;	
+	padding: var(--form-control-padding);	
 	width: 100%;
 	outline: 0; //relegated to InputWrapper
-	min-height: $form-control-min-height;
+	min-height: var(--form-control-min-height);
 	
-	&::placeholder { color: $form-control-placeholder-color; }
+	&::placeholder { color: var(--form-control-placeholder-color); }
 }
 
 .vlHasErrors{
 	.vlInputWrapper{
-		border-color: $form-field-error-color;
+		border-color: var(--form-field-error-color);
 		@if variable-exists(form-control-border-expanding){
 			&:after{
-				background-color: $form-field-error-color;
+				background-color: var(--form-field-error-color);
 			}
 		}
 	}
 }
 
 .vlFieldErrors{
-	color: $form-field-error-color;
+	color: var(--form-field-error-color);
 	font-size: 80%;
 	padding-left: 0.25rem;
 	position: absolute;

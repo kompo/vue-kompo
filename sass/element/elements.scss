@@ -2,16 +2,54 @@
 @import 'icons-svg';
 
 @import "./balloon-css/balloon";
-[aria-label][data-balloon-pos]:after {font-family: inherit;} //disable font-family set in balloon
 
-$primary: #31475e !default;
-$secondary: #359678 !default;
-$box-shadow-focused: 0 0 0.1rem 0.25rem mix($primary, #fff, 35) !default;
-$btn-padding-y: 0.4rem !default;
-$btn-padding-x: 1rem !default;
-$btn-border-radius: 0.25rem !default;
+/**
+ * Variables not yet able to remove from SASS
+ */
+$sidebar-breakpoint: md !default;
 
-$icon-spacing: 0.25em !default;
+/**
+ * CSS variables
+ */
+:root {
+	--primary: #31475e;
+	--primary-darker: #135064;
+	--secondary: #359678;
+	--secondary-darker: #2d8066;
+
+	--focus-box-shadow: 0 0 0.1rem 0.25rem #adc7cf;
+
+	--btn-padding-x: 1rem;
+	--btn-padding-y: 0.4rem;
+	--btn-border-radius: 0.25rem;
+
+	--tags-color: var(--primary);
+
+	--query-filters-spacing: 2rem;
+
+	--sidebar-breakpoint: 768px;
+
+	/**
+	* Colors
+	*/
+	--form-primary-color: var(--primary);
+	--form-field-error-color: #f56565;
+	--form-control-bg: #fff;
+	--form-control-placeholder-color: gainsboro;
+
+	/**
+	 * Icons
+	 */
+	--form-field-icon-width: 1.8rem;
+	--form-field-icon-color: gainsboro;
+
+	/**
+	 * Checkbox & Toggle
+	 */
+	--form-checkbox-height: 1.3rem;
+	--form-toggle-height: 1.44rem;
+	--form-toggle-width: 2.7rem;
+}
 
 [v-cloak] { display: none; }
 

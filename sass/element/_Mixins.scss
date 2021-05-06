@@ -12,30 +12,9 @@
 	transform: $transform;
 }
 
-@mixin ellipsis1(){
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-
 @mixin tag(){
 	display: inline-flex;
 	margin: 0.1rem;
 	border-radius: 0.2rem;
     padding: 0.15rem 0.2rem;
-	@include ellipsis1();
-}
-
-@mixin tagFilled($color){
-	background-color: $color;
-	color: white;
-	font-weight: 700;
-	@include tag();
-}
-
-@mixin tagOutlined($color){
-	border-color: $color;
-	border-width: 1px;
-	color: $color;
-	@include tag();
 }

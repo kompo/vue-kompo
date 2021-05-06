@@ -1,5 +1,5 @@
 .flatpickr-calendar.open{
-	margin-left: -$form-field-icon-width;
+	margin-left: calc(-1 * var(--form-field-icon-width));
 }
 .flatpickr-confirm{
 	cursor: pointer;

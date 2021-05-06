@@ -9,10 +9,9 @@
     position: relative;
     display: flex;
     align-items: center;
-    color: $primary;
-    background-color: mix($primary, white, 20%);
+    color: var(--primary);
     border: 1px solid;
-    border-color: mix($primary, white, 60%);
+    border-color: var(--primary);
     margin-top: 0.5rem;
     >i{
         padding-right: 0.5rem;

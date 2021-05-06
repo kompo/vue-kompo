@@ -12,7 +12,7 @@
                 @click.stop="$emit('click')">
                 <div v-for="(selection, index) in selections" 
                     :key="uniqueKey(selection)"
-                    class="vlCustomLabel"
+                    class="vlCustomLabel truncate"
                     @click.stop="$emit('click', selection)">
                     <i v-if="!readonly"
                         class="icon-times" 

@@ -1,5 +1,7 @@
-$nav-item-border: 3px solid transparent !default;
-$nav-item-border-hover: 3px solid $primary !default;
+:root {
+	--nav-item-border: 3px solid transparent;
+	--nav-item-border-hover: 3px solid var(--primary);
+}
 
 @import 'classic/Navbar';
 @import 'classic/Footer';

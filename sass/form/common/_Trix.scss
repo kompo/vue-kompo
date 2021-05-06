@@ -4,7 +4,7 @@
 		justify-content: stretch;
 	}
 	.trix-button-group{
-		background-color: $form-control-bg;
+		background-color: var(--form-control-bg);
 		margin-bottom: 0;
 		border: 0;
 		&.trix-button-group--text-tools{
@@ -22,7 +22,7 @@
 		max-width: none;
 		flex:1;
 		width: auto;
-		border-bottom: 1px solid $form-control-border-color;
+		border-bottom: 1px solid var(--form-control-border-color);
 	}
 	.trix-content {
 		height: auto;

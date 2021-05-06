@@ -1,15 +1,15 @@
 .vlCheckbox{
     .vlToggleArea{
-        height: $form-checkbox-height;
-        width: $form-checkbox-height;
+        height: var(--form-checkbox-height);
+        width: var(--form-checkbox-height);
         @extend .vlFlexCenter;
         >i{
             display: none;
-            color: $form-control-bg;
+            color: var(--form-control-bg);
         }
     }
     .vlChecked{
-        background-color: $form-primary-color;
+        background-color: var(--form-primary-color);
         >i {
             display: block;
         }        
@@ -17,42 +17,44 @@
 }
 .vlMultiCheckbox{
     >.vlInputWrapper{
-        padding: $form-control-padding;
+        padding: var(--form-control-padding);
     }
 }
 
 .vlToggle,.vlToggleInput {
     .vlInputWrapper:not(.vlOptionalInput){
-        border-radius: 0.5*$form-toggle-height;
+        border-radius: calc(0.5 * var(--form-toggle-height));
+        border: 0;
     }
     .vlToggleArea{
-        height: $form-toggle-height;
-        width: $form-toggle-width;
-        border-radius: 0.5*$form-toggle-height;
+        height: var(--form-toggle-height);
+        width: var(--form-toggle-width);
+        border-radius: calc(0.5 * var(--form-toggle-height));
         display: flex;
         align-items: center;
         padding-left: 2px;
+        background-color: var(--form-control-border-color);
         &:after{
             content: "";
-            width: calc( #{$form-toggle-height} - 4px);
-            height: calc( #{$form-toggle-height} - 4px);
-            background-color: $form-control-border-color;
+            width: calc( var(--form-toggle-height) - 4px);
+            height: calc( var(--form-toggle-height) - 4px);
+            background-color: var(--form-control-bg);
             border-radius: 50%;
             transition: all .15s ease-in-out;
         }
     }
     input:checked ~ .vlToggleArea{
+        background-color: var(--form-primary-color);
         &:after{
-            background-color: $form-primary-color;
-            -webkit-transform: translateX( #{$form-toggle-width - $form-toggle-height} );
-            transform: translateX( #{$form-toggle-width - $form-toggle-height} );
+            -webkit-transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );
+            transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );
         }
     }
 }
 
 .vlToggleInput {
     .vlOptionalInput{
-        margin-top: $form-control-padding-t;
+        margin-top: var(--form-control-padding-t);
         order: 3;
         width: 100%;
     }
@@ -65,7 +67,7 @@
     flex-wrap: wrap;
     .vlFormLabel{
         margin-bottom: 0;
-        margin-left: $form-control-padding-l;
+        margin-left: var(--form-control-padding-l);
         order: 2;
         cursor: pointer;
     }

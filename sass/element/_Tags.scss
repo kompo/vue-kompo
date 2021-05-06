@@ -1,7 +1,13 @@
 .vlTag{
-	@include tagFilled($primary);
+	background-color: var(--tags-color);
+	color: white;
+	font-weight: 700;
+	@include tag();
 }
 
 .vlTagOutlined{
-	@include tagOutlined($primary);
+	border-color: var(--tags-color);
+	border-width: 1px;
+	color: var(--tags-color);
+	@include tag();
 }

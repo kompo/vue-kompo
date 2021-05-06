@@ -9,8 +9,8 @@
 }
 
 .vlInputPrepend,.vlInputAppend{
-	color: $form-field-icon-color;
-    width: $form-field-icon-width;
+	color: var(--form-field-icon-color);
+    width: var(--form-field-icon-width);
 	cursor: pointer;
 	display: flex;
 	align-items: center;

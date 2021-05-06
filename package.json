@@ -1,39 +1,15 @@
 {
-  "_args": [
-    [
-      "vue-kompo@1.2.6",
-      "/var/www/html/condoedge"
-    ]
-  ],
-  "_development": true,
-  "_from": "vue-kompo@1.2.6",
-  "_id": "vue-kompo@1.2.6",
-  "_inBundle": false,
-  "_integrity": "sha512-D/GNtCiyrObsjxjjQ9klLyLHMuGi46ShbPeISxv62xDsjSPHIm8mN+teL7+MMofPI+CEv6+7tngu+vMABUCH1g==",
-  "_location": "/vue-kompo",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "vue-kompo@1.2.6",
-    "name": "vue-kompo",
-    "escapedName": "vue-kompo",
-    "rawSpec": "1.2.6",
-    "saveSpec": null,
-    "fetchSpec": "1.2.6"
-  },
-  "_requiredBy": [
-    "#DEV:/",
-    "/kompo-ckeditor",
-    "/kompo-googlemaps"
-  ],
-  "_resolved": "https://registry.npmjs.org/vue-kompo/-/vue-kompo-1.2.6.tgz",
-  "_spec": "1.2.6",
-  "_where": "/var/www/html/condoedge",
+  "name": "vue-kompo",
+  "version": "2.0.0",
+  "license": "MIT",
+  "main": "index.js",
   "author": {
     "name": "Bass El Hachem",
     "email": "contact@kompo.io",
     "url": "https://kompo.io"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "axios": ">=0.21.1",
@@ -72,12 +48,5 @@
     "input",
     "form-controls",
     "relationships"
-  ],
-  "license": "MIT",
-  "main": "index.js",
-  "name": "vue-kompo",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "1.2.6"
+  ]
 }

@@ -18,8 +18,8 @@
     line-height: 1;
     text-align: center;
     border-radius: 50%;
-    border: $form-control-border;
-    color: $form-control-border-color;
+    border: var(--form-control-border);
+    color: var(--form-control-border-color);
     cursor: pointer;
 }
 .vlCounter{

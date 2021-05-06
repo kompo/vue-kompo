@@ -1,7 +1,36 @@
 @import 'element/elements';
 
-@import 'bootstrap-variables';
+:root{
+	/**
+	 * Spacing
+	 */
+	--form-row-margin-t: 0rem;
+	--form-row-margin-b: 1.2rem;
+	--form-control-padding-t: 0.4rem;
+	--form-control-padding-r: 0.7rem;
+	--form-control-padding-b: 0.4rem;
+	--form-control-padding-l: 0.7rem;
+	--form-control-padding: var(--form-control-padding-t) var(--form-control-padding-r) var(--form-control-padding-b) var(--form-control-padding-l);
+	--form-control-min-height: 2.4rem;
+
+	/**
+	 * Borders
+	 */
+	--form-control-border-radius: .25rem;
+	--form-control-border-color: gainsboro;
+	--form-control-border: 1px solid var(--form-control-border-color);
+	--form-control-border-color-focused: var(--form-primary-color);
+
+	/**
+	 * Specific
+	 */
+	--form-label-margin-b: 0.25rem;
+}
 
 @import 'form/common';
 @import 'query/query';
 @import 'menu/minimal';
+
+.vlFormLabel{
+	margin-bottom: var(--form-label-margin-b);
+}

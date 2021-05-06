@@ -1,19 +1,13 @@
 .vlFormLabel{
-	color: $form-primary-color;
+	color: var(--form-primary-color);
 	display: inline-block;
-	
-	@if variable-exists(form-label-margin-b){
-		margin-bottom: $form-label-margin-b;
-	}
 
 	@if variable-exists(form-label-position){
-		//&:not(.vlFixedLabel){
-			position: $form-label-position;
-			top: $form-label-position-t;
-			left: $form-label-position-l;
-			transition: all 0.3s;
-			z-index: 5;
-		//}
+		position: $form-label-position;
+		top: $form-label-position-t;
+		left: $form-label-position-l;
+		transition: all 0.3s;
+		z-index: 5;
 	}
 }
 
@@ -72,7 +66,7 @@
 		}
 		&.vlDate, &.vlTime, &.vlJson, &.vlListe, &.vlInput.vlLeftIcon{
 			.vlFormLabel{
-				left: $form-field-icon-width + $form-control-padding-l;
+				left: calc(var(--form-field-icon-width) + var(--form-control-padding-l));
 			}
 			&:focus-within, &.vlDirtyField{
 				.vlFormLabel{
@@ -104,5 +98,5 @@
 }
 
 .vlHasErrors .vlFormLabel{
-	color: $form-field-error-color;
+	color: var(--form-field-error-color);
 }

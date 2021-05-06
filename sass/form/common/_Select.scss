@@ -1,6 +1,6 @@
 .vlSelect{
 	.icon-down{
-		color: $form-control-placeholder-color;
+		color: var(--form-control-placeholder-color);
 	}
 	.vlOptions{
 		display: none;
@@ -14,23 +14,23 @@
 .vlOptions{
 	position: absolute;
 	left: 0;
-	background-color: $form-control-bg;
+	background-color: var(--form-control-bg);
 	z-index: 50;
 	max-height: 240px;
 	overflow-y: auto;
 	@extend .mini-scroll !optional;
 	width: 100%;
-	border: 1px solid $form-control-border-color;
+	border: 1px solid var(--form-control-border-color);
 	border-radius: 0 0 5px 5px;
 	.vlOption{
 		cursor: pointer;
-		padding: $form-control-padding-t $form-control-padding-r $form-control-padding-b $form-control-padding-l;
+		padding: var(--form-control-padding-t) var(--form-control-padding-r) var(--form-control-padding-b) var(--form-control-padding-l);
 		color: #444444;
 		&.vlHoveredOption{
 			background-color: ghostwhite;
 		}
 		&.vlSelected{
-			background-color: mix($form-primary-color, #fff, 15);
+			background-color: mix(blue, #fff, 15);
 		}
 		&.vlSelected.vlHoveredOption{
 			background-color: mix(red, #fff, 15);

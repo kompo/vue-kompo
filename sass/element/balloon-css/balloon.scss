@@ -1,10 +1,4 @@
 //
-// Variables
-// -----------------------------------------
-
-@import "./variables";
-
-//
 // Mixins
 // -----------------------------------------
 
@@ -17,10 +11,10 @@
 
 :root {
   --balloon-border-radius: 2px;
-  --balloon-color: #{$balloon-bg};
-  --balloon-text-color: #{$balloon-text-color};
-  --balloon-font-size: #{$balloon-base-size};
-  --balloon-move: #{$balloon-move};
+  --balloon-color: fade-out(#101010, 0.05);
+  --balloon-text-color: #fff;
+  --balloon-font-size: 12px;
+  --balloon-move: 4px;
 }
 
 // IE 11 button bugfix
@@ -128,7 +122,7 @@ button[aria-label] {
         transform: translate(0, var(--balloon-move));
       }
 
-      &:after { margin-bottom: $balloon-arrow-size + 5px; }
+      &:after { margin-bottom: calc(var(--balloon-arrow-size) + 5px); }
     }
 
     &[data-balloon-pos="up"] {
@@ -146,7 +140,7 @@ button[aria-label] {
         transform: translate(0, calc(var(--balloon-move) * -1));
       }
 
-      &:after { margin-top: $balloon-arrow-size + 5px; }
+      &:after { margin-top: calc(var(--balloon-arrow-size) + 5px); }
       &:before { @include arrow(up); }
     }
 
@@ -174,7 +168,7 @@ button[aria-label] {
         transform: translate(var(--balloon-move), -50%);
       }
 
-      &:after { margin-right: $balloon-arrow-size + 5px; }
+      &:after { margin-right: calc(var(--balloon-arrow-size) + 5px); }
       &:before { @include arrow(right); }
     }
 
@@ -186,7 +180,7 @@ button[aria-label] {
         transform: translate(calc(var(--balloon-move) * -1), -50%);
       }
 
-      &:after { margin-left: $balloon-arrow-size + 5px; }
+      &:after { margin-left: calc(var(--balloon-arrow-size) + 5px); }
       &:before { @include arrow(left); }
     }
 

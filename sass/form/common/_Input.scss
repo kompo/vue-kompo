@@ -1,5 +1,5 @@
 .vlClearable{
 	position: absolute;
-	top: $form-control-padding-t;
-	right: $form-control-padding-r;
+	top: var(--form-control-padding-t);
+	right: var(--form-control-padding-r);
 }

@@ -1,7 +1,7 @@
 
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar{
 	border: 0;
-	border-bottom: 1px solid $form-control-border-color;
+	border-bottom: 1px solid var(--form-control-border-color);
 	background: transparent;
 	.ck.ck-dropdown.ck-heading-dropdown .ck-dropdown__button .ck-button__label {
 	    max-width: 4rem;
@@ -23,14 +23,14 @@
 		list-style: decimal;
 	}
 	a{
-		color: $primary;
+		color: var(--primary);
 		cursor: pointer;
 	}
 	&.ck-editor__editable_inline>:first-child{
-		margin-top: $form-control-padding-t;
+		margin-top: var(--form-control-padding-t);
 	}
 	&.ck-editor__editable_inline>:last-child{
-		margin-bottom: $form-control-padding-b;
+		margin-bottom: var(--form-control-padding-b);
 	}
 	&.ck-focused{
 		border: 0;
