@@ -41,5 +41,5 @@ $form-label-trix-focused-position-t: $form-label-focused-position-t !default;
 /**
  * Borders
  */
-$form-control-border-bottom: 1px solid $form-control-border-color !default;
+$form-control-border-bottom: 1px solid var(--form-control-border-color) !default;
 $form-control-border-expanding: 2px !default;

@@ -130,15 +130,14 @@ export default class Action {
         this.vue.$kompo.vlSort(this.vue.kompoid, this.vue.$_sortValue, this.vue.$_elKompoId)
     }
     emitFromAction(response){
-        this.vue.$_vlEmitFrom(this.$_config('event'), Object.assign(
-            this.$_config('emitPayload') || {}, 
-            this.vue.$_getJsonValue || {} 
-        ))
+        this.vue.$_vlEmitFrom(this.$_config('event'), this.getPayloadFor('emitPayload'))
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     emitDirectAction(response){
-    	this.vue.$emit(this.$_config('event'), this.$_config('emitPayload') || (response ? response.data : null))
+        let emitPayload = _.isEmpty(this.getPayloadFor('emitPayload')) ? null : this.getPayloadFor('emitPayload')
+
+    	this.vue.$emit(this.$_config('event'), emitPayload  || (response ? response.data : null))
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
@@ -262,9 +261,9 @@ export default class Action {
             window.location.href = url
         }
     }
-    getPayloadForStore() {
+    getPayloadFor(payloadKey) {
         return Object.assign(
-            this.$_config('ajaxPayload') || {}, 
+            this.$_config(payloadKey) || {}, 
             this.vue.$_getJsonValue || {} 
         )
     }

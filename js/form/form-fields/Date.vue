@@ -9,7 +9,7 @@
                 ref="flatpickr"
                 v-bind="$_attributes"
                 v-on="$_events" 
-                autocomplete="off" />
+                autocomplete="chrome-off" />
             <div class="vlInputAppend" v-if="!$_readOnly">
                 <i v-if="$_value" class="icon-times" @click.stop="clear" />
             </div>

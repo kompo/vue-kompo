@@ -82,3 +82,7 @@ a{
 .vl-sidebar-l, .vl-sidebar-r, .kompoScrollableContent{
     @extend .mini-scroll !optional;
 }
+
+.vl-sidebar-l, .vl-sidebar-r{
+	padding-bottom: 1rem; //because of the bottom toolbar of mobile browsers
+}

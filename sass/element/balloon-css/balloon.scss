@@ -9,12 +9,13 @@
 // Styles
 // -----------------------------------------
 
-:root {
+::before, ::after { //they weren't inheriting from :root!!
   --balloon-border-radius: 2px;
-  --balloon-color: fade-out(#101010, 0.05);
+  --balloon-color: #101010;
   --balloon-text-color: #fff;
   --balloon-font-size: 12px;
   --balloon-move: 4px;
+  --balloon-arrow-size: 5px;
 }
 
 // IE 11 button bugfix

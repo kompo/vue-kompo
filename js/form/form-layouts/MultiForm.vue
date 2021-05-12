@@ -14,7 +14,10 @@
         </draggable>
         <div v-else class="vlTableWrapper">
             <table class="w-full table vlTable">
-                <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
+                <vl-table-headers 
+                    v-if="komponents.length"
+                    :vkompo="component" 
+                    :kompoid="$_elKompoId" />
                 <tbody>
                     <vl-table-rows
                         v-for="(comp,index) in komponents"
@@ -25,11 +28,13 @@
                 </tbody>
             </table>
         </div>
-        <a v-if="!noAdding" 
-            href="javascript:void(0)" 
-            @click.stop="addRow"
-            :class="$_config('addLabelClass')"
-            v-html="$_config('addLabel')" />
+        <component
+            v-if="!noAdding"
+            :is="$_vueTag($_config('addLabel'))"
+            :vkompo="$_config('addLabel')"
+            :kompoid="kompoid" 
+            @newitem="addRow"
+        />
     </div>
 </template>
 

@@ -42,7 +42,7 @@ export default {
             style: this.$_config('inputStyle') || '',
             class: this.$_config('inputClass') || '',
             readonly: this.$_readOnly,
-            autocomplete: this.$_noAutocomplete ? 'off' : ''
+            autocomplete: this.$_noAutocomplete ? 'chrome-off' : ''
         }},
         $_events() { return this.$_defaultFieldEvents },
         $_defaultFieldEvents() { return {
@@ -94,16 +94,11 @@ export default {
 
             this.$_runOwnInteractions('change')
 
-            /* To delete: unless a justification is found
-            this.$_runOwnInteractionsWithAction('change', 'emitFrom')
-            this.$_runOwnInteractionsWithAction('change', 'axiosRequest')            
-            this.$_runOwnInteractionsWithAction('change', 'submitForm')
-            this.$_runOwnInteractionsWithAction('change', 'browseQuery')
-            this.$_runOwnInteractionsWithAction('change', 'sortQuery')
-            this.$_runOwnInteractionsWithAction('change', 'runJs')
-            */
-
             this.$_clearErrors()
+
+            if (this.$_config('resetAfterChange')) {
+                this.$_resetValue()
+            }
         },
         $_inputAction(){
             this.debouncedSubmitOnInput()

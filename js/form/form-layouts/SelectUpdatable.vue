@@ -3,11 +3,12 @@
         
         <component v-bind="$_attributes(komponents[0])" :key="renderKey">
             <template v-slot:after>
-                <a class="vlFormComment" 
-                    href="javascript:void(0)" 
-                    @click.stop="loadUpdateForm"
-                    :class="$_config('addLabelClass')"
-                    v-html="$_config('addLabel')" />
+                <component
+                    class="vlFormComment" 
+                    :is="$_vueTag($_config('addLabel'))"
+                    :vkompo="$_config('addLabel')"
+                    @newitem="loadUpdateForm"
+                />
             </template>
         </component>
 
@@ -34,9 +35,9 @@ export default {
         }
     },
     methods: {
-        loadUpdateForm(){
+        loadUpdateForm(payload){
 
-            this.$_kAxios.$_loadKomposer().then(r => {
+            this.$_kAxios.$_loadKomposer(payload).then(r => {
 
                 this.updateForm = r.data
                 this.$kompo.vlModalShow('modal'+this.$_elKompoId)

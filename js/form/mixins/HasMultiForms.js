@@ -11,11 +11,11 @@ export default {
         getRandomKey(){
             return 'multiform-'+Math.random()
         },
-        addRow(){
+        addRow(payload){
             if(this.noAdding)
                 return
             
-            this.$_kAxios.$_loadKomposer().then(r => {
+            this.$_kAxios.$_loadKomposer(payload).then(r => {
 
                 this.komponents.push(Object.assign(r.data, {key: this.getRandomKey()}))
 

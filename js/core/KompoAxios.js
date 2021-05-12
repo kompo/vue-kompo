@@ -28,7 +28,7 @@ export default class KompoAxios{
 
         var route = this.$_route
         var data = Object.assign(
-            this.element.getPayloadForStore(),
+            this.element.getPayloadFor('ajaxPayload'),
             payload,
             additionalPayload || {}
         )
@@ -114,12 +114,12 @@ export default class KompoAxios{
             }
         })
     }
-    $_loadKomposer(){
+    $_loadKomposer(payload){
 
         return this.$_axiosWithErrorHandling({
             url: this.$_route, 
             method: this.$_routeMethod,
-            data: this.$_ajaxPayload,
+            data: Object.assign(this.$_ajaxPayload || {}, payload || {}),
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
                 'X-Kompo-Action': 'load-komposer',
