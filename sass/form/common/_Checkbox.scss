@@ -70,6 +70,10 @@
         margin-left: var(--form-control-padding-l);
         order: 2;
         cursor: pointer;
+        //To ensure the label doesn't wrap
+        --remaining: calc(var(--form-checkbox-height) + var(--form-control-padding-l) + 2px);
+        width: calc(100% - var(--remaining));
+        flex-shrink: 1;
     }
     .vlToggleArea{
         cursor: pointer;

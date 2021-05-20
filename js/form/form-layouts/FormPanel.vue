@@ -7,7 +7,9 @@
 
         <div v-if="komponents.length" class="h-full"><!-- had to wrap in a div for transition -->
             <template v-for="(row,index) in komponents">
-                <component v-bind="$_attributes(row)" />
+                <component 
+                    v-bind="$_attributes(row)" 
+                    @closePanel="destroyPanel"/>
             </template>
         </div>
 

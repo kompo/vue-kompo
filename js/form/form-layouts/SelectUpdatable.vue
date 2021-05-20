@@ -65,6 +65,8 @@ export default {
             this.komponents.splice(0, 1, newSelect)
             this.renderKey += 1
 
+            this.$_changeAction()
+
             if(!this.$_config('keepModalOpen'))
                 this.$kompo.vlModalClose('modal'+this.$_elKompoId)
         }
