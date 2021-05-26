@@ -71,7 +71,6 @@
         order: 2;
         cursor: pointer;
         //To ensure the label doesn't wrap
-        --remaining: calc(var(--form-checkbox-height) + var(--form-control-padding-l) + 2px);
         width: calc(100% - var(--remaining));
         flex-shrink: 1;
     }
@@ -92,4 +91,12 @@
         height: 0;
         width: 0;
     }
+}
+
+.vlCheckbox .vlFormLabel{
+    --remaining: calc(var(--form-checkbox-height) + var(--form-control-padding-l) + 2px);
+}
+
+.vlToggle .vlFormLabel,.vlToggleInput .vlFormLabel{
+    --remaining: calc(var(--form-toggle-width) + var(--form-control-padding-l) + 2px);
 }
