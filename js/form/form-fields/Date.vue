@@ -9,7 +9,7 @@
                 ref="flatpickr"
                 v-bind="$_attributes"
                 v-on="$_events" 
-                autocomplete="chrome-off" />
+                autocomplete="off" />
             <div class="vlInputAppend" v-if="!$_readOnly">
                 <i v-if="$_value" class="icon-times" @click.stop="clear" />
             </div>
@@ -85,6 +85,9 @@ export default {
                 setTimeout( () => this.$refs.flatpickr.fp.hourElement.focus(), 50)
         },
         onChange(selectedDates, dateStr, instance) {
+
+            if(this.$_dateMode == 'range' && selectedDates.length == 1)
+                return //When it's a Date Range I wan't to emit change only when both are selected
 
             if(dateStr == this.dateCheck) //Flatpickr emits even if the date does not change... had to do the check myself
                 return

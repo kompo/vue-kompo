@@ -14,7 +14,8 @@
                 v-model="inputValue"
                 @keydown.enter.prevent="() => {}"
                 ref="input"
-                autocomplete="chrome-off"
+                type="search" 
+                autocomplete="off"
             />
             <template v-slot:append v-if="appendIcon && !$_readOnly">
                 <i :class="appendIcon"/>

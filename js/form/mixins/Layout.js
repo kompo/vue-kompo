@@ -55,8 +55,9 @@ export default {
         },
         $_toggle(toggleId){
             Element.methods.$_toggle.call(this, toggleId)
-            if(!this.$_state('disabled'))
+            if(!this.$_state('disabled')){
                 this.komponents.forEach( item => item.$_toggle(toggleId) )
+            }
         },
         $_fillRecursive(jsonFormData){
             if(!this.$_hidden)

@@ -34,16 +34,20 @@ export default {
         $_multiple() { return this.component.multiple },
         
         $_attributes() { return this.$_defaultFieldAttributes },
-        $_defaultFieldAttributes() { return {
-            ...this.$_defaultElementAttributes,
-            id: this.$_elementId() || this.$_elKompoId,
-            name: this.$_name,
-            placeholder: this.$_placeholder,
-            style: this.$_config('inputStyle') || '',
-            class: this.$_config('inputClass') || '',
-            readonly: this.$_readOnly,
-            autocomplete: this.$_noAutocomplete ? 'chrome-off' : ''
-        }},
+        $_defaultFieldAttributes() { 
+            return Object.assign({
+                ...this.$_defaultElementAttributes,
+                    id: this.$_elementId() || this.$_elKompoId,
+                    name: this.$_name,
+                    placeholder: this.$_placeholder,
+                    style: this.$_config('inputStyle') || '',
+                    class: this.$_config('inputClass') || '',
+                    readonly: this.$_readOnly,
+                }, this.$_noAutocomplete ? {
+                    autocomplete: 'off-'+this.$_elementId(),
+                } : {}
+            )
+        },
         $_events() { return this.$_defaultFieldEvents },
         $_defaultFieldEvents() { return {
             focus: this.$_focusAction,
