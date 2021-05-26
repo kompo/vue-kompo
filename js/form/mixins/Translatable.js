@@ -44,7 +44,8 @@ export default {
         
         $_fill(jsonFormData){
             Object.keys(this.$_value).forEach(key => {
-                jsonFormData[this.$_name+'['+key+']'] = this.$_value[key]
+                if(this.$_value[key])
+                    jsonFormData[this.$_name+'['+key+']'] = this.$_value[key]
             })
         }
     },
