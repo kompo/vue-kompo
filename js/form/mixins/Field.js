@@ -180,14 +180,11 @@ export default {
     },
     mounted(){
         this.$_updateFieldState()
-        if(this.$_toggleOnLoad)
+        if(this.$_toggleOnLoad){
             this.$_togglesForm()        
+        }
 
         this.$_runOwnInteractions('load')
-
-        /* To delete: unless a justification is found
-        this.$_runOwnInteractionsWithAction('load', 'axiosRequest')
-        */
     },
     created() {
         this.$_setInitialValue()

@@ -83,6 +83,7 @@ export default {
 
             if(r.status === 202){
                 this.$_destroyEvents()
+                this.$_removeLiveKomposer()
                 this.$emit('refreshForm', r.data)
             }
         },
@@ -119,6 +120,7 @@ export default {
             this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
                 
                 this.$_destroyEvents()
+                this.$_removeLiveKomposer()
                 this.$emit('refreshForm', r.data)
                 
                 this.refreshing = false
@@ -166,6 +168,7 @@ export default {
             })
             this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
                 this.$_destroyEvents()
+                this.$_removeLiveKomposer() //no need to save after because created() is called
                 this.$emit('refreshForm', responseData)
             })
 

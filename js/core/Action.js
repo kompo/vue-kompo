@@ -117,7 +117,7 @@ export default class Action {
         this.runKompoInfoSpecifications('$_browseMany', 'vlLoadItems')
     }
     refreshKomposerAction(){
-        this.runKompoInfoSpecifications('$_refreshMany', 'vlRefreshKomposer')
+        this.runKompoInfoSpecifications('$_refreshMany', 'vlRefreshKomposer', true)
     }
     sortQueryAction(){
         this.vue.$_state({ 
@@ -283,11 +283,14 @@ export default class Action {
            this.$_kAxios.$_handleAjaxError(e) 
         }
     }
-    getParentKomposerInfo(kompoid){
+    getParentKomposerInfo(kompoid, resetFilters){
 
         let usedKompoId = kompoid || this.vue.kompoid
 
-        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId, this.$_config('page'))
+        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId, {
+            page: this.$_config('page'), 
+            resetFilters: resetFilters,
+        })
 
         return this.vue.parentKomposerInfo[usedKompoId]
     }
@@ -297,7 +300,7 @@ export default class Action {
         return data ? (_.isArray(data) ? data : [data]) : [fallback]
     }
 
-    getKompoInfoSpecifications(){
+    getKompoInfoSpecifications(resetFilters){
 
         var specifications = []
 
@@ -306,7 +309,7 @@ export default class Action {
             if(!kompoid)
                 return
 
-            let parentKomposerInfo = this.getParentKomposerInfo(kompoid)
+            let parentKomposerInfo = this.getParentKomposerInfo(kompoid, resetFilters)
 
             if(parentKomposerInfo)
                 specifications.push({
@@ -321,11 +324,11 @@ export default class Action {
         return specifications
     }
 
-    runKompoInfoSpecifications(axiosRequestFunc, komposerFillFunc){
+    runKompoInfoSpecifications(axiosRequestFunc, komposerFillFunc, resetFilters){
 
         this.vue.$_state({ loading: true })
 
-        let specifications = this.getKompoInfoSpecifications()
+        let specifications = this.getKompoInfoSpecifications(resetFilters)
 
         if(!specifications.length){
             this.vue.$_state({ loading: false })

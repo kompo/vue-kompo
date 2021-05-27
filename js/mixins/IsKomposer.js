@@ -46,6 +46,9 @@ export default {
         $_saveLiveKomposer(){
             window._kompo.komposers.push(this.$_elKompoId)       
         },
+        $_removeLiveKomposer(){
+            window._kompo.komposers = _.remove(window._kompo.komposers, (n) => n == this.$_elKompoId)
+        },
         $_echoTrigger(){}, //to be overriden in Komposer
     }
 }

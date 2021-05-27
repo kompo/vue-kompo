@@ -165,7 +165,11 @@ export default {
             this.$_fillRecursive(jsonFormData)
             return jsonFormData
         },
-        getJsonFormDataWithFilters(){
+        getJsonFormDataWithFilters(resetFilters){
+            if (resetFilters) {
+                return this.initialFilters
+            }
+
             return this.getJsonFormData(
                 Object.assign(
                     {}, 
@@ -281,15 +285,15 @@ export default {
 
                 this.browseQuery()
             })
-            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId, page) => {
+            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId, options) => {
 
                 if(!this.$_isLive)
                     return
 
                 this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
                     kompoinfo: this.$_kompoInfo,
-                    data: this.getJsonFormDataWithFilters(),
-                    page: page || this.currentPage,
+                    data: this.getJsonFormDataWithFilters(options.resetFilters),
+                    page: options.page || this.currentPage,
                     sort: this.currentSort,
                 })
             })
@@ -298,7 +302,11 @@ export default {
             })
             this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
                 
+                this.$_removeLiveKomposer() //because this.$_elKompoId changed
+                this.$_destroyEvents()
                 this.component = responseData
+                this.$_saveLiveKomposer()
+                this.$_attachEvents()
 
                 Vue.set(this, 'filters', this.component.filters)
                 Vue.set(this, 'pagination', this.getPagination(this.component))
