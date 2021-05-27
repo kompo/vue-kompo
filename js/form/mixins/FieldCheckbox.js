@@ -28,7 +28,6 @@ export default {
                 return
 
             this.handleToggle()
-            this.$_togglesForm()
         },
         handleToggle(){
             this.component.value = !this.checked
