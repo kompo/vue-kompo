@@ -66,6 +66,9 @@ export default {
         this.filteredOptions = this.options
         this.optionsMessage = this.ajaxOptions ? this.enterMoreCharacters : this.noOptionsFound
     },
+    created() {
+        this.vkompo.$_addOptionToValue = this.$_addOptionToValue
+    },
     computed: {
         $_events() {
             return {
@@ -145,7 +148,7 @@ export default {
             if(option.label && _.isObject(option.label) && option.label.$_config('disabled'))
                 return
 
-            this.isSelected(option) ? this.$_remove(this.indexOf(option)) : this.add(option)
+            this.isSelected(option) ? this.$_remove(this.indexOf(option)) : this.$_addOptionToValue(option)
             this.reset()
             this.$_blurAction()
         },
@@ -155,7 +158,7 @@ export default {
                 return searchable.indexOf(this.inputValue.toString().normalize('NFD').toLowerCase()) !== -1
             })
         },
-        add(option){
+        $_addOptionToValue(option){
             if(this.$_multiple){
                 this.component.value.push(option)
             }else{

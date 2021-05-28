@@ -54,18 +54,19 @@ export default {
                 ajaxPayload: Object.assign({id: this.optionValue}, this.$_config('ajaxPayload')),
             })
                 
-            var newSelect = this.komponents[0]
+            let newSelect = this.komponents[0]
 
-            var index = _.findIndex(newSelect.options, {value: this.optionValue});
-            newSelect.options.splice(index, 1, {
+            let index = _.findIndex(newSelect.options, {value: this.optionValue})
+            let formattedOption = {
                 value: this.optionValue, 
                 label: this.option[this.optionValue] 
-            })
-            newSelect.value = this.optionValue
+            }
+            newSelect.options.splice(index, 1, formattedOption)
+            newSelect.value = this.optionValue //To review - setting select value...
             this.komponents.splice(0, 1, newSelect)
             this.renderKey += 1
-
-            this.$_changeAction()
+            
+            newSelect.$_addOptionToValue(formattedOption) //... is very different from using it in requests.
 
             if(!this.$_config('keepModalOpen'))
                 this.$kompo.vlModalClose('modal'+this.$_elKompoId)
