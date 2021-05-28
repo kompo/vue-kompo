@@ -4,13 +4,14 @@
         <draggable 
             v-if="!component.headers"
             v-model="komponents" 
-            handle=".js-row-move"
-            :style="$_elementStyles">
+            handle=".js-row-move">
             <vl-rows
                 v-for="(comp,index) in komponents"
                 :vkompo="comp"
-                :key="index"
-                v-bind="$_attributes(comp)" />
+                :key="comp.key"
+                v-bind="$_attributes(comp)" 
+                @deleted="deleteRow(index)"
+            />
         </draggable>
         <div v-else class="vlTableWrapper">
             <table class="w-full table vlTable">
@@ -24,7 +25,8 @@
                         :vkompo="comp"
                         :key="comp.key"
                         :kompoid="kompoid" 
-                        @deleted="deleteRow(index)" />
+                        @deleted="deleteRow(index)" 
+                    />
                 </tbody>
             </table>
         </div>

@@ -6,7 +6,8 @@
         v-turbo-click="component.turbo">
         <component v-for="(col,index) in komponents"
             :key="index"
-            v-bind="$_attributes(col)" />
+            v-bind="$_attributes(col)"
+        />
     </component>
 </template>
 

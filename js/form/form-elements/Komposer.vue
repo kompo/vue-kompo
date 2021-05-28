@@ -6,6 +6,7 @@
         @closeModal="closeModal"  
         @closePanel="closePanel"  
         @confirmModal="confirmModal" 
+        @deleted="$emit('deleted')" 
     />
 
 </template>
