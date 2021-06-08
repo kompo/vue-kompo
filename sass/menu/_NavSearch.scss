@@ -6,7 +6,7 @@
 	.vlTaggableInput{
 		//align-items: baseline;
 	}
-	.vlInputWrapper{
+	>div>.vlInputWrapper{ //to target only the first one...
 		border: 0;
 	}
 	.vlOptions{

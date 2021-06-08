@@ -21,6 +21,6 @@ export default {
         tdClass(component){
             return this.$_config('tdClass', component)
         }
-    }
+    },
 }
 </script>

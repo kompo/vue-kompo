@@ -21,6 +21,6 @@ export default {
         tdClass(row){
             return this.$_config('tdClass', row)
         }
-    }
+    },
 }
 </script>

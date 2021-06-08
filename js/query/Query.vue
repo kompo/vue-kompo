@@ -71,6 +71,8 @@ export default {
         this.pagination = this.getPagination(this.component)
         this.headers = this.component.headers
 
+        this.checkedItemIds = this.component.checkedItemIds || []
+
         this.$_configureEcho()
         this.$_saveLiveKomposer()
     },

@@ -3,7 +3,7 @@
 	.vlFormField{
 		width: 100%;
 	}
-	.vlInputWrapper{
+	>div>.vlInputWrapper{ //to target only the first one...
 		border-radius: 20px;
 	}
 	.vlOptions{

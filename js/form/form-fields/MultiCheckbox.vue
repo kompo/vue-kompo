@@ -5,7 +5,6 @@
             <vl-form-label :component="option" @click="toggleValue(key)()"/>
             <div class="vlInputWrapper">
                 <input
-                    v-model="component.value[key]"
                     type="checkbox"
                     role="checkbox"
                     v-bind="attributes(key)"
@@ -23,13 +22,18 @@
 import Field from '../mixins/Field'
 export default {
     mixins: [Field],
+    created(){
+    },
     computed: {
         options(){ return this.component.options },
+        $_pristine() { return this.$_value.length === 0 },
+        $_emptyValue() { return [] },
     },
     methods: {
         $_setInitialValue(){
-            if(!this.$_value)
+            if(!this.$_value){
                 this.component.value = []
+            }
         },
         $_fill(jsonFormData){
             !this.$_value.length ? 
@@ -64,7 +68,7 @@ export default {
                 if(index !== -1){
                     this.component.value.splice(index, 1)
                 }else{
-                    this.component.value.push(this.options[key].value)
+                    this.component.value.push(this.options[key].value.toString())
                 }
                 this.changed()
             }
@@ -78,7 +82,7 @@ export default {
             }, 50)
         },
         indexOf(key){
-            return _.indexOf(this.component.value, this.options[key].value)
+            return _.indexOf(this.component.value, this.options[key].value.toString())
         }
     }
 }

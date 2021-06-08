@@ -46,13 +46,19 @@ export default {
             return {
                 //key: this.itemKey(item), //EXPLICITELY set on <component/> cuz Vue emits a warning otherwise...
                 index: parseInt(index),
-                active: this.activeIndex == index,
-                class: this.activeIndex == index ? this.$_activeClass : '',
+                active: this.isActive(item, index),
+                class: this.isActive(item, index) ? this.$_activeClass : '',
                 is: this.$_vueTag(this.itemRender(item)),
                 vkompo: this.itemRender(item),
                 kompoid: this.kompoid,
                 layout: this.component.layout,
             }
+        },
+        isActive(item, index){
+            let checkedItemIds = this.$parent._data.checkedItemIds
+            return ((this.activeIndex == index) || (
+                this.itemAttributes(item).id && checkedItemIds.length && checkedItemIds.includes(this.itemAttributes(item).id)
+            )) ? true : false
         },
         itemRender(item){ return item.render },
         itemAttributes(item){ return item.attributes },
