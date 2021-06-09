@@ -33,19 +33,24 @@ export default class KompoAxios{
             additionalPayload || {}
         )
 
-        //Experimental - to test. Needed this because otherwise ...[0] names weren't converted to arrays in backend
-        var formData = new FormData()
-        for ( var key in data ) {
-            formData.append(key, data[key])
+        if(this.$_routeMethod == 'GET'){
+            route = this.$_route+'?'+ new URLSearchParams(data).toString()
         }
 
-        if(this.$_routeMethod == 'GET')
-            route = this.$_route+'?'+ new URLSearchParams(data).toString()
+        if(['POST', 'PUT'].includes(this.$_routeMethod)){
+            //Experimental - to test. Needed this because otherwise ...[0] names weren't converted to arrays in backend
+            //Removed cuz couldn't reproduce the issue
+            /*var formData = new FormData()
+            for ( var key in data ) {
+                formData.append(key, data[key])
+            }
+            data = formData*/
+        }
 
         return this.$_axios({
             url: route, 
             method: this.$_routeMethod || 'POST', //POST when used outside PHP
-            data: formData,
+            data: data,
             headers: Object.assign(
                 {'X-Kompo-Info': this.$_getKompoInfo()}, 
                 this.$_kompoAction ? { 'X-Kompo-Action': this.$_kompoAction } : {},
