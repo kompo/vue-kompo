@@ -63,6 +63,7 @@ export default {
         filtersKey: 1,
         previewIndex: null,
         checkedItemIds: [],
+        isBrowsing: false,
     }),
     created() {
         this.cardsKey = 'cards' + this.component.id
@@ -221,11 +222,14 @@ export default {
             if(!this.isScrollPagination)
                 return
 
+            if(this.isBrowsing)
+                return
+
             if(this.pagination.current_page >= this.pagination.last_page) //>= was necessary because when we delete, the height is smaller and below gets triggered
                 return
 
             if(this.bottomPagination)
-                if (scrollTop + clientHeight >= scrollHeight)
+                if (scrollTop + clientHeight >= scrollHeight - 5)
                     this.browseQuery(this.currentPage + 1, true)
 
             if(this.topPagination)
@@ -233,13 +237,19 @@ export default {
                     this.browseQuery(this.currentPage + 1, true)
         },
         browseQuery(page, additive) {
+            
+            this.isBrowsing = true
+
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 
                 this.loadItems(r.data, additive)
 
+                this.isBrowsing = false
+
             })
             .catch(e => {
+                this.isBrowsing = false
                 console.log('Error in Query.vue', e)
                 if (e.response.status == 422){
                     this.$_validate(e.response.data.errors)
