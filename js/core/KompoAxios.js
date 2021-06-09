@@ -37,14 +37,13 @@ export default class KompoAxios{
             route = this.$_route+'?'+ new URLSearchParams(data).toString()
         }
 
-        if(['POST', 'PUT'].includes(this.$_routeMethod)){
+        if(['POST', 'PUT', 'PATCH'].includes(this.$_routeMethod)){
             //Experimental - to test. Needed this because otherwise ...[0] names weren't converted to arrays in backend
-            //Removed cuz couldn't reproduce the issue
-            /*var formData = new FormData()
+            var formData = new FormData()
             for ( var key in data ) {
                 formData.append(key, data[key])
             }
-            data = formData*/
+            data = formData
         }
 
         return this.$_axios({
