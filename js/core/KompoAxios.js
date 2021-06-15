@@ -41,7 +41,13 @@ export default class KompoAxios{
             //Experimental - to test. Needed this because otherwise ...[0] names weren't converted to arrays in backend
             var formData = new FormData()
             for ( var key in data ) {
-                formData.append(key, data[key])
+                if (_.isArray(data[key])){
+                    data[key].forEach((item, k) => {
+                        formData.append(key+'['+k+']', item)
+                    })
+                }else{
+                    formData.append(key, data[key])
+                }
             }
             data = formData
         }

@@ -75,5 +75,9 @@ export default {
         $_deliverJsonTo(componentId, json){
             this.komponents.forEach( item => item.$_deliverJsonTo(componentId, json) )
         },
-	}
+	},
+    mounted(){
+        if(this.$_toggleOnLoad)
+            this.$_togglesForm()
+    }
 }
