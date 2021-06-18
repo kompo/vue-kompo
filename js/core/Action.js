@@ -71,12 +71,12 @@ export default class Action {
 
         if(!parentKomposerInfo.url)
             return
-        
+
         this.$_kAxios.$_submitFormAction(
             parentKomposerInfo.url, 
             parentKomposerInfo.method, 
             parentKomposerInfo.action,
-            parentKomposerInfo.jsonFormData
+            Object.assign(parentKomposerInfo.jsonFormData, this.$_config('submitPayload') || {})
         )
         .then(r => {
 

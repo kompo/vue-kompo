@@ -28,6 +28,19 @@ export default {
         $_customClassArray() { return [
             this.$_config('active')
         ] },
-	}
+	},
+    methods: {
+        $_clickAction(){
+            
+            this.$emit('click')
+            
+            this.$_runOwnInteractions('click')
+            
+            this.$_revertPanel()
+            this.$_revertFormRow()
+
+        },
+
+    }
 
 }

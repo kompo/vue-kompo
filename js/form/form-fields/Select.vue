@@ -153,9 +153,10 @@ export default {
             this.$_blurAction()
         },
         filterOptions(){
+            //https://stackoverflow.com/questions/5700636/using-javascript-to-perform-text-matches-with-without-accented-characters
             this.filteredOptions = _.filter(this.options, (opt) => {
-                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().normalize('NFD').toLowerCase()
-                return searchable.indexOf(this.inputValue.toString().normalize('NFD').toLowerCase()) !== -1
+                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().normalize('NFD').toLowerCase().replace(/[\u0300-\u036f]/g, "")
+                return searchable.indexOf(this.inputValue.toString().normalize('NFD').toLowerCase().replace(/[\u0300-\u036f]/g, "")) !== -1
             })
         },
         $_addOptionToValue(option){

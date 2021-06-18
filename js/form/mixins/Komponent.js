@@ -57,7 +57,7 @@ export default {
             let vm = this.$parent
             while(vm && vm.$options._componentTag !== type) { vm = vm.$parent }
             return vm 
-        }
+        },
 
     }
 }

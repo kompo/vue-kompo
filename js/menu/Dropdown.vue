@@ -79,6 +79,8 @@ export default {
                 this.open = true
                 this.$_overwriteBladeClasses()
             }
+
+            this.$_clickAction()
         },
         closeSubmenu(){
             if(this.openOnClick){
