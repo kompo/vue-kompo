@@ -22,16 +22,16 @@ export default class TurboClick {
         )
     }
     trigger(){
-        toggleSpinner('block')
+        this.toggleSpinner('block')
         axios.get(this.url).then(r => {
 
-            toggleSpinner('none')
+            this.toggleSpinner('none')
                             
             this.displayResponse(r)
 
         }).catch(e => {
 
-            toggleSpinner('none')
+            this.toggleSpinner('none')
 
             if(e.response.status === 401)
                 if(confirm(window._kompo.sessionTimeoutMessage))
