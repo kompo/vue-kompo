@@ -22,11 +22,16 @@ export default class TurboClick {
         )
     }
     trigger(){
+        toggleSpinner('block')
         axios.get(this.url).then(r => {
+
+            toggleSpinner('none')
                             
             this.displayResponse(r)
 
         }).catch(e => {
+
+            toggleSpinner('none')
 
             if(e.response.status === 401)
                 if(confirm(window._kompo.sessionTimeoutMessage))
@@ -35,6 +40,12 @@ export default class TurboClick {
 
             console.log('Error loading object in Panel:' + e)
         })
+    }
+    toggleSpinner(display){
+        let spinner = document.getElementById('vl-spinner')
+        if (spinner) {
+            spinner.style.display = display
+        }       
     }
     displayResponse(r){
         //parse the GET response HTML
