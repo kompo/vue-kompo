@@ -8,6 +8,12 @@ window._kompo = {
     komposers: [], //used to stop refreshing komposers
     sessionTimeoutMessage: '',
     history: [window.location.href],
+    toggleSpinner: function(display){
+        let spinner = document.getElementById('vl-spinner')
+        if (spinner) {
+            spinner.style.display = display
+        }       
+    }
 }
 
 const Kompo = {

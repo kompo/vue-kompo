@@ -21,6 +21,8 @@
 import Layout from '../mixins/Layout'
 import Flatpickr from 'flatpickr'
 
+import { French } from "flatpickr/dist/l10n/fr.js"
+
 export default {
     mixins: [Layout],
     props: {
@@ -31,6 +33,9 @@ export default {
     		sortedItems: [],
             selectedDate: null //for rescrolling into view on month/year change
     	}
+    },
+    computed: {
+        $_locale(){ return this.$_config('kompo_locale') },
     },
     methods: {
         defaultKey(item){ return (this.itemAttributes(item).event_class + this.itemAttributes(item).id) || null },
@@ -108,7 +113,7 @@ export default {
             (item) => this.itemAttributes(item).start_date.substr(0,10)
         )
 
-        var fp = new Flatpickr(this.$refs.calendar, {
+        var fp = new Flatpickr(this.$refs.calendar, Object.assign({
             
             inline: true,
             
@@ -118,7 +123,9 @@ export default {
             onChange: this.dayChange,
             onMonthChange: this.monthYearChange,
             onYearChange: this.monthYearChange,
-        })
+        },
+            (this.$_locale == 'fr') ? {locale: French} : {},
+        ))
 
         this.scrollToDate()
     }

@@ -15,6 +15,10 @@ export default {
         $_isFromBlade(){
             return this.$slots.default
         },
+
+        $_fullLabel(){
+            return this.$_label+(this.$_loading ? '<i class="icon-spinner"></i>' : '')
+        },
         
         $_attributes() { return this.$_defaultOtherAttributes },
         $_defaultOtherAttributes() { 

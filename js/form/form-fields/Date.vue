@@ -26,6 +26,8 @@ import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate'
 import 'flatpickr/dist/flatpickr.css';
 import 'flatpickr/dist/themes/airbnb.css';
 
+import { French } from "flatpickr/dist/l10n/fr.js"
+
 export default {
     mixins: [Field],
     components: { flatPickr },
@@ -41,6 +43,7 @@ export default {
         $_enableTime(){ return this.$_config('enableTime') || false },
         $_noCalendar(){ return this.$_config('noCalendar') || false },
         $_dateMode(){ return this.$_config('dateMode') || false },
+        $_locale(){ return this.$_config('kompo_locale') },
         $_attributes(){
             return {
                 ...this.$_defaultFieldAttributes,
@@ -56,7 +59,8 @@ export default {
                     altFormat: this.$_config('altFormat'),
                     time_24hr: true
                 }, 
-                    this.$_dateMode ? {mode: this.$_dateMode} : {}
+                    this.$_dateMode ? {mode: this.$_dateMode} : {},
+                    (this.$_locale == 'fr') ? {locale: French} : {},
                 ),
                 disabled: this.$_readOnly ? true : false
             }

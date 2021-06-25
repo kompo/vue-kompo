@@ -10,7 +10,7 @@
             :class="togglerClass" 
             @click="checkClickable">
             
-            <span v-if="!$slots.default" v-html="$_label" />
+            <span v-if="!$slots.default" v-html="$_fullLabel" />
             <slot />
 
         </div>

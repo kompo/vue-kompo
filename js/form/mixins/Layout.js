@@ -49,6 +49,13 @@ export default {
             if(_.isString(state)){
                 return Element.methods.$_state.call(this, state)
             }else{
+
+                if (state.loading) {
+                    _kompo.toggleSpinner('block')
+                }else{
+                    _kompo.toggleSpinner('none')
+                }
+
                 Element.methods.$_state.call(this, state)
                 this.komponents.forEach( item => { item.$_state(state) })
             }
