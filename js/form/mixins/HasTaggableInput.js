@@ -1,3 +1,5 @@
+import LabelSearcher from '../../core/LabelSearcher'
+
 export default {
     data(){
         return {
@@ -28,7 +30,7 @@ export default {
             var input = this.$refs.input.$el || this.$refs.input
             input.click()
             input.focus()
-            this.inputValue = this.$_bestGuessLabelFromSelection(selection)
+            this.inputValue = (new LabelSearcher()).makeBestGuessForLabel(selection)
         },
         $_remove(index) {
             if(this.$_readOnly)
@@ -42,20 +44,5 @@ export default {
         $_emptyInput() {
             this.inputValue = ''
         },
-        $_bestGuessLabelFromSelection(selection)
-        {
-            if(!selection)
-                return ''
-
-            if(selection.label){
-                if(_.isString(selection.label))
-                    return selection.label 
-
-                if(selection.label.label && _.isString(selection.label.label))
-                    return selection.label.label
-            }
-
-            return ''
-        }
     },
 }

@@ -23,7 +23,7 @@
         </vlTaggableInput>
         <div class="vlOptions" :key="optionsKey">
             <template v-if="filteredOptions.length">
-                <div v-for="(option,key) in filteredOptions" :key="key"
+                <div v-for="(option,key) in filteredOptions" :key="option.value"
                     class="vlOption"
                     :class="{
                         'vlSelected' : isSelected(option),
@@ -50,6 +50,7 @@
 import FieldSelect from '../mixins/FieldSelect'
 import HasTaggableInput from '../mixins/HasTaggableInput'
 import DoesAxiosRequests from '../mixins/DoesAxiosRequests'
+import LabelSearcher from '../../core/LabelSearcher'
 
 export default {
     mixins: [FieldSelect, HasTaggableInput, DoesAxiosRequests],
@@ -153,11 +154,7 @@ export default {
             this.$_blurAction()
         },
         filterOptions(){
-            //https://stackoverflow.com/questions/5700636/using-javascript-to-perform-text-matches-with-without-accented-characters
-            this.filteredOptions = _.filter(this.options, (opt) => {
-                var searchable = (_.isObject(opt.label) ? opt.label.label : opt.label).toString().normalize('NFD').toLowerCase().replace(/[\u0300-\u036f]/g, "")
-                return searchable.indexOf(this.inputValue.toString().normalize('NFD').toLowerCase().replace(/[\u0300-\u036f]/g, "")) !== -1
-            })
+            this.filteredOptions = (new LabelSearcher()).filterOptions(this.options, this.inputValue)
         },
         $_addOptionToValue(option){
             if(this.$_multiple){
@@ -206,12 +203,6 @@ export default {
 
             if(this.ajaxOptionsFromField){
                 
-                /* Old way: we used to get the whole form data and retrieve the related key's value... ??
-                this.$kompo.vlDeliverJsonFormData(this.kompoid, this.$_elKompoId)
-                this.performAjax(this.$_getFromStore(this.ajaxOptionsFromField))
-                TODO: delete vlDeliverJsonFormData and recursive $_deliverJsonTo
-                */
-                /* new way emit to related field directly */
                 this.$kompo.vlRequestFieldValue(this.kompoid, this.ajaxOptionsFromField, this.$_elKompoId)
                 this.performAjax(this.$_getFromStore())
 

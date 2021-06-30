@@ -3,7 +3,10 @@
         <template v-for="component in komponents">
             <component v-bind="$_attributes(component)"/>
         </template>
-        <vl-support-modal :kompoid="$_elKompoId" />
+        <vl-support-modal 
+            :kompoid="$_elKompoId"
+            @refresh="triggerRefreshForm"
+        />
     </component>
 </template>
 
@@ -110,8 +113,7 @@ export default {
         redirect(url) {
             window.location.href = url
         },
-        $_echoTrigger(){
-
+        triggerRefreshForm(){
             if(this.refreshing)
                 return
 
@@ -119,12 +121,20 @@ export default {
 
             this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
                 
-                this.$_destroyEvents()
-                this.$_removeLiveKomposer()
-                this.$emit('refreshForm', r.data)
+                this.handleRefreshResponse(r.data)
                 
                 this.refreshing = false
             })
+        },
+        handleRefreshResponse(responseData){
+            this.$_destroyEvents()
+            this.$_removeLiveKomposer()
+            this.$emit('refreshForm', responseData)
+        },
+        $_echoTrigger(){
+
+            this.triggerRefreshForm()
+            
         },
 
         $_attachEvents(){
@@ -167,9 +177,7 @@ export default {
 
             })
             this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
-                this.$_destroyEvents()
-                this.$_removeLiveKomposer() //no need to save after because created() is called
-                this.$emit('refreshForm', responseData)
+                this.handleRefreshResponse(responseData)
             })
 
             this.$_deliverKompoInfoOn()
