@@ -17,6 +17,7 @@
             <table v-if="isTableLayout" class="w-full table vlTable" :class="tableClass">
                 <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
                 <component v-bind="layoutAttributes" />
+                <vl-table-footers :vkompo="component" :kompoid="$_elKompoId" />
             </table>
 
             <component v-else 
