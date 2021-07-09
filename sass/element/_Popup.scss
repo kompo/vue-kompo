@@ -2,16 +2,53 @@
     position: fixed;
     bottom: 0;
     right: 0;
-    z-index: 120; //higher than vlSidebarToggler and form-controls
+    z-index: 5000;
+    overflow: auto;
 }
 .vlPopupClose{
     position: absolute;
     top: 1rem;
     right: 1rem;
-    font-size: 1.5rem;
-    color: white;
+    font-size: 2rem;
     .icon-times{
         color: gainsboro;
         text-shadow: 0 5px 8px white;
+    }
+}
+
+.vlPopup{
+    .resizer{
+        position: absolute;
+        display: none;
+    }
+
+    .resizer.top-left {
+        left: 0;
+        top: 0;
+        cursor: nwse-resize;
+        transform: rotate(-45deg);
+    }
+    /*
+    .resizer.top-right {
+        right: 0;
+        top: 0;
+        cursor: nesw-resize;
+        transform: rotate(45deg);
+    }
+    .resizer.bottom-left {
+        left: 0;
+        bottom: 0;
+        cursor: nesw-resize;
+        transform: rotate(45deg);
+    }
+    .resizer.bottom-right {
+        right: 0;
+        bottom: 0;
+        cursor: nwse-resize;
+        transform: rotate(-45deg);
+    }*/
+
+    &:hover .resizer{
+      display: block;
     }
 }

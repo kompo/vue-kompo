@@ -207,6 +207,11 @@ export default class Action {
         	this.vue.$kompo.vlFillPanel(panelId, response.data.message || response.data)
         })
     }
+    closeModalAction(response){
+        this.vue.$kompo.vlModalClose('modal'+this.$_config('closeModalName'))
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
     modalInsertAction(response){
         this.vue.$kompo.vlModalInsert(
             this.vue.kompoid, 

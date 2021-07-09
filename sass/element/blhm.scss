@@ -86,3 +86,7 @@ a{
 .vl-sidebar-l, .vl-sidebar-r{
 	padding-bottom: 1rem; //because of the bottom toolbar of mobile browsers
 }
+
+.vlPopup{
+	@extend .mini-scroll !optional;
+}
