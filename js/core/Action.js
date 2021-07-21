@@ -241,6 +241,9 @@ export default class Action {
     fillPopupAction(response){
         this.vue.$kompo.vlFillPopup(response)
     }
+    closePopupAction(){
+        this.vue.$kompo.vlClosePopup()
+    }
     addAlertAction(){
         new Alert().asObject(this.$_config('alert')).emitFrom(this.vue)
     }
