@@ -44,7 +44,7 @@ export default {
 
             if(item.added){  
                 if(!this.checkConfirm(status, item)){
-                    this.$emit('refresh')
+                    this.$emit('browse')
                     return
                 }
 

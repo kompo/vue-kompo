@@ -25,6 +25,7 @@ export default {
         $_hasItems(){ return this.items.length > 0 },
         $_orderable(){ return this.component.orderable },
         $_dragHandle(){ return this.component.dragHandle },
+        $_browseAfterOrder(){ return this.component.browseAfterOrder },
         $_sortingAttributes(){
             return Object.assign({
                     disabled: this.sortingDisabled || !this.$_orderable,
@@ -94,6 +95,10 @@ export default {
 
                 this.$_kAxios.$_orderQuery(newOrder).then(r => {
                     this.sortingDisabled = false
+
+                    if (this.$_browseAfterOrder) {
+                        this.$emit('browse')
+                    }
                 })
             }
         }

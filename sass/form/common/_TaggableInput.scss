@@ -36,6 +36,7 @@
 			color: white;
 			font-weight: 700;
 			@include tag();
+			margin: 0.1rem;
 		    padding: 0.1rem 0.5rem 0.1rem 0.2rem; //has to be after @include tag()
 			&.vlCustomLabel{ // to align x with customLabel, don't remove
 				display: flex;

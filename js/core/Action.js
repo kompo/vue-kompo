@@ -201,6 +201,12 @@ export default class Action {
     	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_config('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
+        //New addition: use modalInsertAction to refresh parent Komposer and close modal (replicate edit/addlink behavior)
+        if (this.vue.$_config('refreshParent')) {
+            this.modalInsertAction(response)
+            return
+        }
+
         this.vue.$kompo.vlModalShow(modalName, true, this.vue.$_config('warnBeforeClose'), confirmFunc)
 
         this.vue.$nextTick( () => {
@@ -250,7 +256,7 @@ export default class Action {
     fillAlertAction(response){
         new Alert().asObject({
             ...this.$_config('alert'),
-            message: response.data
+            message: response.data.message || response.data,
         }).emitFrom(this.vue)
     }
     redirectAction(response){

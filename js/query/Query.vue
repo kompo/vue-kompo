@@ -22,7 +22,7 @@
 
             <component v-else 
                 v-bind="layoutAttributes"
-                @refresh="browseQuery"
+                @browse="browseQuery"
             />
         </div>
 
