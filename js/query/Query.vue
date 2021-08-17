@@ -275,6 +275,8 @@ export default {
             this.fixTopPaginationScroll(
                 additive ? this.$refs.vlQueryWrapper.scrollHeight : 0
             )
+
+            this.$_runOwnInteractions('load')
         },
         $_attachEvents(){
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
