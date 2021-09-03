@@ -8,7 +8,7 @@ export default {
     },
     computed: {
         $_noItemsFound(){ return this.vkompo.noItemsFound },
-        $_noItemsAsHtml(){ return _.isString(this.$_noItemsFound)},
+        $_noItemsAsHtml(){ return !this.$_noItemsFound || _.isString(this.$_noItemsFound)},
         $_noItemsAttributes(){
             return {
                 is: this.$_vueTag(this.$_noItemsFound),

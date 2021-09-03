@@ -292,7 +292,7 @@ export default class Action {
     }
     handleErrorInteraction(e){
         if(this.vue.$_hasInteractionsOfType(this, 'error')){
-           this.vue.$_runInteractionsOfType(this, 'error', e)
+           this.vue.$_runInteractionsOfType(this, 'error', e.response) //Errors need a .response to be like the success response
         }else{
            this.$_kAxios.$_handleAjaxError(e) 
         }

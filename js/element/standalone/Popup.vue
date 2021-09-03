@@ -49,7 +49,7 @@ export default {
 
             this.$nextTick(() => {
                 this.dragElement(this.$refs.popup)
-                this.resizeElement(this.$refs.popup)
+                this.resizeElement()
             })
         },
         $_attachEvents(){
