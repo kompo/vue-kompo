@@ -24,7 +24,8 @@ export default {
         return {
             slides : [],
             initialId: 0,
-            hasSlidingPanels: 0 //I had to decouple it for the transition effect to work
+            hasSlidingPanels: 0, //I had to decouple it for the transition effect to work
+            warnBeforeClose: false,
         }
     },
     computed:{
@@ -40,9 +41,15 @@ export default {
           return !e.target.classList.contains('vlPanelContainer')
               && !this.$refs.panelContainer.contains(e.target)
         },
+        warnConfirmation(){ 
+            return !this.warnbeforeclose || (this.warnbeforeclose && confirm(this.warnbeforeclose))
+        },
         close(e){
-          if (this.outsideModal(e))
-            this.closeByIndex(this.slides.length-1)
+            if (this.outsideModal(e)){
+                if(this.warnConfirmation()){
+                    this.closeByIndex(this.slides.length-1)
+                }
+            }
         },
         closeById(id){
             var indexWithId = _.findIndex(this.slides, (slide) => slide.id == id)
@@ -63,7 +70,8 @@ export default {
             }))
         },
         $_attachEvents(){
-            this.$_vlOn('vlFillSlidingPanel', (response) => {
+            this.$_vlOn('vlFillSlidingPanel', (response, warnbeforeclose) => {
+                this.warnbeforeclose = warnbeforeclose || false
                 this.addSlidingPanel(response.data)
             })
             this.$_vlOn('vlCloseSlidingPanel', () => {

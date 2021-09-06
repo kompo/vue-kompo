@@ -239,7 +239,7 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     fillSlidingPanelAction(response){
-        this.vue.$kompo.vlFillSlidingPanel(response)
+        this.vue.$kompo.vlFillSlidingPanel(response, this.vue.$_config('warnBeforeClose'))
     }
     closeSlidingPanelAction(){
         this.vue.$kompo.vlCloseSlidingPanel()
