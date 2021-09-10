@@ -1,22 +1,16 @@
 <template>
-    <nav>
+    <nav v-bind="$_menuAttributes">
         <slot />
+        <vl-support-modal 
+            :kompoid="$_elKompoId"
+        />
     </nav>
 </template>
 
 <script>
-import HasConfig from '../element/mixins/HasConfig'
-import IsKomposer from '../mixins/IsKomposer'
+import IsMenu from './mixins/IsMenu'
 
 export default {
-    mixins: [HasConfig, IsKomposer],
-    props:{
-    },
-    data(){
-        return {
-        }
-    },
-    methods:{
-    }
+    mixins: [IsMenu],
 }
 </script>

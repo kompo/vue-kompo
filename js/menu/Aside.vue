@@ -1,20 +1,21 @@
 <template>
     <aside 
         ref="sidebar"
-        :class="sidebarClass"
+        v-bind="$_menuAttributes"
         v-click-out="close">
         <slot />
+        <vl-support-modal 
+            :kompoid="$_elKompoId"
+        />
     </aside>
 </template>
 
 <script>
-import EmitsEvents from '../element/mixins/EmitsEvents'
-import HasConfig from '../element/mixins/HasConfig'
 import IsMobile from './mixins/IsMobile'
-import IsKomposer from '../mixins/IsKomposer'
+import IsMenu from './mixins/IsMenu'
 
 export default {
-    mixins: [HasConfig, EmitsEvents, IsMobile, IsKomposer],
+    mixins: [IsMenu, IsMobile],
     props:{
         side: {type: String, required: true}
     },
@@ -24,6 +25,11 @@ export default {
             sidebarClass: '',
             togglerKompoId: null
         }
+    },
+    computed: {
+        $_customClassArray() { return [
+            this.sidebarClass
+        ] },
     },
     methods:{
         toggle(){
