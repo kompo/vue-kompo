@@ -39,6 +39,7 @@
                         :id="panelId"
                         @closeModal="closeAction"
                         @confirmModal="confirmAction"
+                        @touchedForm="handleTouchedForm"  
                     />
                 
                     <slot v-if="!ajaxContent" />
@@ -66,7 +67,8 @@ export default {
             zIndex: 2000,
             panelId: '',
             warnData: false,
-            confirmFunc: undefined
+            confirmFunc: undefined,
+            canCloseModal: true,
         }
     },
     computed: {
@@ -82,7 +84,7 @@ export default {
                 && !this.$refs.modalContainer.contains(e.target)
         },
         warnConfirmation(){ 
-            return !this.warnbeforeclose || (this.warnbeforeclose && confirm(this.warnbeforeclose))
+            return !this.warnbeforeclose || (this.warnData && this.canCloseModal) || (this.warnbeforeclose && confirm(this.warnbeforeclose))
         },
         mouseDown(e){
             if (this.outsideModal(e))
@@ -107,6 +109,9 @@ export default {
         confirmAction(){
             this.closeAction()
             this.confirmFunc()
+        },
+        handleTouchedForm(){
+            this.canCloseModal = this.warnbeforeclose ? false : true
         },
         open(ajaxContent){
             this.opened = true

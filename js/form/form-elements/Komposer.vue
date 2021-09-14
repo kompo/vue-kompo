@@ -6,6 +6,7 @@
         @closeModal="closeModal"  
         @closePanel="closePanel"  
         @confirmModal="confirmModal" 
+        @touchedForm="$emit('touchedForm')"  
         @deleted="$emit('deleted')" 
     />
 

@@ -13,6 +13,7 @@
                     @closeModal="closeModal"
                     @closePanel="reset"
                     @confirmModal="confirmModal"
+                    @touchedForm="$emit('touchedForm')"  
                 />
             </template>
         </transition>
