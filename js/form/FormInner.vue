@@ -31,6 +31,9 @@ export default {
         this.$_configureEcho()
         this.$_saveLiveKomposer()
     },
+    mounted() {
+        this.$_runOwnInteractions('load')
+    },
 
     computed: {
         formAttributes(){
@@ -151,6 +154,8 @@ export default {
                 this.$_toggle(toggleId)
             })
             this.$_vlOn('vlUpdateErrorState'+this.$_elKompoId, () => {
+                this.$emit('touchedForm')
+
                 var errors = []
                 this.$_getErrors(errors)
             })

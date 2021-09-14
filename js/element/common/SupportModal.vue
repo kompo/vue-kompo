@@ -10,6 +10,7 @@
             v-bind="modalComponentProps"
             @closeModal="closeModal"
             @openModal="openModal"
+            @touchedForm="touchedForm"
             @refresh="refresh"
             @previous="$emit('previous')" 
             @next="$emit('next')" />
@@ -27,7 +28,8 @@ export default {
     },
     data: () => ({
         modalComponentProps: null,
-        modalProps: {}
+        modalProps: {},
+        warn: null,
     }),
     computed: {
         modalName(){ return 'modal'+this.kompoid}
@@ -36,11 +38,17 @@ export default {
         openModal(){ this.$kompo.vlModalShow(this.modalName) },
         closeModal(){ this.$kompo.vlModalClose(this.modalName) },
         refresh(index){this.$emit('refresh', index)},
+        touchedForm(){
+            this.modalProps = Object.assign(this.modalProps, {warn: this.warn}) //we add the warning
+        },
         
         $_attachEvents(){
             this.$_vlOn('vlModalInsert'+this.kompoid, (componentProps, modalProps) => {
                 this.modalComponentProps = componentProps
-                this.modalProps = modalProps
+
+                this.warn = modalProps.warn
+                this.modalProps = Object.assign(modalProps, {warn: null}) //until the form is touched, we don't want to warn
+
                 this.$kompo.vlModalShow(this.modalName)
             })
         },

@@ -27,6 +27,7 @@ export default {
                 submit: this.submit,
                 success: this.successEvent,
                 error: this.errorEvent,
+                touchedForm: this.touchedForm,
             }
         }
     },
@@ -56,6 +57,9 @@ export default {
             this.$emit('error',response, submitKomponent)
             if(this.error) //Injected javascript function to be executed on error
                 this.error(response)
+        },
+        touchedForm(){
+            this.$emit('touchedForm')
         },
 
         $_attachEvents(){

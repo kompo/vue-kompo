@@ -18,8 +18,9 @@ export default {
                     
                     this.$_addImageToThumbnails(Object.assign(file, {src: reader.result}))
 
-                    if(this.$_checkAllImagesLoaded() == Array.from(this.$refs.input.files).length)
+                    if(this.$_checkAllImagesLoaded() == this.thumbnails.length){
                         this.$_changeAction()
+                    }
                 }
             })
         },
@@ -47,11 +48,14 @@ export default {
             this.$_blurAction()        
         },
         $_handleError(error, index){ //when the _Image() auto-submits, we want to remove the thumb if the image was not set
+            if (this.$_multiple)
+                return
+
             index = index || 0
             this.removeFromValue(index) //on Error: remove thumbnail, but don't trigger changeAction
         },
     },
     created(){
-        this.thumbnails = this.$_value
+        this.thumbnails = this.$_value ? _.cloneDeep(this.$_value) : []
     }
 }

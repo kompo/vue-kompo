@@ -1,6 +1,6 @@
 <template>
 
-	<vl-form :vkompo="editForm"  @success="success" @closeModal="closeModal" />
+	<vl-form :vkompo="editForm"  @success="success" @closeModal="closeModal" @touchedForm="touchedForm" />
 
 </template>
 
@@ -30,6 +30,9 @@ export default {
         },
         closeModal(){
             this.$emit('closeModal')
+        },
+        touchedForm(){
+            this.$emit('touchedForm')
         }
     }
 }
