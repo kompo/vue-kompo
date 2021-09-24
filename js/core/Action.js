@@ -258,6 +258,8 @@ export default class Action {
             ...this.$_config('alert'),
             message: response.data.message || response.data,
         }).emitFrom(this.vue)
+        
+        this.vue.$_runInteractionsOfType(this, 'success')
     }
     redirectAction(response){
     	if(this.$_config('redirectUrl') === true){

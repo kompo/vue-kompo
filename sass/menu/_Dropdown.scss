@@ -18,7 +18,7 @@
 	.vl-nav-item{
 		align-items: center;
 	}
-	&.vlOpenOnHover:hover .vlDropdownMenu{
+	&.vlOpenOnHover:hover>.vlDropdownMenu{
 		transform: scale(1);
 		opacity: 1;
 	}

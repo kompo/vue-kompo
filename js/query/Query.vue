@@ -196,7 +196,7 @@ export default {
         },
         preview(index){
             this.previewIndex = index
-            this.cards[this.previewIndex].$_previewModal(this.cards.length > 1)
+            this.cards[this.previewIndex].render.$_previewModal(this.cards.length > 1)
         },
         previewPrevious(){
             this.preview(this.previewIndex == 0 ? this.cards.length - 1 : this.previewIndex - 1)

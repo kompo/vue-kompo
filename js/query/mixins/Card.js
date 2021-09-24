@@ -34,8 +34,13 @@ export default {
         $_clickAction(){
             this.$_runOwnInteractions('click') //new experimental feature for TableRow
 
-            if(this.component.href && this.component.turbo)
-                new TurboClick(this.$vnode, this.component.href).trigger()
+            if(this.component.href){
+	            if(this.component.turbo){
+	                new TurboClick(this.$vnode, this.component.href).trigger()
+		        }else{
+		            window.location.href = this.component.href
+		        }
+		    }
         },
 		$_prop(propKey){ 
 			return this.$_props[propKey] || '' //otherwise classes were showing undefined
