@@ -248,6 +248,8 @@ export default {
 
                 this.isBrowsing = false
 
+                this.checkedItemIds = []
+
             })
             .catch(e => {
                 this.isBrowsing = false
@@ -286,6 +288,11 @@ export default {
                     this.checkedItemIds.includes(itemId) ? 
                         this.checkedItemIds.splice(this.checkedItemIds.indexOf(itemId), 1) : 
                         this.checkedItemIds.push(itemId)
+                }
+
+                if (eventName == 'checkAllItems') {
+                    this.checkedItemIds = (this.checkedItemIds.length == this.cards.length) ? [] :
+                        this.cards.map((item) => item.attributes.id)
                 }
 
                 this.$emit(eventName, eventPayload)
@@ -330,6 +337,8 @@ export default {
 
                 this.cardsKey += 1
                 this.filtersKey += 1
+
+                this.checkedItemIds = []
 
                 this.fixTopPaginationScroll()
             })

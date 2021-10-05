@@ -4,6 +4,7 @@
         <component v-bind="$_attributes(komponents[0])" :key="renderKey">
             <template v-slot:after>
                 <component
+                    v-if="!$_readOnly"
                     class="vlFormComment" 
                     :is="$_vueTag($_config('addLabel'))"
                     :vkompo="$_config('addLabel')"
@@ -33,6 +34,9 @@ export default {
             optionValue: null,
             option: null
         }
+    },
+    computed: {
+        $_readOnly(){ return this.$_config('readOnly') },
     },
     methods: {
         loadUpdateForm(payload){
