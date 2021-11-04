@@ -8,6 +8,7 @@
             </p>
 
             <input
+                v-if="!$_readOnly"
                 v-bind="$_attributes"
                 v-on="$_events"
                 type="file"
