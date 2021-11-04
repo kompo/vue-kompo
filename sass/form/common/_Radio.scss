@@ -1,0 +1,21 @@
+.vlRadio{
+    [role=radiogroup]{
+        display: flex;
+        align-items: center;
+    }
+    input{
+        height: var(--form-checkbox-height);
+        width: var(--form-checkbox-height);
+        margin-right: var(--form-control-padding-r);
+    }
+}
+
+.vlRadio{
+    &.vlHorizontalRadio>div{
+        display: flex;
+        flex-wrap: wrap;
+        > * ~ * {
+            margin-left: 1rem;
+        }
+    }
+}
