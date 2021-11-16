@@ -2,23 +2,25 @@
     <div ref="toggler"
         @click.stop="toggle"
         @mouseenter="hoverToggle"
-        :class="toggleClass"
+        class="vlSidebarToggler"
+        :class="togglerClass"
         aria-label="Open menu"
         aria-expanded="false">
 
-        <slot />
+        <span v-html="$_label"/>
+        <span>&#10005;</span>
     </div>
 </template>
 
 <script>
-import Element from '../element/mixins/Element'
+import Komponent from '../form/mixins/Komponent'
 import IsMobile from './mixins/IsMobile'
 
 export default {
-    mixins: [Element, IsMobile],
+    mixins: [Komponent, IsMobile],
     data(){
         return {
-            toggleClass: ''
+            toggleClass: '',
         }
     },
     computed: {
@@ -30,6 +32,13 @@ export default {
             return this.$_classString([
                 'vlOpen',
                 this.$_config('openClass')
+            ])
+        },
+        togglerClass(){
+            return this.$_classString([
+                'vlSidebarToggler',
+                this.component.class,
+                this.toggleClass,
             ])
         }
     },

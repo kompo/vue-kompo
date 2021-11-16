@@ -5,7 +5,8 @@
 }
 .vlAlert{
     padding: 1rem;
-    border-radius: 0.25rem;
+    padding-right: 2rem;
+    border-radius: 0.75rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -20,18 +21,20 @@
 .vlAlertClose{
     position: absolute;
     top: 0;
+    bottom: 0;
     right: 0;
-    font-size: 80%;
+    display: flex;
+    align-items: center;
 }
 .vlAlertSuccess{
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+    color: #104015;
+    background-color: #1fe5346e;
+    border-color: #19c72c96;
 }
 .vlAlertError{
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+    color: #660f0f;
+    background-color: #f10c0c52;
+    border-color: #eb9999;
 }
 
 .alert-enter,.alert-leave-active {

@@ -5,32 +5,27 @@
         @mouseleave="closeSubmenu"
     >
 
-        <div 
+        <component
+            v-bind="$_menuItemHrefAttributes" 
+            v-turbo-click="component.turbo" 
             class="vlDropdownToggler"
             :class="togglerClass" 
             @click="checkClickable">
             
-            <span v-if="!$slots.default" v-html="$_fullLabel" />
-            <slot />
+            <span class="flex" v-html="$_fullLabel" />
 
-        </div>
+        </component>
 
         <transition name="slideDown">
 
             <div class="vlDropdownMenu"
                 :class="menuClass" >
-            
-                <slot name="komponents" />
-
-                <div 
-                    v-if="!$slots.komponents"
+                <component 
                     v-for="(col,index) in komponents"
-                    :key="index">
-                    <component 
-                        v-bind="$_defaultLayoutAttributes(col)" 
-                        @click="$emit('click', col)"
-                    />
-                </div>
+                    :key="index"
+                    v-bind="$_defaultLayoutAttributes(col)" 
+                    @click="$emit('click', col)"
+                />
         
             </div>
 

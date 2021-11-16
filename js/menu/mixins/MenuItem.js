@@ -32,6 +32,19 @@ export default {
         $_customClassArray() { return [
             this.$_config('active')
         ] },
+
+        $_menuItemHref(){
+            return (this.component.href && this.component.href != 'javascript:void(0)') ? 
+                this.component.href : ''
+        },
+        $_menuItemHrefAttributes(){
+            if(!this.$_menuItemHref)
+                return { is: 'div' }
+
+            return Object.assign({ is: 'a', href: this.$_menuItemHref }, 
+                this.component.target ? {target: this.component.target} : {},
+            )
+        }
 	},
     methods: {
         $_clickAction(){

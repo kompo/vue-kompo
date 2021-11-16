@@ -3,7 +3,9 @@
         ref="sidebar"
         v-bind="$_menuAttributes"
         v-click-out="close">
-        <slot />
+        <template v-for="component in komponents">
+            <component v-bind="$_attributes(component)"/>
+        </template>
         <vl-support-modal 
             :kompoid="$_elKompoId"
         />

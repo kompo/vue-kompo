@@ -1,29 +1,27 @@
 <template>
     <div v-bind="$_attributes" ref="wrapper">
 
-        <div 
+        <component
+            v-bind="$_menuItemHrefAttributes" 
+            v-turbo-click="component.turbo"
             class="vlCollapseToggler"
             :class="togglerClass"
             @click="toggle"
             >
-            
-            <span v-if="!$slots.default" v-html="$_label" />
-            <slot />
+
+            <span class="flex" v-html="$_label" />
 
             <i v-if="komponents.length && !noCaret" class="icon-down-dir"></i>
 
-        </div>
+        </component>
 
         <transition name="slideDown">
 
             <div v-show="open"
                 class="vlCollapseMenu"
                 :class="menuClass" >
-            
-                <slot name="komponents" />
 
                 <div 
-                    v-if="!$slots.komponents"
                     v-for="(col,index) in komponents"
                     :key="index">
                     <component 
