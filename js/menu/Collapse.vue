@@ -1,15 +1,13 @@
 <template>
-    <div v-bind="$_attributes" ref="wrapper">
+    <div :class="$_wrapperClass">
 
         <component
-            v-bind="$_menuItemHrefAttributes" 
+            v-bind="$_attributes" 
             v-turbo-click="component.turbo"
-            class="vlCollapseToggler"
-            :class="togglerClass"
             @click="toggle"
             >
 
-            <span class="flex" v-html="$_label" />
+            <span class="flex items-center" v-html="$_label" />
 
             <i v-if="komponents.length && !noCaret" class="icon-down-dir"></i>
 
@@ -60,9 +58,13 @@ export default {
         noCaret(){
             return this.$_config('noCaret')
         },
+        $_wrapperClass() {
+            return this.$_defaultCssClass()+' flex-col'
+        },
         $_customClassArray(){
             return [
-                'flex-col'
+                'vlCollapseToggler',
+                this.togglerClass,
             ]
         }
 

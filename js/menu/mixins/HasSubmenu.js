@@ -14,11 +14,11 @@ export default {
             }
         },
         $_overwriteBladeClasses(){
-            this.$refs.wrapper.classList.value = this.$_classes
+            //this.$refs.wrapper.classList.value = this.$_classes
         }
     },
     mounted(){
-        this.$nextTick(() => this.$_overwriteBladeClasses())
+        //this.$nextTick(() => this.$_overwriteBladeClasses())
     },
     created() {
         this.komponents = this.component.komponents

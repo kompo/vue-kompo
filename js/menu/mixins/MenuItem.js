@@ -4,30 +4,23 @@ export default {
     mixins: [ Komponent ],
 	computed: {
 
-        $_togglerAttributes(){
-            return this.$_isFromBlade ? {
-                is: 'div'
-            } : {
-                is: {template: '<div>'+this.$_label+'</div>'}
-            }
-        },
-
-        $_isFromBlade(){
-            return this.$slots.default
+        $_wrapperClass() {
+            return this.$_defaultCssClass()
         },
 
         $_fullLabel(){
             return this.$_label+(this.$_loading ? '<i class="icon-spinner"></i>' : '')
         },
         
-        $_attributes() { return this.$_defaultOtherAttributes },
-        $_defaultOtherAttributes() { 
-            return !this.$_isFromBlade ? {
+        $_attributes() { return this.$_togglerAttributes },
+        $_togglerAttributes() { 
+            return Object.assign({
                     ...this.$_defaultElementAttributes,
                     style: this.$_elementStyles,
-                    class: this.$_classes
-                } : 
-                {} //Hack: class & style are applied on blade (needed for initial load not glitching) 
+                    class: this.$_classString([ this.$_phpClasses ].concat(this.$_customClassArray)),
+                },
+                this.$_menuItemHrefAttributes
+            )
         },
         $_customClassArray() { return [
             this.$_config('active')

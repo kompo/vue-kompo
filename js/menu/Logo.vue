@@ -18,17 +18,24 @@
 </template>
 
 <script>
-import MenuItem from './mixins/MenuItem'
+import Komponent from '../form/mixins/Komponent'
 
 export default {
-    mixins: [MenuItem],
+    mixins: [Komponent],
     computed: {
         $_customClassArray(){
             return [
                 'flex items-center',
                 this.$_config('active'),
             ]
-        }
+        },
+        $_attributes() { 
+            return {
+                ...this.$_defaultElementAttributes,
+                style: this.$_elementStyles,
+                class: this.$_classes
+            }
+        },
     }
 }
 </script>
