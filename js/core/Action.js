@@ -34,8 +34,8 @@ export default class Action {
     	this.vue.$_state({ loading: true })
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
-        let additionalPayload = this.$_config('withAllFormValues') ? this.getParentKomposerInfo().jsonFormData : null
-        let checkedItemIds = this.vue.$_config('withCheckedItemIds') ? this.getParentKomposerInfo().data : null
+        let additionalPayload = this.$_config('withAllFormValues') ? this.getParentKomponentInfo().jsonFormData : null
+        let checkedItemIds = this.vue.$_config('withCheckedItemIds') ? this.getParentKomponentInfo().data : null
 
         this.$_kAxios.$_actionAxiosRequest(payload, Object.assign(additionalPayload || {}, checkedItemIds || {}))
         .then(r => {
@@ -60,23 +60,23 @@ export default class Action {
         this.vue.$_state({ isSuccess: false })
         this.vue.$_state({ hasError: false })
 
-        let parentKomposerInfo = this.getParentKomposerInfo()
+        let parentKomponentInfo = this.getParentKomponentInfo()
 
-        if(!parentKomposerInfo.canSubmit){
+        if(!parentKomponentInfo.canSubmit){
             setTimeout( () => { this.submitFormAction() }, 100)
             return
         }
 
         this.vue.$kompo.vlPreSubmit(this.vue.kompoid)
 
-        if(!parentKomposerInfo.url)
+        if(!parentKomponentInfo.url)
             return
 
         this.$_kAxios.$_submitFormAction(
-            parentKomposerInfo.url, 
-            parentKomposerInfo.method, 
-            parentKomposerInfo.action,
-            Object.assign(parentKomposerInfo.jsonFormData, this.$_config('submitPayload') || {})
+            parentKomponentInfo.url, 
+            parentKomponentInfo.method, 
+            parentKomponentInfo.action,
+            Object.assign(parentKomponentInfo.jsonFormData, this.$_config('submitPayload') || {})
         )
         .then(r => {
 
@@ -116,8 +116,8 @@ export default class Action {
     browseQueryAction(){
         this.runKompoInfoSpecifications('$_browseMany', 'vlLoadItems')
     }
-    refreshKomposerAction(){
-        this.runKompoInfoSpecifications('$_refreshMany', 'vlRefreshKomposer', true)
+    refreshKomponentAction(){
+        this.runKompoInfoSpecifications('$_refreshMany', 'vlRefreshKomponent', true)
     }
     sortQueryAction(){
         this.vue.$_state({ 
@@ -201,7 +201,7 @@ export default class Action {
     	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
         var panelId = this.$_config('panelId') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
 
-        //New addition: use modalInsertAction to refresh parent Komposer and close modal (replicate edit/addlink behavior)
+        //New addition: use modalInsertAction to refresh parent Komponent and close modal (replicate edit/addlink behavior)
         if (this.vue.$_config('refreshParent')) {
             this.modalInsertAction(response)
             return
@@ -238,11 +238,11 @@ export default class Action {
         
         this.vue.$_runInteractionsOfType(this, 'success')
     }
-    fillSlidingPanelAction(response){
-        this.vue.$kompo.vlFillSlidingPanel(response, this.vue.$_config('warnBeforeClose'))
+    fillDrawerAction(response){
+        this.vue.$kompo.vlFillDrawer(response, this.vue.kompoid, this.vue.$_config('warnBeforeClose'))
     }
-    closeSlidingPanelAction(){
-        this.vue.$kompo.vlCloseSlidingPanel()
+    closeDrawerAction(){
+        this.vue.$kompo.vlCloseDrawer()
     }
     fillPopupAction(response){
         this.vue.$kompo.vlFillPopup(response)
@@ -299,16 +299,16 @@ export default class Action {
            this.$_kAxios.$_handleAjaxError(e) 
         }
     }
-    getParentKomposerInfo(kompoid, resetFilters){
+    getParentKomponentInfo(kompoid, resetFilters){
 
         let usedKompoId = kompoid || this.vue.kompoid
 
-        this.vue.$kompo.vlRequestKomposerInfo(usedKompoId, this.vue.$_elKompoId, {
+        this.vue.$kompo.vlRequestKomponentInfo(usedKompoId, this.vue.$_elKompoId, {
             page: this.$_config('page'), 
             resetFilters: resetFilters,
         })
 
-        return this.vue.parentKomposerInfo[usedKompoId]
+        return this.vue.parentKomponentInfo[usedKompoId]
     }
 
     /* utils */
@@ -325,22 +325,22 @@ export default class Action {
             if(!kompoid)
                 return
 
-            let parentKomposerInfo = this.getParentKomposerInfo(kompoid, resetFilters)
+            let parentKomponentInfo = this.getParentKomponentInfo(kompoid, resetFilters)
 
-            if(parentKomposerInfo)
+            if(parentKomponentInfo)
                 specifications.push({
                     kompoid: kompoid,
-                    data: Object.assign(parentKomposerInfo.data || {}, this.$_config('ajaxPayload') || {}),
-                    kompoinfo: parentKomposerInfo.kompoinfo,
-                    page: parentKomposerInfo.page,
-                    sort: parentKomposerInfo.sort,
+                    data: Object.assign(parentKomponentInfo.data || {}, this.$_config('ajaxPayload') || {}),
+                    kompoinfo: parentKomponentInfo.kompoinfo,
+                    page: parentKomponentInfo.page,
+                    sort: parentKomponentInfo.sort,
                 })
         })
 
         return specifications
     }
 
-    runKompoInfoSpecifications(axiosRequestFunc, komposerFillFunc, resetFilters){
+    runKompoInfoSpecifications(axiosRequestFunc, komponentFillFunc, resetFilters){
 
         this.vue.$_state({ loading: true })
 
@@ -357,7 +357,7 @@ export default class Action {
                 this.vue.$_state({ loading: false })
 
                 Object.keys(r.data).forEach((kompoid) => {
-                    this.vue.$kompo[komposerFillFunc](kompoid, r.data[kompoid])
+                    this.vue.$kompo[komponentFillFunc](kompoid, r.data[kompoid])
                 })
 
                 this.vue.$_runInteractionsOfType(this, 'success')

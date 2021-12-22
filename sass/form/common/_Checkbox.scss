@@ -2,7 +2,7 @@
     .vlToggleArea{
         height: var(--form-checkbox-height);
         width: var(--form-checkbox-height);
-        @extend .vlFlexCenter;
+        @extend .flex-center;
         >i{
             display: none;
             color: var(--form-control-bg);

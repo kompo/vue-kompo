@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import Element from '../../element/mixins/Element'
+import BaseElement from '../../element/mixins/BaseElement'
 
 export default {
-    mixins: [Element], // for $_elKompoId
+    mixins: [BaseElement], // for $_elKompoId
     props: {
         kompoid: {type: String, required: true},
         index: {type: Number} //because addlink doesn't have an index

@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import Komponent from '../form/mixins/Komponent'
+import Element from '../form/mixins/Element'
 
 export default {
-    mixins: [Komponent],
+    mixins: [Element],
     computed: {
         $_customClassArray(){
             return [

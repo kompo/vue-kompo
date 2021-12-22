@@ -7,8 +7,8 @@ export default class KompoAxios{
 
         this.element = element
 
-        this.$_komponent = element instanceof Action ? element.vue : element
-        this.$_parentKompoId = this.$_komponent.kompoid
+        this.$_element = element instanceof Action ? element.vue : element
+        this.$_parentKompoId = this.$_element.kompoid
 
         this.$_route = element.$_config('route')
         this.$_routeMethod = element.$_config('routeMethod')
@@ -83,12 +83,12 @@ export default class KompoAxios{
         })
     }
 
-    /******* Komponents *********/
+    /******* Elements *********/
     $_browseQuery(page, sort){
         return this.$_axios({
             url: this.$_kompoRoute, 
             method: 'POST',
-            data: this.$_komponent.preparedFormData(),
+            data: this.$_element.preparedFormData(),
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
                 'X-Kompo-Page': page,
@@ -130,7 +130,7 @@ export default class KompoAxios{
             }
         })
     }
-    $_loadKomposer(payload){
+    $_loadKomponent(payload){
 
         return this.$_axiosWithErrorHandling({
             url: this.$_route, 
@@ -138,8 +138,8 @@ export default class KompoAxios{
             data: Object.assign(this.$_ajaxPayload || {}, payload || {}),
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
-                'X-Kompo-Action': 'load-komposer',
-                'X-Kompo-Target': this.$_kompoTarget //komposerClass here
+                'X-Kompo-Action': 'load-komponent',
+                'X-Kompo-Target': this.$_kompoTarget //komponentClass here
             }
         })
     }
@@ -183,11 +183,11 @@ export default class KompoAxios{
     /*** Internal *******/
     $_getKompoInfo(){
 
-        var kompoInfo = this.$_komponent.$_kompoInfo //if a Komposer use own kompoInfo else fetch it
+        var kompoInfo = this.$_element.$_kompoInfo //if a Komponent use own kompoInfo else fetch it
 
         if(!kompoInfo){
-            this.$_komponent.$kompo.vlGetKomposerInfo(this.$_komponent.kompoid, this.$_komponent.$_elKompoId)
-            kompoInfo = this.$_komponent.kompoInfo
+            this.$_element.$kompo.vlGetKomponentInfo(this.$_element.kompoid, this.$_element.$_elKompoId)
+            kompoInfo = this.$_element.kompoInfo
         }
 
         return kompoInfo
@@ -213,7 +213,7 @@ export default class KompoAxios{
             return
 
         if(![419, 401].includes(e.response.status))
-            return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_komponent)
+            return new Alert('Error '+e.response.status+' | '+e.response.data.message).asError().emitFrom(this.$_element)
 
         if(confirm(window._kompo.sessionTimeoutMessage))
             window.location.reload()

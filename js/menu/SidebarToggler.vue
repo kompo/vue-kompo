@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import Komponent from '../form/mixins/Komponent'
+import Element from '../form/mixins/Element'
 import IsMobile from './mixins/IsMobile'
 
 export default {
-    mixins: [Komponent, IsMobile],
+    mixins: [Element, IsMobile],
     data(){
         return {
             toggleClass: '',

@@ -1,6 +1,6 @@
 export default {
     data: () => ({
-        komponents: []
+        elements: []
     }),
 	methods: {
         $_defaultLayoutAttributes(component) {
@@ -21,7 +21,7 @@ export default {
         //this.$nextTick(() => this.$_overwriteBladeClasses())
     },
     created() {
-        this.komponents = this.component.komponents
+        this.elements = this.component.elements
     }
 
 }

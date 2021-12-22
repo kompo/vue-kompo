@@ -45,7 +45,7 @@ export default {
         },
         insertFromResponse(obj){
             this.component = obj
-            this.partial = this.$_komposerTag(obj)
+            this.partial = this.$_komponentTag(obj)
 
             this.$nextTick(() => {
                 this.dragElement(this.$refs.popup)

@@ -1,7 +1,7 @@
 <template>
     <nav v-bind="$_menuAttributes">
-        <template v-for="component in komponents">
-            <component v-bind="$_attributes(component)"/>
+        <template v-for="element in elements">
+            <component v-bind="$_attributes(element)"/>
         </template>
         <vl-support-modal 
             :kompoid="$_elKompoId"

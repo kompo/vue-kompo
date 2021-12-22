@@ -1,13 +1,13 @@
 .vlTag{
-	background-color: var(--tags-color);
-	color: white;
+	background-color: var(--tags-bg);
+	color: var(--tags-color);
 	font-weight: 700;
 	@include tag();
 }
 
 .vlTagOutlined{
-	border-color: var(--tags-color);
+	border-color: var(--tags-bg);
 	border-width: 1px;
-	color: var(--tags-color);
+	color: var(--tags-bg);
 	@include tag();
 }

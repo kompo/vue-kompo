@@ -33,14 +33,17 @@
                     :style="{'width': width}">
 
                     <!-- v-if necessary -->
-                    <vl-panel 
-                        v-if="panelId" 
+                    <template 
+                        v-if="elements.length" 
                         v-show="ajaxContent"
-                        :id="panelId"
-                        @closeModal="closeAction"
-                        @confirmModal="confirmAction"
-                        @touchedForm="handleTouchedForm"  
-                    />
+                        v-for="(row,index) in elements">
+                        <component 
+                            v-bind="$_attributes(row)" 
+                            @closeModal="closeAction"
+                            @confirmModal="confirmAction"
+                            @touchedForm="handleTouchedForm"  
+                        />
+                    </template>
                 
                     <slot v-if="!ajaxContent" />
 
@@ -55,15 +58,17 @@
 
 <script>
 import EmitsEvents from '../mixins/EmitsEvents'
+import HasElements from '../../form/mixins/HasElements'
 
 export default {
-    mixins: [EmitsEvents],
+    mixins: [HasElements, EmitsEvents],
     props: ['name', 'width', 'warn', 'arrows'],
     data(){
         return {
             readyToClose: false,
             opened : false,
             ajaxContent: false,
+            component: {elements: []},
             zIndex: 2000,
             panelId: '',
             warnData: false,
@@ -154,18 +159,25 @@ export default {
                     this.$kompo.vlFillPanel(this.panelId, html)
                 })
             })
+            this.$_vlOn('vlFillPanel' + this.name, (response, included) => {
+
+                this.elements = []
+
+                this.$nextTick(() => {
+                    this.elements = _.isArray(response) ? response : [response]
+                })
+            })
         },
         $_destroyEvents(){
             this.$_vlOff([
                 'vlModalShow'+this.name,
                 'vlModalClose'+this.name,
                 'vlModalShowFill'+this.name,
+                'vlFillPanel'+this.name,
             ])
         }
     },
     created() {
-        this.panelId = this.name !='default' ? this.name : 'vlDefaultModal'
-
         this.$_destroyEvents()
         this.$_attachEvents()
     },

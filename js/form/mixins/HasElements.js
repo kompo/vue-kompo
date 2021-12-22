@@ -3,7 +3,7 @@ import HasVueComponent from '../../element/mixins/HasVueComponent'
 export default {
 	mixins: [HasVueComponent],
     data: () => ({
-        komponents: []
+        elements: []
     }),
     methods: {        
         $_attributes(component) { return this.$_defaultLayoutAttributes(component) },
@@ -19,6 +19,6 @@ export default {
         },
     },
     created() {
-        this.komponents = this.component.komponents
+        this.elements = this.component.elements
     }
 }

@@ -1,14 +1,18 @@
 <template>
-    <vl-tab 
-        :name="$_label" 
-        :active="isActive"
-        :isDisabled="isDisabled"
-        v-bind="$_layoutWrapperAttributes"
-    >
-        <component v-bind="$_attributes(tab)"
-            v-for="(tab,index) in komponents"
+    <section 
+        v-if="!isDisabled"
+        :aria-hidden="!activeTab"
+        v-show="activeTab"
+        v-bind="$_layoutWrapperAttributes" 
+        class="vlTab"
+        role="tabpanel">
+
+        <component 
+            v-bind="$_attributes(tab)"
+            v-for="(tab,index) in elements"
             :key="index" />
-    </vl-tab>
+
+    </section>
 </template>
 
 <script>
@@ -16,16 +20,13 @@ import Layout from '../mixins/Layout'
 
 export default {
     mixins: [Layout],
-    data: () => ({
-        isActive: false
-    }),
+    props: {
+        activeTab: { type: Boolean, required: true },
+    },
     computed: {
-        header() {
-            return this.$_label
-        },
         isDisabled(){
             return this.$_config('tabDisabled')
-        }
-    }
+        },
+    },
 }
 </script>

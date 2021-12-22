@@ -1,7 +1,7 @@
 <template>
     <div v-bind="$_layoutWrapperAttributes" v-show="!$_hidden">
 
-        <component v-for="(col,index) in komponents" 
+        <component v-for="(col,index) in elements" 
             :key="index"
             v-bind="$_attributes(col)" />
             

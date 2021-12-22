@@ -5,10 +5,9 @@
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
-
-	border-radius: var(--btn-border-radius);
 }
 .vlBtn{
+	border-radius: var(--btn-border-radius);
 	justify-content: center; //Only buttons are centered	
 }
 button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normalize adding outline

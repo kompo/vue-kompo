@@ -52,15 +52,15 @@ export default class TurboClick {
             Echo.private(spec.channel).stopListening(spec.message)
         })
 
-        window._kompo.komposers = [] //reset live komposers
+        window._kompo.komponents = [] //reset live komponents
         
-        const newVue = new Vue(this.getMainVueBootObject(this.vnode)) //TODO: destroy the app first because the old komposers are staying in memory...
+        const newVue = new Vue(this.getMainVueBootObject(this.vnode)) //TODO: destroy the app first because the old komponents are staying in memory...
 
         //Reload last Popup if available
         if(window.vlLastPopup)
             newVue.$kompo.vlFillPopup(window.vlLastPopup)
 
-        Array.from(doc.getElementsByClassName('komposer-script')).forEach((scriptString) => {
+        Array.from(doc.getElementsByClassName('komponent-script')).forEach((scriptString) => {
             let script = document.createElement('script')
             script.textContent = scriptString.textContent
             document.head.appendChild(script)

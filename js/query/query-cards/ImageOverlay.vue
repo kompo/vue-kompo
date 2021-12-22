@@ -10,7 +10,7 @@
             <img v-if="fullImage" class="vlWFull"
             	:src="$_prop('image')" :alt="$_prop('title')">
 
-	        <div :class="overlayClass" class="vlAbsoluteInset vlFlexCenter">
+	        <div :class="overlayClass" class="vlAbsoluteInset flex-center">
 		        <h2 v-if="$_prop('title')" v-html="$_prop('title')" />
 		    </div>
 

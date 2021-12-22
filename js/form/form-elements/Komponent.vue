@@ -20,7 +20,7 @@ export default {
     computed:{
         $_attributes(){
             return {
-                is: this.$_komposerTag(this.component),
+                is: this.$_komponentTag(this.component),
                 vkompo: this.component,
                 kompoid: this.$_elKompoId || this.kompoid,
             }

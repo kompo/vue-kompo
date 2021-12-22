@@ -1,6 +1,6 @@
 <template>
     <component v-bind="formAttributes">
-        <template v-for="component in komponents">
+        <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
         <vl-support-modal 
@@ -13,12 +13,12 @@
 <script>
 import Layout from './mixins/Layout'
 import Alert from '../core/Alert'
-import IsKomposer from '../mixins/IsKomposer'
+import IsKomponent from '../mixins/IsKomponent'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
 import TurboClick from '../core/TurboClick'
 
 export default {
-    mixins: [Layout, IsKomposer, DoesAxiosRequests],
+    mixins: [Layout, IsKomponent, DoesAxiosRequests],
 
     data(){
         return {
@@ -29,7 +29,7 @@ export default {
     },
     created() {
         this.$_configureEcho()
-        this.$_saveLiveKomposer()
+        this.$_saveLiveKomponent()
     },
     mounted() {
         this.$_runOwnInteractions('load')
@@ -39,10 +39,10 @@ export default {
         formAttributes(){
             return {
                 ...this.$_defaultElementAttributes,
-                is: this.$_komposerTag(this.component) == 'vl-form' ? 'form' : 'div',
+                is: this.$_komponentTag(this.component) == 'vl-form' ? 'form' : 'div',
                 class: this.$_classString([
                     this.$_phpClasses,
-                    this.$_komposerTag(this.component) == 'vl-form' ? 'vlForm' : 'vlView',
+                    this.$_komponentTag(this.component) == 'vl-form' ? 'vlForm' : 'vlView',
                 ]),
                 style: this.$_elementStyles,
             }
@@ -64,9 +64,9 @@ export default {
             if(this.emitFormData)
                 this.$emit('submit', this.jsonFormData)
         },
-        submitSuccess(r, submitKomponent){
+        submitSuccess(r, submitElement){
 
-            this.$emit('success', r, submitKomponent)
+            this.$emit('success', r, submitElement)
             
             //redirect route predefined in form
             if(this.redirectUrl){
@@ -89,7 +89,7 @@ export default {
 
             if(r.status === 202){
                 this.$_destroyEvents()
-                this.$_removeLiveKomposer()
+                this.$_removeLiveKomponent()
                 this.$emit('refreshForm', r.data)
             }
         },
@@ -131,7 +131,7 @@ export default {
         },
         handleRefreshResponse(responseData){
             this.$_destroyEvents()
-            this.$_removeLiveKomposer()
+            this.$_removeLiveKomponent()
             this.$emit('refreshForm', responseData)
         },
         $_echoTrigger(){
@@ -144,8 +144,8 @@ export default {
             this.$_vlOn('vlPreSubmit'+this.$_elKompoId, () => {
                 this.preSubmit()
             })
-            this.$_vlOn('vlSubmitSuccess'+this.$_elKompoId, (response, submitKomponent) => {
-                this.submitSuccess(response, submitKomponent)
+            this.$_vlOn('vlSubmitSuccess'+this.$_elKompoId, (response, submitElement) => {
+                this.submitSuccess(response, submitElement)
             })
             this.$_vlOn('vlSubmitError'+this.$_elKompoId, (error) => {
                 this.submitError(error)
@@ -165,13 +165,13 @@ export default {
             this.$_vlOn('vlToggleSubmit'+this.$_elKompoId, (canSubmit) => {
                 this.canSubmit = canSubmit
             })
-            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId) => {
+            this.$_vlOn('vlRequestKomponentInfo'+this.$_elKompoId, (askerId) => {
 
                 if(!this.$_isLive)
                     return
 
                 this.jsonFormData = this.getJsonFormData()
-                this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
+                this.$kompo.vlDeliverKomponentInfo(askerId, this.$_elKompoId, {
                     canSubmit: this.canSubmit,
                     jsonFormData: this.jsonFormData,
                     url: this.formUrl, 
@@ -181,8 +181,12 @@ export default {
                 })
 
             })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
+            this.$_vlOn('vlRefreshKomponent'+this.$_elKompoId, (responseData) => {
                 this.handleRefreshResponse(responseData)
+            })
+
+            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, () => {
+                this.triggerRefreshForm()
             })
 
             this.$_deliverKompoInfoOn()
@@ -196,8 +200,9 @@ export default {
                 'vlUpdateErrorState'+this.$_elKompoId,
                 'vlDeliverJsonFormData'+this.$_elKompoId,
                 'vlToggleSubmit'+this.$_elKompoId,
-                'vlRequestKomposerInfo'+this.$_elKompoId,
-                'vlRefreshKomposer'+this.$_elKompoId,
+                'vlRequestKomponentInfo'+this.$_elKompoId,
+                'vlRefreshKomponent'+this.$_elKompoId,
+                'vlReloadAfterChildAction'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
         }

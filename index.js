@@ -5,7 +5,7 @@ require('./js/core/bootstrap')
 
 window._kompo = {
     echo : [], //used to stop listeners on turboclick
-    komposers: [], //used to stop refreshing komposers
+    komponents: [], //used to stop refreshing komponents
     sessionTimeoutMessage: '',
     history: [window.location.href],
     toggleSpinner: function(display){
@@ -39,11 +39,14 @@ const Kompo = {
 			vlPreSubmit(kompoid){
 	    		Kompo.events.$emit('vlPreSubmit'+kompoid)
 	    	},
-			vlSubmitSuccess(kompoid, response, submitKomponent){
-	    		Kompo.events.$emit('vlSubmitSuccess'+kompoid, response, submitKomponent)
+			vlSubmitSuccess(kompoid, response, submitElement){
+	    		Kompo.events.$emit('vlSubmitSuccess'+kompoid, response, submitElement)
 	    	},
 			vlSubmitError(kompoid, error){
 	    		Kompo.events.$emit('vlSubmitError'+kompoid, error)
+	    	},
+	    	vlReloadAfterChildAction(kompoid){
+	    		Kompo.events.$emit('vlReloadAfterChildAction'+kompoid)
 	    	},
 			vlBrowseQuery(kompoid, page, initialFilter){
 	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
@@ -51,8 +54,8 @@ const Kompo = {
 			vlRemoveItem(kompoid, index){
 	    		Kompo.events.$emit('vlRemoveItem'+kompoid, index)
 	    	},
-	    	vlRefreshKomposer(kompoid, responseData){
-	    		Kompo.events.$emit('vlRefreshKomposer'+kompoid, responseData)
+	    	vlRefreshKomponent(kompoid, responseData){
+	    		Kompo.events.$emit('vlRefreshKomponent'+kompoid, responseData)
 	    	},
 	    	vlLoadItems(kompoid, responseData){
 	    		Kompo.events.$emit('vlLoadItems'+kompoid, responseData)
@@ -78,11 +81,11 @@ const Kompo = {
 	    	vlFillPanel(panelId, response, included){
 	    		Kompo.events.$emit('vlFillPanel'+panelId, response, included)
 	    	},
-	    	vlFillSlidingPanel(response, warnbeforeclose){
-	    		Kompo.events.$emit('vlFillSlidingPanel', response, warnbeforeclose)
+	    	vlFillDrawer(response, kompoid, warnbeforeclose){
+	    		Kompo.events.$emit('vlFillDrawer', response, kompoid, warnbeforeclose)
 	    	},
-	    	vlCloseSlidingPanel(){
-	    		Kompo.events.$emit('vlCloseSlidingPanel')
+	    	vlCloseDrawer(){
+	    		Kompo.events.$emit('vlCloseDrawer')
 	    	},
 	    	vlFillPopup(response){
 	    		Kompo.events.$emit('vlFillPopup', response)
@@ -90,14 +93,14 @@ const Kompo = {
 	    	vlClosePopup(){
 	    		Kompo.events.$emit('vlClosePopup')
 	    	},
-	    	vlRequestKomposerInfo(kompoid, askerId, options){
-	    		Kompo.events.$emit('vlRequestKomposerInfo'+kompoid, askerId, options)
+	    	vlRequestKomponentInfo(kompoid, askerId, options){
+	    		Kompo.events.$emit('vlRequestKomponentInfo'+kompoid, askerId, options)
 	    	},
-	    	vlDeliverKomposerInfo(askerId, senderId, komposerInfo){
-	    		Kompo.events.$emit('vlDeliverKomposerInfo'+askerId, senderId, komposerInfo)
+	    	vlDeliverKomponentInfo(askerId, senderId, komponentInfo){
+	    		Kompo.events.$emit('vlDeliverKomponentInfo'+askerId, senderId, komponentInfo)
 	    	},
-	    	vlGetKomposerInfo(komposerId, askerId){
-	    		Kompo.events.$emit('vlGetKomposerInfo'+komposerId, askerId)
+	    	vlGetKomponentInfo(komponentId, askerId){
+	    		Kompo.events.$emit('vlGetKomponentInfo'+komponentId, askerId)
 	    	},
 	    	vlDeliverKompoInfo(askerId, kompoInfo){
 	    		Kompo.events.$emit('vlDeliverKompoInfo'+askerId, kompoInfo)
@@ -187,7 +190,20 @@ const Kompo = {
 		    }
 		}, function (error) {
 			// Status codes outside the range of 2xx
-			return Promise.reject(error);
+			let r = error.response.data
+
+		    if(_.isString(r) && !!r.match(/<script>Sfdump\(".+"\)<\/script>/)){
+				
+		        Kompo.events.$kompo.vlModalShowFill(
+		        	'vlDefaultModal', 
+		        	'<iframe height="600" width="768" srcdoc="'+r.replace(/"/g, '&quot;')+'"></iframe>'
+		        )
+
+		        throw new axios.Cancel('Operation canceled by dump.')
+
+		    }else{
+				return Promise.reject(error);
+		    }
 		});
 
 	}

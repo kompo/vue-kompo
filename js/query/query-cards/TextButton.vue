@@ -1,6 +1,6 @@
 <template>
-    <div class="cursor-pointer vlFlexCenter">
-        <div class="vlFlexCenter flex-col md:flex-row">
+    <div class="cursor-pointer flex-center">
+        <div class="flex-center flex-col md:flex-row">
             <div class="p-2">
                 <div class="vlText text-xl" v-html="$_prop('label')" />
                 <div class="text-gray-600 text-xs" v-html="$_prop('comment')" />

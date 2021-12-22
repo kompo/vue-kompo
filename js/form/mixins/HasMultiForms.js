@@ -1,6 +1,6 @@
 export default {
     created(){
-        this.komponents.forEach( item => {
+        this.elements.forEach( item => {
             item.key = this.getRandomKey()
         })
     },
@@ -15,9 +15,9 @@ export default {
             if(this.noAdding)
                 return
             
-            this.$_kAxios.$_loadKomposer(payload).then(r => {
+            this.$_kAxios.$_loadKomponent(payload).then(r => {
 
-                this.komponents.push(Object.assign(r.data, {key: this.getRandomKey()}))
+                this.elements.push(Object.assign(r.data, {key: this.getRandomKey()}))
 
             })
         },
@@ -27,7 +27,7 @@ export default {
                 return _.startsWith(key, this.$_name+'.')
             })
 
-            this.komponents.forEach( (form,k) => {
+            this.elements.forEach( (form,k) => {
                 var formErrors = _.mapKeys(_.pickBy(ownErrors, (value, key) => {
                     return _.startsWith(key, this.$_name+'.'+k+'.')
                 }), (value, key) => {
@@ -41,7 +41,7 @@ export default {
                 return 
 
             var name = this.$_name, results = [] 
-            this.komponents.forEach( (item,k) => {
+            this.elements.forEach( (item,k) => {
                 var json = {}
                 item.$_fillRecursive(json)
                 if(item.multiFormKey)
@@ -60,16 +60,16 @@ export default {
             })
         },
         deleteRow(index){
-            this.$delete(this.komponents, index)
+            this.$delete(this.elements, index)
         },
         revertFormRow(childId){
             var rowToDelete
-            this.komponents.forEach( (item, k) => {
+            this.elements.forEach( (item, k) => {
                 if(item.$_getPathById(childId))
                     rowToDelete = k
             })
             if(rowToDelete || rowToDelete === 0)
-                this.$delete(this.komponents, rowToDelete)
+                this.$delete(this.elements, rowToDelete)
         }
     }
 }

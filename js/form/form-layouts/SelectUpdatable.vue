@@ -1,7 +1,7 @@
 <template>
     <div v-bind="$_layoutWrapperAttributes" v-show="!$_hidden">
         
-        <component v-bind="$_attributes(komponents[0])" :key="renderKey">
+        <component v-bind="$_attributes(elements[0])" :key="renderKey">
             <template v-slot:after>
                 <component
                     v-if="!$_readOnly"
@@ -41,7 +41,7 @@ export default {
     methods: {
         loadUpdateForm(payload){
 
-            this.$_kAxios.$_loadKomposer(payload).then(r => {
+            this.$_kAxios.$_loadKomponent(payload).then(r => {
 
                 this.updateForm = r.data
                 this.$kompo.vlModalShow('modal'+this.$_elKompoId)
@@ -58,7 +58,7 @@ export default {
                 ajaxPayload: Object.assign({id: this.optionValue}, this.$_config('ajaxPayload')),
             })
                 
-            let newSelect = this.komponents[0]
+            let newSelect = this.elements[0]
 
             let index = _.findIndex(newSelect.options, {value: this.optionValue})
             let formattedOption = {
@@ -67,7 +67,7 @@ export default {
             }
             newSelect.options.splice(index, 1, formattedOption)
             newSelect.value = this.optionValue //To review - setting select value...
-            this.komponents.splice(0, 1, newSelect)
+            this.elements.splice(0, 1, newSelect)
             this.renderKey += 1
             
             newSelect.$_addOptionToValue(formattedOption) //... is very different from using it in requests.

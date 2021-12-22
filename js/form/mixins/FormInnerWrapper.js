@@ -1,7 +1,7 @@
-import Element from '../../element/mixins/Element'
+import BaseElement from '../../element/mixins/BaseElement'
 
 export default {
-    mixins: [Element],
+    mixins: [BaseElement],
 
     data(){
         return {
@@ -44,17 +44,17 @@ export default {
             this.component = Object.assign({}, this.vkompo)
             this.formKey += 1
         },
-        successEvent(response, submitKomponent){
-            this.$emit('success', response, submitKomponent)
+        successEvent(response, submitElement){
+            this.$emit('success', response, submitElement)
 
-            if(submitKomponent.$_getFreshForm)
+            if(submitElement.$_getFreshForm)
                 this.reloadFreshForm()
 
             if(this.success) //Injected javascript function to be executed on success
                 this.success(response)
         },
-        errorEvent(response, submitKomponent){
-            this.$emit('error',response, submitKomponent)
+        errorEvent(response, submitElement){
+            this.$emit('error',response, submitElement)
             if(this.error) //Injected javascript function to be executed on error
                 this.error(response)
         },

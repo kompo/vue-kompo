@@ -1,8 +1,8 @@
-import Komponent from './Komponent'
+import Element from './Element'
 import HasName from './HasName'
 
 export default {
-    mixins: [ Komponent, HasName ],
+    mixins: [ Element, HasName ],
 
     data(){
         return {
@@ -79,7 +79,7 @@ export default {
                         this.$_setError(errors[errorName+'.'+k], k) //showing the last error only
                 })
         },
-        $_keyUp(key){}, //to be overriden in komponents when needed
+        $_keyUp(key){}, //to be overriden in elements when needed
         $_keyupAction(key){
             this.$_keyUp(key)
             this.$_clearErrors()

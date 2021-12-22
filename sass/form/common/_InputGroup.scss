@@ -10,16 +10,17 @@
 
 .vlInputPrepend,.vlInputAppend{
 	color: var(--form-field-icon-color);
-    width: var(--form-field-icon-width);
 	cursor: pointer;
 	display: flex;
 	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
 }
 
 .vlInputPrepend{
-	justify-content: flex-end;
+	padding: var(--form-control-padding-t) 0 var(--form-control-padding-b) var(--form-control-padding-l);
 }
 
 .vlInputAppend{
-	justify-content: flex-start;
+	padding-right: var(--form-control-padding-r); //in MD Filled, we want to center rIcon vertically but not the left one
 }

@@ -20,7 +20,7 @@
 	}
 }
 .vlImageMsg{
-	@extend .vlAbsoluteInset, .vlFlexCenter;
+	@extend .vlAbsoluteInset, .flex-center;
 	line-height: 1.1rem;
 	color: var(--form-control-placeholder-color);
     i{

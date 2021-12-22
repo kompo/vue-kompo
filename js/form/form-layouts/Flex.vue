@@ -4,7 +4,7 @@
         v-show="!$_hidden"
         @click="$_clickAction"
         v-turbo-click="component.turbo">
-        <component v-for="(col,index) in komponents"
+        <component v-for="(col,index) in elements"
             :key="index"
             v-bind="$_attributes(col)"
         />

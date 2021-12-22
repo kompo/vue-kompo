@@ -1,11 +1,11 @@
 <template>
     <div 
-        :class="$_wrapperClass" 
+        v-bind="$_attributes" 
         @mouseleave="closeSubmenu"
     >
 
         <component
-            v-bind="$_attributes" 
+            v-bind="$_togglerAttributes" 
             v-turbo-click="component.turbo" 
             @click="checkClickable">
             
@@ -18,7 +18,7 @@
             <div class="vlDropdownMenu"
                 :class="menuClass" >
                 <component 
-                    v-for="(col,index) in komponents"
+                    v-for="(col,index) in elements"
                     :key="index"
                     v-bind="$_defaultLayoutAttributes(col)" 
                     @click="$emit('click', col)"
@@ -42,20 +42,19 @@ export default {
             open: false,
         }
     },
-    computed: {
-        $_wrapperClass() {
-            return this.$_classString([
-                this.$_defaultCssClass(),
-                this.$_config('active'),
-                (this.openOnClick && !this.open) ? '' : 'vlOpenOnHover',
-            ])
-        },
-        
+    computed: {        
         $_customClassArray(){
             return [
+                this.$_config('active'),
+                (this.openOnClick && !this.open) ? '' : 'vlOpenOnHover',
+            ]
+        },
+        togglerClass(){
+            return this.$_classString([
                 'vlDropdownToggler',
                 'vlTogglerClosed',
-            ]
+                this.$_config('togglerClass'),
+            ])
         },
         menuClass(){
             return this.$_classString([

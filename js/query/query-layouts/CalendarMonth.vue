@@ -43,7 +43,7 @@ export default {
     		return 'date-'+dateStr
     	},
         dayChange(selectedDates, dateStr, instance){
-            this.$_vlEmitFrom('selected', {date : dateStr}) //Emits to parent komposer for doing more actions
+            this.$_vlEmitFrom('selected', {date : dateStr}) //Emits to parent komponent for doing more actions
 
             this.selectedDate = dateStr
 

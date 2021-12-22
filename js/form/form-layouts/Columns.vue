@@ -3,7 +3,7 @@
     	v-bind="$_layoutWrapperAttributes" 
     	v-show="!$_hidden"
         @click="$_clickAction">
-        <div v-for="(col,index) in komponents"
+        <div v-for="(col,index) in elements"
             :key="index"
             :class="colClasses(col)">
             <component 

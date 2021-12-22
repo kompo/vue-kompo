@@ -30,7 +30,7 @@ export default {
         },
         linkClass(){
             return this.$_classString([
-                this.$_config('active') ? 'vlActive' : '',
+                this.$_config('active') ? this.$_config('active') : '',
                 this.$_config('btnStyle') ? 'vlBtn' : '',
                 this.$_config('btnOutlined') ? 'vlBtnOutlined' : '',
                 this.$_config('btnPlain') ? 'vlBtnPlain' : '',

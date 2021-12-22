@@ -8,7 +8,6 @@
             v-on="$_events"
             ref="input"
         />
-        <i v-if="clearable" class="vlClearable icon-times" @click="clearValue" />
         <div v-if="$_icon || $_rIcon" class="vlInputGroup">
             <div v-if="$_icon" class="vlInputPrepend" @click="focus" v-html="$_icon" />
             <input
@@ -36,19 +35,11 @@ export default {
                 ...this.$_defaultInputAttributes
             }
         },
-        clearable(){
-            return this.$_config('clearable') && this.$_value
-        }
     },
     methods: {
         focus(){
             this.$refs.input.focus()
         },
-        clearValue(){
-            this.component.value = null
-            this.$_inputAction()
-            this.$_changeAction()
-        }
     }
 }
 </script>

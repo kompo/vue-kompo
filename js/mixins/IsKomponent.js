@@ -6,16 +6,16 @@ export default {
 
         $_kompoInfo() { return this.$_config('X-Kompo-Info') },
 
-        $_deliverKompoInfoOff() { return 'vlGetKomposerInfo'+this.$_elKompoId },
+        $_deliverKompoInfoOff() { return 'vlGetKomponentInfo'+this.$_elKompoId },
 
         $_pusherRefresh(){ return this.component.pusherRefresh },
 
-        $_isLive(){ return window._kompo.komposers.includes(this.$_elKompoId) },
+        $_isLive(){ return window._kompo.komponents.includes(this.$_elKompoId) },
 
     },
     methods:{
         $_deliverKompoInfoOn(){
-            this.$_vlOn('vlGetKomposerInfo'+this.$_elKompoId, (askerId) => {
+            this.$_vlOn('vlGetKomponentInfo'+this.$_elKompoId, (askerId) => {
 
                 this.$kompo.vlDeliverKompoInfo(askerId, this.$_kompoInfo)
                 
@@ -43,12 +43,12 @@ export default {
                 })
             })
         },
-        $_saveLiveKomposer(){
-            window._kompo.komposers.push(this.$_elKompoId)       
+        $_saveLiveKomponent(){
+            window._kompo.komponents.push(this.$_elKompoId)       
         },
-        $_removeLiveKomposer(){
-            window._kompo.komposers = _.filter(window._kompo.komposers, (n) => n !== this.$_elKompoId)
+        $_removeLiveKomponent(){
+            window._kompo.komponents = _.filter(window._kompo.komponents, (n) => n !== this.$_elKompoId)
         },
-        $_echoTrigger(){}, //to be overriden in Komposer
+        $_echoTrigger(){}, //to be overriden in Komponent
     }
 }

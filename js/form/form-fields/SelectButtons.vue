@@ -54,6 +54,7 @@ export default {
             return this.$_classString([
                 this.$_config('optionInnerClass'),
                 option.selected ? this.$_selectedClass : this.$_unselectedClass,
+                this.$_commonClass,
             ])
         },
         $_setInitialValue(){

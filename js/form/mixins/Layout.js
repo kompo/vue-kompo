@@ -1,9 +1,9 @@
-import Komponent from './Komponent'
-import Element from '../../element/mixins/Element'
-import HasKomponents from './HasKomponents'
+import Element from './Element'
+import BaseElement from '../../element/mixins/BaseElement'
+import HasElements from './HasElements'
 
 export default {
-    mixins: [ Komponent, HasKomponents],
+    mixins: [ Element, HasElements],
 
     computed: {
         $_customLayoutAttributes(){
@@ -38,16 +38,16 @@ export default {
         },
         $_getPathById(id, path){
             path = path || ''
-            var result = Komponent.methods.$_getPathById.call(this, id, path)
+            var result = Element.methods.$_getPathById.call(this, id, path)
             if(result) return result
-            for(const [key,item] of this.komponents.entries()){
-                result = item.$_getPathById(id, path + '.komponents[' + key + ']')
+            for(const [key,item] of this.elements.entries()){
+                result = item.$_getPathById(id, path + '.elements[' + key + ']')
                 if(result) return result
             }            
         },
         $_state(state){
             if(_.isString(state)){
-                return Element.methods.$_state.call(this, state)
+                return BaseElement.methods.$_state.call(this, state)
             }else{
 
                 if (state.loading) {
@@ -56,31 +56,31 @@ export default {
                     _kompo.toggleSpinner('none')
                 }
 
-                Element.methods.$_state.call(this, state)
-                this.komponents.forEach( item => { item.$_state(state) })
+                BaseElement.methods.$_state.call(this, state)
+                this.elements.forEach( item => { item.$_state(state) })
             }
         },
         $_toggle(toggleId){
-            Element.methods.$_toggle.call(this, toggleId)
+            BaseElement.methods.$_toggle.call(this, toggleId)
             if(!this.$_state('disabled')){
-                this.komponents.forEach( item => item.$_toggle(toggleId) )
+                this.elements.forEach( item => item.$_toggle(toggleId) )
             }
         },
         $_fillRecursive(jsonFormData){
             if(!this.$_hidden)
-                this.komponents.forEach( item => item.$_fillRecursive(jsonFormData) )
+                this.elements.forEach( item => item.$_fillRecursive(jsonFormData) )
         },
         $_validate(errors) {
-            this.komponents.forEach( item => item.$_validate(errors) )
+            this.elements.forEach( item => item.$_validate(errors) )
         },
         $_getErrors(errors) {
-            this.komponents.forEach( item => item.$_getErrors(errors) )
+            this.elements.forEach( item => item.$_getErrors(errors) )
         },
         $_resetSort(exceptId) {
-            this.komponents.forEach( item => item.$_resetSort(exceptId) )
+            this.elements.forEach( item => item.$_resetSort(exceptId) )
         },
         $_deliverJsonTo(componentId, json){
-            this.komponents.forEach( item => item.$_deliverJsonTo(componentId, json) )
+            this.elements.forEach( item => item.$_deliverJsonTo(componentId, json) )
         },
 	},
     mounted(){

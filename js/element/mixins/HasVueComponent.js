@@ -6,8 +6,8 @@ export default {
         $_vueTag(element){
             return 'Vl' + this.$_vueComponent(element)
         },
-        $_komposerTag(komposer){
-            return komposer ? komposer.vueKomposerTag : this.component.vueKomposerTag
+        $_komponentTag(komponent){
+            return komponent ? komponent.vueKomponentTag : this.component.vueKomponentTag
         },
     }
 }

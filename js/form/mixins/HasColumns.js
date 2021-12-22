@@ -8,7 +8,7 @@ export default {
             ]
         },
         numOfColumns(){
-            return this.komponents.length
+            return this.elements.length
         },
         equalColumnClass(){
             return 12 % this.numOfColumns == 0 ? 

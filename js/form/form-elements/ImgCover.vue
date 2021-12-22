@@ -13,11 +13,15 @@ import Other from '../mixins/Other'
 export default {
     mixins: [Other],
     computed: {
+        src(){ return this.component.src },
     	$_attributes() {
             return Object.assign(
-            	this.$_defaultOtherAttributes,{
-            	style: this.$_elementStyles +';background-image:url('+this.$_pureLabel+');background-size:cover;background-position:center'
+            	this.$_defaultOtherAttributes, {
+            	style: this.$_elementStyles +';background-image:url('+this.src+');background-size:cover;background-position:'+this.bgPosition,
             })
+        },
+        bgPosition() {
+            return this.$_config('bgPosition') || 'center'
         }
     }
 }

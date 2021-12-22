@@ -1,12 +1,13 @@
 <template>
-<div v-if="hasSlidingPanels"
-     class="vlSlidingPanels"
+<div v-if="hasDrawers"
+     class="vlDrawers"
      @click="close" >
     <div ref="panelContainer" class="vlPanelContainer">
       <transition-group name="slideLeft">
-          <vl-sliding-panel
+          <vl-drawer
               v-for="(slide, key) in slides"
               :obj="slide.obj"
+              :kompoid="slide.kompoid"
               :index="slide.id"
               :key="slide.id"
               @close="closeById" />
@@ -24,12 +25,12 @@ export default {
         return {
             slides : [],
             initialId: 0,
-            hasSlidingPanels: 0, //I had to decouple it for the transition effect to work
+            hasDrawers: 0, //I had to decouple it for the transition effect to work
             warnBeforeClose: false,
         }
     },
     computed:{
-        /*hasSlidingPanels(){ //I had to decouple it for the transition effect to work
+        /*hasDrawers(){ //I had to decouple it for the transition effect to work
             return this.slides.length
         }*/
     },
@@ -57,31 +58,32 @@ export default {
         },
         closeByIndex(index){
             this.slides.splice(index)
-            this.hasSlidingPanels = this.slides.length
+            this.hasDrawers = this.slides.length
         },
-        addSlidingPanel(obj){
+        addDrawer(obj, kompoid){
             this.initialId += 1
 
-            this.hasSlidingPanels = Math.max(this.slides.length, 1)
+            this.hasDrawers = Math.max(this.slides.length, 1)
             
             this.$nextTick(() => this.slides.push({
-                id: 'vl-sliding-panel-'+this.initialId,
-                obj: obj
+                id: 'vl-drawer-'+this.initialId,
+                obj: obj,
+                kompoid: kompoid,
             }))
         },
         $_attachEvents(){
-            this.$_vlOn('vlFillSlidingPanel', (response, warnbeforeclose) => {
+            this.$_vlOn('vlFillDrawer', (response, kompoid, warnbeforeclose) => {
                 this.warnbeforeclose = warnbeforeclose || false
-                this.addSlidingPanel(response.data)
+                this.addDrawer(response.data, kompoid)
             })
-            this.$_vlOn('vlCloseSlidingPanel', () => {
+            this.$_vlOn('vlCloseDrawer', () => {
                 this.closeByIndex(this.slides.length-1)
             })
         },
         $_destroyEvents(){
             this.$_vlOff([
-              'vlFillSlidingPanel',
-              'vlCloseSlidingPanel'
+              'vlFillDrawer',
+              'vlCloseDrawer'
             ])
         }
 

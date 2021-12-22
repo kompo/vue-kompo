@@ -1,7 +1,7 @@
-import Komponent from './Komponent'
+import Element from './Element'
 
 export default {
-    mixins: [ Komponent ],
+    mixins: [ Element ],
 	computed: {
         
         $_attributes() { return this.$_defaultTriggerAttributes },

@@ -1,7 +1,7 @@
 .vlPanel{
     position: relative;
 }
-.vlSlidingPanels{
+.vlDrawers{
     @extend .vlAbsoluteInset;
     position: fixed;
     overflow: hidden;
@@ -19,7 +19,7 @@
         text-shadow: 0 5px 8px white;
     }
 }
-.vlSlidingPanel{
+.vlDrawer{
     position: absolute;
     top: 0;
     bottom: 0;

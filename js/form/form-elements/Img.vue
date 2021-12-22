@@ -4,7 +4,7 @@
         v-if="!$_displayNone"
         v-show="!$_hidden"
         v-bind="$_attributes" 
-        :src="$_pureLabel"
+        :src="src"
         :alt="$_alt" />
 
 </template>
@@ -15,6 +15,7 @@ import Other from '../mixins/Other'
 export default {
     mixins: [Other],
     computed: {
+        src(){ return this.component.src },
     	$_alt(){ return this.$_config('alt') }
     }
 }

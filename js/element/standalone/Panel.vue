@@ -7,7 +7,7 @@
         <transition :name="usedTransition" :mode="usedMode">
             <slot />
             <div v-if="html" :is="{template: html}" />
-            <template v-for="(row,index) in komponents">
+            <template v-for="(row,index) in elements">
                 <component 
                     v-bind="$_attributes(row)" 
                     @closeModal="closeModal"
@@ -23,12 +23,12 @@
 </template>
 
 <script>
-import HasKomponents from '../../form/mixins/HasKomponents'
+import HasElements from '../../form/mixins/HasElements'
 import EmitsEvents from '../mixins/EmitsEvents'
 import HasClasses from '../mixins/HasClasses'
 
 export default {
-    mixins: [HasKomponents, EmitsEvents, HasClasses],
+    mixins: [HasElements, EmitsEvents, HasClasses],
     props: {
         id: { type: String, required: true },
         transition: { type: String },
@@ -45,16 +45,16 @@ export default {
     },
     computed: {
         showCloseButton(){
-            return this.closable && this.hasLoadedKomponents
+            return this.closable && this.hasLoadedElements
         },
         panelClass(){
             return this.$_classString([
                 'vlPanel',
-                this.hasLoadedKomponents ? 'vlPanelNotEmpty' : ''
+                this.hasLoadedElements ? 'vlPanelNotEmpty' : ''
             ])
         },
-        hasLoadedKomponents(){
-            return this.komponents && this.komponents.length > 0
+        hasLoadedElements(){
+            return this.elements && this.elements.length > 0
         }
     }, 
     methods: {
@@ -62,7 +62,7 @@ export default {
             this.component = {}
             this.html = null
             this.partial = null
-            this.komponents = []
+            this.elements = []
         },
         close(){
             this.reset()
@@ -84,7 +84,7 @@ export default {
                 this.$nextTick(() => {
                     if(!_.isString(response)){
 
-                        this.komponents = _.isArray(response) ? response : [response] //Array when getKomponents() is used, non-array when selfGet returns a single Komponent
+                        this.elements = _.isArray(response) ? response : [response] //Array when getElements() is used, non-array when a single Element is returned
 
                     }else{
                         this.html = response

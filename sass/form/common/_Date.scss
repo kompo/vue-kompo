@@ -1,5 +1,5 @@
 .flatpickr-calendar.open{
-	margin-left: calc(-1 * var(--form-field-icon-width));
+	margin-left: -1.8rem; //account for the calendar icon width
 }
 .flatpickr-confirm{
 	cursor: pointer;

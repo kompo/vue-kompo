@@ -3,7 +3,7 @@
         ref="sidebar"
         v-bind="$_menuAttributes"
         v-click-out="close">
-        <template v-for="component in komponents">
+        <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
         <vl-support-modal 
@@ -52,23 +52,20 @@ export default {
             
             this.$kompo.vlToggleSidebarToggler(this.togglerKompoId)
         },
-        $_attachEvents(){
+        $_attachCustomEvents(){
             this.$_vlOn('vlToggleSidebar'+this.side, (elKompoId) => {
                 this.togglerKompoId = elKompoId
                 this.toggle()
             })
         },
-        $_destroyEvents(){
+        $_destroyCustomEvents(){
             this.$_vlOff([
                 'vlToggleSidebar'+this.side
             ])
-        }
+        },
     },
     created(){
-        this.$nextTick(()=>{
-            this.$_destroyEvents()
-            this.$_attachEvents()
-        })
+        
     }
 }
 </script>

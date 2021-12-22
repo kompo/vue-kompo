@@ -1,15 +1,15 @@
 <template>
-    <div :class="$_wrapperClass">
+    <div v-bind="$_attributes">
 
         <component
-            v-bind="$_attributes" 
+            v-bind="$_togglerAttributes" 
             v-turbo-click="component.turbo"
             @click="toggle"
             >
 
             <span class="flex items-center" v-html="$_label" />
 
-            <i v-if="komponents.length && !noCaret" class="icon-down-dir"></i>
+            <i v-if="elements.length && !noCaret" class="icon-down-dir"></i>
 
         </component>
 
@@ -20,7 +20,7 @@
                 :class="menuClass" >
 
                 <div 
-                    v-for="(col,index) in komponents"
+                    v-for="(col,index) in elements"
                     :key="index">
                     <component 
                         v-bind="$_defaultLayoutAttributes(col)" />
@@ -50,7 +50,11 @@ export default {
             return this.$_config('expandByDefault') || (this.$_config('expandIfActive') && this.$_config('active'))
         },
         togglerClass(){
-            return this.open ? '' : 'vlTogglerClosed'
+            return this.$_classString([
+                this.open ? '' : 'vlTogglerClosed',
+                'vlCollapseToggler',
+                this.$_config('togglerClass'),
+            ])
         },
         menuClass(){
             return this.open ? '' : 'vlMenuClosed'
@@ -58,15 +62,12 @@ export default {
         noCaret(){
             return this.$_config('noCaret')
         },
-        $_wrapperClass() {
-            return this.$_defaultCssClass()+' flex-col'
-        },
-        $_customClassArray(){
+        $_customClassArray() {
             return [
-                'vlCollapseToggler',
-                this.togglerClass,
+                this.$_config('active'),
+                'flex-col',
             ]
-        }
+        },
 
     },
     methods:{

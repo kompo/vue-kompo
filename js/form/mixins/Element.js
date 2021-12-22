@@ -1,7 +1,7 @@
-import Element from '../../element/mixins/Element'
+import BaseElement from '../../element/mixins/BaseElement'
 
 export default {
-    mixins: [ Element ],
+    mixins: [ BaseElement ],
     props: {
         kompoid: { type: String, required: false },
         kompoinfo: { type: String, required: false }

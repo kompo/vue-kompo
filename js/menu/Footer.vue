@@ -1,6 +1,6 @@
 <template>
     <footer v-bind="$_menuAttributes">
-        <template v-for="component in komponents">
+        <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
         <vl-support-modal 

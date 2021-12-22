@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import Element from '../element/mixins/Element'
+import BaseElement from '../element/mixins/BaseElement'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
-import IsKomposer from '../mixins/IsKomposer'
+import IsKomponent from '../mixins/IsKomponent'
 
 export default {
-    mixins: [Element, IsKomposer, DoesAxiosRequests],
+    mixins: [BaseElement, IsKomponent, DoesAxiosRequests],
     props: {
         kompoid: { type: String, required: false }
     },
@@ -76,7 +76,7 @@ export default {
         this.checkedItemIds = this.component.checkedItemIds || []
 
         this.$_configureEcho()
-        this.$_saveLiveKomposer()
+        this.$_saveLiveKomponent()
     },
     mounted() {
         this.$_runOwnInteractions('load')
@@ -301,18 +301,21 @@ export default {
                     payload: eventPayload
                 })
             })
+            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, () => {
+                this.browseQuery()
+            })
             this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters) => {
                 this.currentPage = page ? page : this.currentPage
                 this.initialFilters = initialFilters ? initialFilters : this.initialFilters //first introduced to get month, year from CalendarMonth
 
                 this.browseQuery()
             })
-            this.$_vlOn('vlRequestKomposerInfo'+this.$_elKompoId, (askerId, options) => {
+            this.$_vlOn('vlRequestKomponentInfo'+this.$_elKompoId, (askerId, options) => {
 
                 if(!this.$_isLive)
                     return
 
-                this.$kompo.vlDeliverKomposerInfo(askerId, this.$_elKompoId, {
+                this.$kompo.vlDeliverKomponentInfo(askerId, this.$_elKompoId, {
                     kompoinfo: this.$_kompoInfo,
                     data: this.getJsonFormDataWithFilters(options.resetFilters),
                     page: options.page || this.currentPage,
@@ -322,12 +325,12 @@ export default {
             this.$_vlOn('vlLoadItems'+this.$_elKompoId, (responseData) => {
                 this.loadItems(responseData)
             })
-            this.$_vlOn('vlRefreshKomposer'+this.$_elKompoId, (responseData) => {
+            this.$_vlOn('vlRefreshKomponent'+this.$_elKompoId, (responseData) => {
                 
-                this.$_removeLiveKomposer() //because this.$_elKompoId changed
+                this.$_removeLiveKomponent() //because this.$_elKompoId changed
                 this.$_destroyEvents()
                 this.component = responseData
-                this.$_saveLiveKomposer()
+                this.$_saveLiveKomponent()
                 this.$_attachEvents()
 
                 Vue.set(this, 'filters', this.component.filters)
@@ -364,9 +367,10 @@ export default {
         $_destroyEvents(){
             this.$_vlOff([
                 'vlEmit'+this.$_elKompoId,
+                'vlReloadAfterChildAction'+this.$_elKompoId,
                 'vlBrowseQuery'+this.$_elKompoId,
-                'vlRequestKomposerInfo'+this.$_elKompoId,
-                'vlRefreshKomposer'+this.$_elKompoId,
+                'vlRequestKomponentInfo'+this.$_elKompoId,
+                'vlRefreshKomponent'+this.$_elKompoId,
                 'vlLoadItems'+this.$_elKompoId,
                 'vlRemoveItem'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,

@@ -1,8 +1,8 @@
-import Element from '../../element/mixins/Element'
+import BaseElement from '../../element/mixins/BaseElement'
 import TurboClick from '../../core/TurboClick'
 
 export default {
-    mixins: [ Element ],
+    mixins: [ BaseElement ],
 	props: {
 		vkompo: { type: Object | Array, required: true }, //to override Object ony type in Elements
     	kompoid: { type: String, required: true },
@@ -11,7 +11,7 @@ export default {
 		layout: { type: String},
 	},
 	computed:{
-		$_props(){ return this.vkompo.komponents },
+		$_props(){ return this.vkompo.elements },
 
         $_customCardWrapperAttributes(){
             return {}

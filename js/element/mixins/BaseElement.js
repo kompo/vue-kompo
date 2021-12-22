@@ -17,7 +17,7 @@ export default {
             component: {},
             state: {},
             elementStore: {},
-            parentKomposerInfo: {},
+            parentKomponentInfo: {},
             label2: false,
         }
     },
@@ -86,10 +86,10 @@ export default {
             if(!this.$_elKompoId)
                 return
 
-            this.$_vlOn('vlDeliverKomposerInfo'+this.$_elKompoId, (senderId, komposerInfo) => { //for submit 
+            this.$_vlOn('vlDeliverKomponentInfo'+this.$_elKompoId, (senderId, komponentInfo) => { //for submit 
 
-                this.parentKomposerInfo = Object.assign({}, this.parentKomposerInfo, {
-                    [senderId] : komposerInfo
+                this.parentKomponentInfo = Object.assign({}, this.parentKomponentInfo, {
+                    [senderId] : komponentInfo
                 })
 
             })
@@ -101,7 +101,7 @@ export default {
         },
         $_destroyEvents(){
             this.$_vlOff([
-                'vlDeliverKomposerInfo'+this.$_elKompoId,
+                'vlDeliverKomponentInfo'+this.$_elKompoId,
                 'vlDeliverKompoInfo'+this.$_elKompoId
             ])
         },

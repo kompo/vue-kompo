@@ -32,8 +32,8 @@
 		flex-wrap: wrap;
 		align-items: flex-end;
 		>div{
-			background-color: var(--tags-color);
-			color: white;
+			background-color: var(--tags-bg);
+			color: var(--tags-color);
 			font-weight: 700;
 			@include tag();
 			margin: 0.1rem;

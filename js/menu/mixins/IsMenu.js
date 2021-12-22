@@ -1,9 +1,9 @@
-import Element from '../../element/mixins/Element'
-import IsKomposer from '../../mixins/IsKomposer'
-import HasKomponents from '../../form/mixins/HasKomponents'
+import BaseElement from '../../element/mixins/BaseElement'
+import IsKomponent from '../../mixins/IsKomponent'
+import HasElements from '../../form/mixins/HasElements'
 
 export default {
-    mixins: [Element, IsKomposer, HasKomponents],
+    mixins: [BaseElement, IsKomponent, HasElements],
 	computed: {
         $_menuClass(){
             return this.$_classString([
@@ -29,6 +29,6 @@ export default {
             this.$_vlOff([
                 this.$_deliverKompoInfoOff
             ])
-        }
+        },
     }
 }

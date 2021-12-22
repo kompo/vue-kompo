@@ -1,9 +1,9 @@
-import Element from '../../element/mixins/Element'
+import BaseElement from '../../element/mixins/BaseElement'
 import HashesObjects from '../../element/mixins/HashesObjects'
 import DoesAxiosRequests from '../../form/mixins/DoesAxiosRequests'
 
 export default {
-    mixins: [ Element, HashesObjects, DoesAxiosRequests ],
+    mixins: [ BaseElement, HashesObjects, DoesAxiosRequests ],
     props: {
         cards: { type: Array, required: true},
         kompoid: { type: String, required: true }

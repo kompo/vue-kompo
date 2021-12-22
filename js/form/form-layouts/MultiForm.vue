@@ -3,10 +3,10 @@
         <vl-form-label :component="component" />
         <draggable 
             v-if="!component.headers"
-            v-model="komponents" 
+            v-model="elements" 
             handle=".js-row-move">
             <vl-rows
-                v-for="(comp,index) in komponents"
+                v-for="(comp,index) in elements"
                 :vkompo="comp"
                 :key="comp.key"
                 v-bind="$_attributes(comp)" 
@@ -16,12 +16,12 @@
         <div v-else class="vlTableWrapper">
             <table class="w-full table vlTable">
                 <vl-table-headers 
-                    v-if="komponents.length"
+                    v-if="elements.length"
                     :vkompo="component" 
                     :kompoid="$_elKompoId" />
                 <tbody>
                     <vl-table-rows
-                        v-for="(comp,index) in komponents"
+                        v-for="(comp,index) in elements"
                         :vkompo="comp"
                         :key="comp.key"
                         :kompoid="kompoid" 

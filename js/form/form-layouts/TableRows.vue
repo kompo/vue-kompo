@@ -3,7 +3,7 @@
     	v-bind="$_layoutWrapperAttributes" 
     	v-show="!$_hidden"
         @click="$_clickAction">
-        <td v-for="(row,index) in komponents"
+        <td v-for="(row,index) in elements"
             :class="tdClass(row)">
             <component 
                 v-bind="$_attributes(row)" 

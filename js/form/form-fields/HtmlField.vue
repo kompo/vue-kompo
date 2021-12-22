@@ -30,6 +30,7 @@ export default {
         $_customClassArray(){
             return [
                 this.$_value ? this.$_selectedClass : this.$_unselectedClass,
+                this.$_commonClass,
             ]
         },
     },

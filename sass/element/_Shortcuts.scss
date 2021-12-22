@@ -29,7 +29,12 @@
 	align-items: center;
 }
 
-
+/* Personal shortcuts */
+.flex-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+}
 
 /* OLD APPROACH TO MERGE WITH TAILWIND CLASSES */
 .vlAbsoluteInset{
@@ -38,11 +43,6 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-}
-.vlFlexCenter{
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
 .vlFlexCol{

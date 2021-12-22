@@ -7,21 +7,27 @@ export default class LabelSearcher{
             return ''
         }
 
-        let objectLabel = object.label
+        let oLabel = object.label
 
-        if (objectLabel) {
-            if (_.isString(objectLabel)) {
-                return objectLabel
+        if (oLabel) {
+            if (_.isString(oLabel)) {
+                return oLabel
             }
 
-            if (_.isObject(objectLabel)){
-                let objChildren = objectLabel.komponents
-                if (objChildren && objChildren.length && objChildren[0].label && _.isString(objChildren[0].label)){
-                    return objChildren[0].label
+            if (_.isObject(oLabel)){
+                if (oLabel.$_config('searchableBy')) {
+                    return oLabel.$_config('searchableBy')
                 }
 
-                if (objectLabel.label) {
-                    return objectLabel.label
+                let children = oLabel.elements
+                if (children && children.length) {
+                    if(children[0].label && _.isString(children[0].label)){
+                        return children[0].label
+                    }
+                }
+
+                if (oLabel.label) {
+                    return oLabel.label
                 }
             }
         }

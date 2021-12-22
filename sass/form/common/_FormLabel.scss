@@ -32,7 +32,7 @@
 
 	//Focused/Dirty state
 	.vlFormField{
-		&:focus-within, &.vlDirtyField{
+		&:focus-within, &.vlDirtyField, &.vlDate, &.vlTime, &.vlJson, &.vlListe, &.vlInput.vlLeftIcon{
 			.vlFormLabel{
 				top: $form-label-focused-position-t;
 				left: $form-label-focused-position-l;
@@ -61,16 +61,6 @@
 			&:focus-within, &.vlDirtyField{
 				.vlFormLabel{
 					top: $form-label-select-buttons-focused-position-t;
-				}
-			}
-		}
-		&.vlDate, &.vlTime, &.vlJson, &.vlListe, &.vlInput.vlLeftIcon{
-			.vlFormLabel{
-				left: calc(var(--form-field-icon-width) + var(--form-control-padding-l));
-			}
-			&:focus-within, &.vlDirtyField{
-				.vlFormLabel{
-					left: $form-label-icon-focused-position-l;
 				}
 			}
 		}

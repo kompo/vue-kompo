@@ -1,7 +1,7 @@
 export default {
     computed: {
         $_phpClasses() { return this.component.class || '' },
-        $_customClassArray() { return [] }, //to be overridden in Komponents
+        $_customClassArray() { return [] }, //to be overridden in Elements
         $_classes() {
         	return this.$_classString(
                     [ this.$_defaultCssClass() ]
