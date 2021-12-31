@@ -1,11 +1,2 @@
-:root {
-	--nav-item-border: 3px solid transparent;
-	--nav-item-border-hover: 3px solid var(--primary);
-}
-
-@import 'classic/Navbar';
-@import 'classic/Footer';
-@import 'classic/Sidebar';
-@import 'classic/NavItem';
-@import 'classic/Dropdown';
-@import 'classic/Menu';
+//Don't use classic, deprecated in v4
+@import 'minimal';
