@@ -9,10 +9,6 @@
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
-    .vl-nav-item{
-        align-items: center;
-        white-space: initial;
-    }
 }
 
 @include media-breakpoint-down($sidebar-breakpoint) {
