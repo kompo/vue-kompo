@@ -7,16 +7,16 @@
         <div :class="$_prop('class')"
         	:style="backgroundImage">
 
-            <img v-if="fullImage" class="vlWFull"
+            <img v-if="fullImage" class="w-full"
             	:src="$_prop('image')" :alt="$_prop('title')">
 
-	        <div :class="overlayClass" class="vlAbsoluteInset flex-center">
+	        <div :class="overlayClass" class="absolute inset-0 flex-center">
 		        <h2 v-if="$_prop('title')" v-html="$_prop('title')" />
 		    </div>
 
 	        <component 
 	        	v-if="$_prop('buttons')" 
-	        	class="vlToolbar vlAbsoluteInset"
+	        	class="vlToolbar absolute inset-0"
 	        	v-bind="componentAttributes($_prop('buttons'))"/>
 	        
 	    </div>
