@@ -1,15 +1,17 @@
 <template>
     <transition name="fadeIn">
-        <div class="vlMask" v-show="drawers.length">
-            <transition-group name="slideLeft">
-                <vl-drawer
-                    v-for="(drawer, key) in drawers"
-                    :key="drawer.id"
-                    :obj="drawer.obj"
-                    :kompoid="drawer.kompoid"
-                    :options="drawer.options"
+        <div class="vlMask" v-show="modals.length">
+            <transition-group name="modal">
+                <vl-modal
+                    v-for="(modal, key) in modals"
+                    :key="modal.id"
+                    :obj="modal.obj"
+                    :kompoid="modal.kompoid"
+                    :options="modal.options"
                     @close="closeLast"
                     @confirmSubmit="confirmSubmit"
+                    @previous="previous"
+                    @next="next"
                 />
             </transition-group>
         </div>
@@ -23,56 +25,64 @@ export default {
     mixins: [EmitsEvents],
     data(){
         return {
-            drawers: [],
+            modals: [],
             initialId: 0,
             confirmSubmitFunction: null,
         }
     },
-    computed:{
+    computed: {
 
     },
     methods:{
-        addDrawer(obj, kompoid, options){
+        addModal(obj, kompoid, options){
 
             this.initialId += 1
             
-            this.$nextTick(() => this.drawers.push({
-                id: 'vl-drawer-'+this.initialId,
+            this.$nextTick(() => this.modals.push({
+                id: 'vl-modal-'+this.initialId,
                 obj: obj,
                 kompoid: kompoid,
                 options: Object.assign(options, {
-                    zIndex: 1000 + 100*this.initialId,
+                    zIndex: 2000 + 100*this.initialId,
                 }),
             }))
         },
         closeByIndex(index){
-            this.drawers.splice(index)
+            this.modals.splice(index)
         },
         closeLast(){
-            this.closeByIndex(this.drawers.length-1)
+            this.closeByIndex(this.modals.length-1)
             this.initialId -= 1
         },
         confirmSubmit(){
             this.confirmSubmitFunction()
         },
+        previous(){
+            this.closeLast()
+            this.$kompo.vlGalleryPrevious()
+        },
+        next(){
+            this.closeLast()
+            this.$kompo.vlGalleryNext()
+
+        },
         $_attachEvents(){
-            this.$_vlOn('vlFillDrawer', (response, kompoid, options) => {
+            this.$_vlOn('vlFillModal', (response, kompoid, options) => {
                 this.confirmSubmitFunction = options.confirmFunc
-                this.addDrawer(response.data, kompoid, options)
+                this.addModal(response.data, kompoid, options)
             })
-            this.$_vlOn('vlCloseDrawer', () => {
-                this.closeByIndex(this.slides.length-1)
+            this.$_vlOn('vlCloseModal', () => {
+                this.closeLast()
             })
         },
         $_destroyEvents(){
             this.$_vlOff([
-              'vlFillDrawer',
-              'vlCloseDrawer'
+              'vlFillModal',
+              'vlCloseModal'
             ])
         }
-
     },
-    created(){
+    created() {
         this.$_destroyEvents()
         this.$_attachEvents()
     },

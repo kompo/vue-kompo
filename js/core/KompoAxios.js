@@ -131,7 +131,6 @@ export default class KompoAxios{
         })
     }
     $_loadKomponent(payload){
-
         return this.$_axiosWithErrorHandling({
             url: this.$_route, 
             method: this.$_routeMethod,

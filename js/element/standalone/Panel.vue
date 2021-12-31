@@ -12,7 +12,7 @@
                     v-bind="$_attributes(row)" 
                     @closeModal="closeModal"
                     @closePanel="reset"
-                    @confirmModal="confirmModal"
+                    @confirmSubmit="confirmSubmit"
                     @touchedForm="$emit('touchedForm')"  
                 />
             </template>
@@ -70,8 +70,8 @@ export default {
         closeModal(){
             this.$emit('closeModal')
         },
-        confirmModal(){
-            this.$emit('confirmModal')
+        confirmSubmit(){
+            this.$emit('confirmSubmit')
         },
         $_attachEvents(){
             this.$_vlOn('vlFillPanel' + this.id, (response, included) => {

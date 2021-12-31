@@ -12,7 +12,7 @@ window._kompo = {
         let spinner = document.getElementById('vl-spinner')
         if (spinner) {
             spinner.style.display = display
-        }       
+        }
     }
 }
 
@@ -33,9 +33,6 @@ const Kompo = {
 			vlSort(kompoid, sortValue, emitterId){
 				Kompo.events.$emit('vlSort'+kompoid, sortValue, emitterId)
 			},
-			vlPreview(kompoid, index){
-				Kompo.events.$emit('vlPreview'+kompoid, index)
-			},
 			vlPreSubmit(kompoid){
 	    		Kompo.events.$emit('vlPreSubmit'+kompoid)
 	    	},
@@ -45,8 +42,8 @@ const Kompo = {
 			vlSubmitError(kompoid, error){
 	    		Kompo.events.$emit('vlSubmitError'+kompoid, error)
 	    	},
-	    	vlReloadAfterChildAction(kompoid){
-	    		Kompo.events.$emit('vlReloadAfterChildAction'+kompoid)
+	    	vlReloadAfterChildAction(kompoid, response){ //response used in CE
+	    		Kompo.events.$emit('vlReloadAfterChildAction'+kompoid, response)
 	    	},
 			vlBrowseQuery(kompoid, page, initialFilter){
 	    		Kompo.events.$emit('vlBrowseQuery'+kompoid, page, initialFilter)
@@ -81,8 +78,8 @@ const Kompo = {
 	    	vlFillPanel(panelId, response, included){
 	    		Kompo.events.$emit('vlFillPanel'+panelId, response, included)
 	    	},
-	    	vlFillDrawer(response, kompoid, warnbeforeclose){
-	    		Kompo.events.$emit('vlFillDrawer', response, kompoid, warnbeforeclose)
+	    	vlFillDrawer(response, kompoid, options){
+	    		Kompo.events.$emit('vlFillDrawer', response, kompoid, options)
 	    	},
 	    	vlCloseDrawer(){
 	    		Kompo.events.$emit('vlCloseDrawer')
@@ -111,6 +108,9 @@ const Kompo = {
 			vlToggleSidebarToggler(kompoid){
 				Kompo.events.$emit('vlToggleSidebarToggler'+kompoid)
 			},
+	    	vlFillModal(response, kompoid, options){
+	    		Kompo.events.$emit('vlFillModal', response, kompoid, options || {})
+	    	},
 	    	vlModalShow(modal, ajaxContent, warnbeforeclose, confirmFunc){
 	    		Kompo.events.$emit('vlModalShow' + modal, ajaxContent, warnbeforeclose, confirmFunc)
 	    	},
@@ -125,6 +125,15 @@ const Kompo = {
 	    	},
 	    	vlAlertShow(alert){
 	    		Kompo.events.$emit('vlAlertShow', alert)
+	    	},
+	    	vlGalleryPrevious(){
+	    		Kompo.events.$emit('vlGalleryPrevious')
+	    	},
+	    	vlGalleryNext(){
+	    		Kompo.events.$emit('vlGalleryNext')
+	    	},
+	    	vlUpdateSelectOption(kompoid, response){
+	    		Kompo.events.$emit('vlUpdateSelectOption'+kompoid, response)
 	    	},
 	    	events : this.events
 	    }
@@ -153,8 +162,10 @@ const Kompo = {
 
 						var url = el.href.split('#'),
 							currentUrl = window.location.href.replace(window.location.hash, '')
-						if(url.length == 2 && url[0] == currentUrl)
+
+						if(url.length == 2 && url[0] == currentUrl){
 							return
+						}
 
 						e.preventDefault()
 

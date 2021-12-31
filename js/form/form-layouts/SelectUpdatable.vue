@@ -12,10 +12,6 @@
                 />
             </template>
         </component>
-
-        <vl-modal :name="'modal'+$_elKompoId">
-            <vl-form :vkompo="updateForm" @success="updateOptionsAndValue"/>
-        </vl-modal>
     
     </div>
 </template>
@@ -43,8 +39,9 @@ export default {
 
             this.$_kAxios.$_loadKomponent(payload).then(r => {
 
-                this.updateForm = r.data
-                this.$kompo.vlModalShow('modal'+this.$_elKompoId)
+                this.$kompo.vlFillModal(r, this.$_elKompoId, {
+                    updateSelectOption: true,
+                })
 
             })
 
@@ -74,7 +71,20 @@ export default {
 
             if(!this.$_config('keepModalOpen'))
                 this.$kompo.vlModalClose('modal'+this.$_elKompoId)
-        }
+        },
+
+        $_attachCustomEvents(){
+            this.$_vlOn('vlUpdateSelectOption'+this.$_elKompoId, (response) => {
+
+                this.updateOptionsAndValue(response)
+
+            })
+        },
+        $_destroyCustomEvents(){
+            this.$_vlOff([
+                'vlUpdateSelectOption'+this.$_elKompoId,
+            ])
+        },
     }
 }
 </script>

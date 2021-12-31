@@ -1,0 +1,43 @@
+.vlButtonGroup{
+	.vlOption{
+		flex: 1;
+		&:not(.vlSelected):focus{
+			outline: 0;
+			box-shadow: inset 0 0 0 3px var(--primary-light);
+		}
+	}
+	.vlOptionCont:not(.flex-col){
+		>.vlOption:first-child{
+			border-radius: var(--form-control-border-radius) 0 0 var(--form-control-border-radius);
+			>div{
+				border-radius: var(--form-control-border-radius) 0 0 var(--form-control-border-radius);
+			}
+		}
+		>.vlOption:last-child{
+			border-radius: 0 var(--form-control-border-radius) var(--form-control-border-radius) 0;
+			>div{
+				border-radius: 0 var(--form-control-border-radius) var(--form-control-border-radius) 0;
+			}
+		}
+		.vlOption+.vlOption{
+			border-left: var(--form-control-border);
+		}
+	}
+	.vlOptionCont.flex-col{
+		>.vlOption:first-child{
+			border-radius: var(--form-control-border-radius) var(--form-control-border-radius) 0 0;
+			>div{
+				border-radius: var(--form-control-border-radius) var(--form-control-border-radius) 0 0;
+			}
+		}
+		>.vlOption:last-child{
+			border-radius: 0 0 var(--form-control-border-radius) var(--form-control-border-radius);
+			>div{
+				border-radius: 0 0 var(--form-control-border-radius) var(--form-control-border-radius);
+			}
+		}
+		.vlOption+.vlOption{
+			border-top: var(--form-control-border);
+		}
+	}
+}

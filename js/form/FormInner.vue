@@ -3,10 +3,6 @@
         <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
-        <vl-support-modal 
-            :kompoid="$_elKompoId"
-            @refresh="triggerRefreshForm"
-        />
     </component>
 </template>
 
@@ -185,7 +181,7 @@ export default {
                 this.handleRefreshResponse(responseData)
             })
 
-            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, () => {
+            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, (response) => {
                 this.triggerRefreshForm()
             })
 

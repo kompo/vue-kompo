@@ -3,7 +3,7 @@
         <vl-input v-if="withCardholder" :vkompo="chComponent" />
 
         <vl-form-field v-bind="$_wrapperAttributes" class="vlMargins">
-            <div class="vlFormControl vlFlex vlAlignCenter">
+            <div class="vlFormControl flex items-center">
                 <div style="width: 1px">&nbsp;</div>
                 <div ref="card" style="flex:1"></div>
             </div>

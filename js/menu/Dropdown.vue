@@ -1,7 +1,9 @@
 <template>
     <div 
+        :tabindex="0"
         v-bind="$_attributes" 
         @mouseleave="closeSubmenu"
+        @keyup.space="toggleForceOpen"
     >
 
         <component
@@ -9,7 +11,7 @@
             v-turbo-click="component.turbo" 
             @click="checkClickable">
             
-            <span class="flex" v-html="$_fullLabel" />
+            <span class="flex items-center" v-html="$_fullLabel" />
 
         </component>
 
@@ -40,6 +42,7 @@ export default {
     data(){
         return {
             open: false,
+            forcedOpen: false,
         }
     },
     computed: {        
@@ -47,6 +50,7 @@ export default {
             return [
                 this.$_config('active'),
                 (this.openOnClick && !this.open) ? '' : 'vlOpenOnHover',
+                this.forcedOpen ? 'vlForcedOpen' : '',
             ]
         },
         togglerClass(){
@@ -59,7 +63,8 @@ export default {
         menuClass(){
             return this.$_classString([
                 'vlMenuClosed',
-                this.$_config('dropdownPosition')
+                this.$_config('menuNoBorder') ? 'vlNoBorder' : '',
+                this.$_config('dropdownPosition'),
             ])
         },
         openOnClick(){
@@ -74,6 +79,8 @@ export default {
                 this.$_overwriteBladeClasses()
             }
 
+            this.forcedOpen = false
+
             this.$_clickAction()
         },
         closeSubmenu(){
@@ -81,6 +88,9 @@ export default {
                 this.open = false
                 this.$_overwriteBladeClasses()
             }
+        },
+        toggleForceOpen(){
+            this.forcedOpen = !this.forcedOpen
         }
     }
 }

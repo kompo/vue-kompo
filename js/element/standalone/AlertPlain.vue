@@ -3,7 +3,7 @@
         <div v-if="icon" v-html="icon" />
         <div v-html="message"/>
         <div class="vlAlertClose" @click.stop="close()">
-          <i class="icon-times vlCursorPointer"></i>
+          <i class="icon-times cursor-pointer"></i>
         </div>
     </div>
 </template>

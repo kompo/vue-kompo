@@ -6,9 +6,9 @@
 /*** style ****/
 .vlBtn, a.vlBtn{
 	background-clip: padding-box;
-	border-bottom: calc(2 * var(--btn-depth)) solid var(--primary-darker);
+	border-bottom: calc(2 * var(--btn-depth)) solid var(--primary-dark);
 	&:hover{
 		border-top: var(--btn-depth) solid transparent;
-		border-bottom: var(--btn-depth) solid var(--primary-darker);
+		border-bottom: var(--btn-depth) solid var(--primary-dark);
 	}
 }

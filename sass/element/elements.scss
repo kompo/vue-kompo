@@ -13,30 +13,35 @@ $sidebar-breakpoint: md !default;
  */
 :root {
 	--primary: #31475e;
-	--primary-darker: #135064;
-	--primary-lighter: #a9bbef;
+	--primary-dark: #135064;
+	--primary-light: #d5dffd;
 	--secondary: #359678;
-	--secondary-darker: #2d8066;
+	--secondary-dark: #2d8066;
 
-	--focus-box-shadow: 0 0 0.1rem 0.25rem #adc7cf;
+	--body-color: #fff;
+	--text-color: #164f63;
+
+	--focus-box-shadow: 0 0 0 1px var(--form-control-border-color-focused);
+	--btn-focus-box-shadow: 0 0 0 2px var(--form-control-border-color-focused);
 
 	--btn-padding-x: 1rem;
 	--btn-padding-y: 0.4rem;
 	--btn-border-radius: 0.375rem;
 
 	--tags-color: var(--primary);
-	--tags-bg: var(--primary-lighter);
+	--tags-bg: var(--primary-light);
 
 	--query-filters-spacing: 2rem;
 
 	--sidebar-breakpoint: 768px;
 
 	/**
-	* Colors
+	* Form Colors
 	*/
-	--form-primary-color: var(--primary);
 	--form-field-error-color: #f56565;
 	--form-control-bg: #fff;
+	--form-label-color: var(--primary);
+	--form-label-color-focused: inherit;
 	--form-control-placeholder-color: gainsboro;
 
 	/**
@@ -67,6 +72,7 @@ $sidebar-breakpoint: md !default;
 @import 'Tabs';
 @import 'Modal';
 @import 'Drawer';
+@import 'Panel';
 @import 'Popup';
 @import 'Alert';
 @import 'Badge';

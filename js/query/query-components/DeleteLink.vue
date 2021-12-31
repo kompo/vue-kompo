@@ -1,6 +1,6 @@
 <template>
-	
-	<vl-link 
+    
+    <vl-link 
         v-bind="$_attributes" 
         @click="confirmDelete"
         v-html="$_defaultLabel"
@@ -21,7 +21,9 @@ export default {
         }
     },
     computed:{
-        deleteTitle(){ return this.$_config('deleteTitle') },
+        deleteTitle(){
+            return this.$_config('deleteTitle')
+        },
         $_attributes(){
             return {
                 vkompo: Object.assign({}, this.confirmComponent), 
@@ -35,26 +37,17 @@ export default {
     },
     methods: {
         confirmDelete(){
-            this.$kompo.vlModalInsert(
-                this.kompoid, {
-                    vkompo: Object.assign(this.vkompo, {class: '', style: ''}), //TODO make configurable
-                    is: this.$options.name+ 'ModalContent',
-                    index: this.index,
-                    kompoid: this.kompoid
-                },
-                {}
-            )
-        },
-        $_attachEvents(){
-            this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
-                this.$emit('deleted')
+            console.log('lfel', this.index)
+            const modalSpecs = {
+                data: Object.assign({}, this.vkompo, {
+                    vueComponent: 'DeleteLinkModalContent',
+                    itemIndex: this.index,
+                })
+            }
+            this.$kompo.vlFillModal(modalSpecs, this.kompoid, {
+                refreshParent: true,
             })
         },
-        $_destroyEvents(){
-            this.$_vlOff([
-                'vlEmit'+this.$_elKompoId
-            ])
-        }
     },
     created(){
         var confirmComponent = _.cloneDeep(this.vkompo)

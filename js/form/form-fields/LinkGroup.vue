@@ -7,11 +7,13 @@
 
         <div :class="containerClass" v-bind="$_attributes">
 
-            <div :class="optionClass" @click.stop="setValue(key)"
+            <div :class="optionClass(option)" 
+                @click.stop="setValue(key)"
+                @keyup.enter.stop="setValue(key)"
+                tabindex="0"
                 v-for="(option,key) in options" :key="componentKey(key)">
 
                 <vlCustomLabel 
-                    tabindex="0"
                      v-on="$_events"
                     :vkompo="option.label" 
                     :kompoid="kompoid" 
@@ -34,11 +36,11 @@ export default {
         options(){ return this.component.options },
         containerClass(){ 
             return this.$_classString([
+                'vlOptionCont',
                 this.$_config('containerClass'),
                 this.$_config('guttersClass') 
             ])
         },
-        optionClass(){ return this.$_config('optionClass') },
         $_emptyValue() { return this.$_multiple ? [] : null },
         checkAllActivated(){ return this.$_multiple && this.$_config('checkAllActivated') }
     },
@@ -50,11 +52,17 @@ export default {
 
             this.$_setInitialValue()
         },
+        optionClass(option){ 
+            return this.$_classString([
+                'vlOption',
+                this.$_config('optionClass'),
+                option.selected ? this.$_selectedClass : this.$_unselectedClass,
+                this.$_commonClass,
+            ])
+        },
         optionInnerClass(option, key){ 
             return this.$_classString([
                 this.$_config('optionInnerClass'),
-                option.selected ? this.$_selectedClass : this.$_unselectedClass,
-                this.$_commonClass,
             ])
         },
         $_setInitialValue(){

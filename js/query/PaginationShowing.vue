@@ -1,5 +1,5 @@
 <template>
-    <div v-if="needsPaginationLinks" class="vlFlex vlAlignCenter vlPaginationShowing">
+    <div v-if="needsPaginationLinks" class="flex items-center vlPaginationShowing">
         <div>
             <span v-html="pagination.total + ' results'" />
             <span v-html="'(showing '+from+' to '+to+') &nbsp;'" />

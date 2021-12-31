@@ -56,27 +56,8 @@ export default {
                 index: this.index
         	}
         },
-		$_preview(){
-			if(this.$_prop('noPreview') || this.$_prop('url'))
-				return
-
-			this.$kompo.vlPreview(this.kompoid, this.index)
-		},
-		$_previewModal(arrows){
-
-			this.$kompo.vlModalInsert(
-                this.kompoid, {
-                	is: 'VlImageModalContent',
-					image: this.$_prop('image'),
-					title: this.$_prop('title')
-				}, {
-					arrows: arrows
-				}
-			)
-		}
 	},
 	created(){
         this.vkompo.$_prop = this.$_prop
-        this.vkompo.$_previewModal = this.$_previewModal
 	}
 }

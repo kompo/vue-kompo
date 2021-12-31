@@ -99,7 +99,7 @@ export default class Action {
                         this.submitFormAction()
                     }
                 }else{
-                    this.fillModalAction(e.response, () => {
+                    this.fillModalNewAction(e.response, () => {
                         this.warningConfirmed = true
                         this.submitFormAction()
                     })
@@ -186,6 +186,7 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     removeSelfAction(){
+        console.log('removing', this.vue.index)
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
 
         this.vue.$_runInteractionsOfType(this, 'success')
@@ -196,6 +197,14 @@ export default class Action {
         window.onpopstate = function(e) {location.reload()} //for back button
 
         this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    fillModalNewAction(response, confirmFunc){
+        this.vue.$kompo.vlFillModal(response, this.vue.kompoid, {
+            confirmFunc: confirmFunc,
+            warnBeforeClose: this.vue.$_config('warnBeforeClose'),
+            refreshParent: this.vue.$_config('refreshParent'),
+            keepModalOpen: this.vue.$_config('keepModalOpen'),
+        })
     }
     fillModalAction(response, confirmFunc){
     	var modalName = this.$_config('modalName') || (this.vue.kompoid ? 'modal'+this.vue.kompoid : 'vlDefaultModal')
@@ -219,19 +228,13 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     modalInsertAction(response){
-        this.vue.$kompo.vlModalInsert(
-            this.vue.kompoid, 
-            {
-                vkompo: response.data,
-                is: 'VlEditLinkModalContent',
-                index: this.vue.index,
-                kompoid: this.vue.kompoid,
-                keepModalOpen: this.vue.$_config('keepModalOpen')
-            }, 
-            {
-                warn: this.vue.$_config('warnBeforeClose')
-            }
-        )
+        this.vue.$kompo.vlFillModal(response, this.vue.kompoid, {
+            confirmFunc: null,
+            warnBeforeClose: this.vue.$_config('warnBeforeClose'),
+            refreshParent: true,
+            keepModalOpen: this.vue.$_config('keepModalOpen'),
+            index: this.vue.index, //not used yet
+        })
     }
     fillPanelAction(response, parentAction){
         this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, this.$_config('included') || parentAction.$_config('included'))
@@ -239,7 +242,9 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     fillDrawerAction(response){
-        this.vue.$kompo.vlFillDrawer(response, this.vue.kompoid, this.vue.$_config('warnBeforeClose'))
+        this.vue.$kompo.vlFillDrawer(response, this.vue.kompoid, {
+            warnBeforeClose: this.vue.$_config('warnBeforeClose'),
+        })
     }
     closeDrawerAction(){
         this.vue.$kompo.vlCloseDrawer()

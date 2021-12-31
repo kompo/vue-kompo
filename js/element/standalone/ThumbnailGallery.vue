@@ -17,23 +17,16 @@
                     @preview="previewAndOpen" />
             </transition-group>
         </draggable>
-
-        <vl-thumbnail-modal 
-            v-if="previewable"
-            :name="modalname"
-            :image="previewImage" 
-            :length="images.length"
-            @next="nextImage"
-            @previous="previousImage" />
-
     </div>
 </template>
 
 <script>
 
+import EmitsEvents from '../mixins/EmitsEvents'
 import draggable from 'vuedraggable'
 
 export default {
+    mixins: [EmitsEvents],
     props: {
         images: {type: Array, required: true}, 
         height: {type: String, required: false},
@@ -45,7 +38,7 @@ export default {
     data: () => ({
         previewIndex: null,
         previewImage: null,
-        modalname:  null
+        id: null,
     }),
 
     computed: {
@@ -57,11 +50,25 @@ export default {
     methods: {
         previewAndOpen(index){
             this.preview(index)
-            this.$kompo.vlModalShow(this.modalname)
+            //this.$kompo.vlModalShow(this.modalname)
         },
         preview(index){
             this.previewIndex = index
-            this.previewImage = this.images[this.previewIndex]
+            const previewImage = this.images[this.previewIndex]
+
+            this.previewImage = {
+                data: {
+                    vueComponent: 'Img',
+                    id: 'image',
+                    src: previewImage.src,
+                    alt: previewImage.alt,
+                    class: 'image-preview',
+                }
+            }
+
+            this.$kompo.vlFillModal(this.previewImage, this.id, {
+                arrows: true,
+            })
         },
         previousImage(){
             this.preview(this.previewIndex == 0 ? this.images.length - 1 : this.previewIndex - 1)
@@ -71,10 +78,34 @@ export default {
         },
         remove(index){
             this.$emit('remove',index)
+        },
+        close(){
+            this.previewImage = null
+        },
+        $_attachEvents(){
+            this.$_vlOn('vlGalleryPrevious', () => {
+                this.previousImage()
+            })
+            this.$_vlOn('vlGalleryNext', () => {
+                this.nextImage()
+            })
+        },
+        $_destroyEvents(){
+            this.$_vlOff([
+                'vlGalleryPrevious',
+                'vlGalleryNext',
+            ])
         }
     },
-    mounted(){
-        this.modalname = 'image-preview'+this._uid
+    created(){
+        this.id = Math.random().toString(36).substr(2, 5) //uniq id
+    
+        this.$_destroyEvents()
+        this.$_attachEvents()
+    },
+    updated() {
+        this.$_destroyEvents()
+        this.$_attachEvents()
     }
 }
 </script>

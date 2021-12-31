@@ -5,12 +5,11 @@
 
         <component v-bind="filtersAttributes('Top')" />
 
-        <component v-if="showTopPagination" @browse="browseQuery" 
-            v-bind="paginationAttributes" />
+        <component v-if="showTopPagination" @browse="browseQuery" v-bind="paginationAttributes(paginationClassT)" />
 
         <div class="vlQueryWrapper"
-            :class="cardWrapperClass"
-            :style="cardWrapperStyle"
+            :class="itemsWrapperClass"
+            :style="itemsWrapperStyle"
             ref="vlQueryWrapper"
             @scroll="onScroll">
 
@@ -26,18 +25,11 @@
             />
         </div>
 
-        <component v-if="showBottomPagination" @browse="browseQuery" 
-            v-bind="paginationAttributes" />
+        <component v-if="showBottomPagination" @browse="browseQuery" v-bind="paginationAttributes(paginationClassB)" />
 
         <component v-bind="filtersAttributes('Bottom')" />
 
         <component v-bind="filtersAttributes('Right')" />
-
-        <vl-support-modal 
-            :kompoid="$_elKompoId" 
-            @refresh="refreshItem"
-            @previous="previewPrevious"
-            @next="previewNext" />
 
     </div>
 </template>
@@ -62,7 +54,6 @@ export default {
         headers: [],
         cardsKey: '',
         filtersKey: 1,
-        previewIndex: null,
         checkedItemIds: [],
         isBrowsing: false,
     }),
@@ -79,6 +70,11 @@ export default {
         this.$_saveLiveKomponent()
     },
     mounted() {
+
+        if (this.isScrollPagination && this.topPagination) {
+            this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
+        }
+
         this.$_runOwnInteractions('load')
     },
     computed: {
@@ -101,14 +97,15 @@ export default {
                 style: this.$_elementStyles
             }
         },
-        cardWrapperClass(){
+        itemsWrapperClass(){
             return this.$_classString([
                 this.isTableLayout ? 'vlTableWrapper' : '',
-                this.component.cardWrapperClass
+                this.component.itemsWrapperClass,
+                this.isScrollPagination ? 'overflow-y-auto' : '',
             ])
         },
-        cardWrapperStyle(){
-            return this.component.cardWrapperStyle
+        itemsWrapperStyle(){
+            return this.component.itemsWrapperStyle
         },
         layoutAttributes(){
             return {
@@ -122,14 +119,7 @@ export default {
                             'flex flex-col-reverse' : ''
             }
         },
-        paginationAttributes(){
-            return {
-                is: this.paginationStyle,
-                pagination: this.pagination,
-                class: this.paginationClass
-            }
-        },
-        isScrollPagination() { return this.component.paginationStyle == 'Scroll' },
+        isScrollPagination() { return this.component.paginationType == 'Scroll' },
         tableClass() { return this.component.tableClass },
         hasPagination() { return this.component.hasPagination && !this.isScrollPagination },
         topPagination(){ return this.component.topPagination },
@@ -137,12 +127,9 @@ export default {
         showTopPagination(){ return this.hasPagination && this.topPagination },
         showBottomPagination(){ return this.hasPagination && this.bottomPagination },
         leftPagination(){ return this.hasPagination && this.component.leftPagination },
-        paginationStyle() { return 'VlPagination' + this.component.paginationStyle },
-        paginationClass(){ return this.$_classString(
-            [this.leftPagination ? '' : 'vlJustifyEnd']
-            .concat([this.showTopPagination ? 'vlPaginationT' : ''])
-            .concat([this.showBottomPagination ? 'vlPaginationB' : ''])
-        ) },
+        paginationType() { return 'VlPagination' + this.component.paginationType },
+        paginationClassB(){ return this.showBottomPagination ? 'vlPaginationB' : ''},
+        paginationClassT(){ return this.showTopPagination ? 'vlPaginationT' : ''},
         layoutComponent(){ 
             if(this.component.layout == 'CalendarMonth')
                 return 'VlCalendarMonth'
@@ -156,6 +143,20 @@ export default {
     methods: {
         getCards(query){ return this.getPagination(query).data },
         getPagination(query){ return query.query },
+        getPaginationClass(secondClass){
+            return this.$_classString([
+                this.leftPagination ? '' : 'justify-end',
+                this.component.paginationClass,
+                secondClass,
+            ])
+        },
+        paginationAttributes(positionClass){
+            return {
+                is: this.paginationType,
+                pagination: this.pagination,
+                class: this.getPaginationClass(positionClass)
+            }
+        },
         filtersAttributes(placement){
             return {
                 is: this.filters[placement.toLowerCase()].length > 1 ? 'VlFilters' : 'VlFiltersSingle',
@@ -190,19 +191,6 @@ export default {
                 formData.append(key, jsonFormData[key])
             }
             return formData
-        },
-        refreshItem(index){
-            this.browseQuery() //temporary need to make back-end
-        },
-        preview(index){
-            this.previewIndex = index
-            this.cards[this.previewIndex].render.$_previewModal(this.cards.length > 1)
-        },
-        previewPrevious(){
-            this.preview(this.previewIndex == 0 ? this.cards.length - 1 : this.previewIndex - 1)
-        },
-        previewNext(){
-            this.preview(this.previewIndex == this.cards.length - 1 ? 0 : this.previewIndex + 1)
         },
         $_echoTrigger(){
 
@@ -301,7 +289,7 @@ export default {
                     payload: eventPayload
                 })
             })
-            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, () => {
+            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, (response) => {
                 this.browseQuery()
             })
             this.$_vlOn('vlBrowseQuery'+this.$_elKompoId, (page, initialFilters) => {
@@ -359,9 +347,6 @@ export default {
             this.$_vlOn('vlToggle'+this.$_elKompoId, (toggleId) => {
                 this.$_toggle(toggleId)
             })
-            this.$_vlOn('vlPreview'+this.$_elKompoId, (index) => {
-                this.preview(index)
-            })
             this.$_deliverKompoInfoOn()
         },
         $_destroyEvents(){
@@ -375,7 +360,6 @@ export default {
                 'vlRemoveItem'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,
                 'vlToggle'+this.$_elKompoId,
-                'vlPreview'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
         },

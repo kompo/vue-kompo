@@ -2,7 +2,7 @@
     <div class="vlTabs"
         v-bind="$_layoutWrapperAttributes" 
         v-show="!$_hidden">
-        <ul role="tablist" class="vlFlex">
+        <ul role="tablist" class="flex">
             <li
                 v-for="(element, index) in elements"
                 :key="index"

@@ -54,7 +54,7 @@ export default {
             blur: this.$_blurAction,
             keyup: this.$_keyupAction,
             change: this.$_changeAction,
-            input: this.$_inputAction
+            input: this.$_inputAction,
         }},
         $_wrapperAttributes(){ return {
             component: this.component,

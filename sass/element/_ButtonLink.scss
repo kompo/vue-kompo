@@ -5,6 +5,7 @@
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
+	transition: all .3s ease-in-out;
 }
 .vlBtn{
 	border-radius: var(--btn-border-radius);
@@ -13,7 +14,7 @@
 button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normalize adding outline
 	&:focus{
 		outline: 0;
-		box-shadow: var(--focus-box-shadow);
+		box-shadow: var(--btn-focus-box-shadow);
 	}
 }
 .vlBtn{ 
@@ -28,13 +29,22 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	width: auto;
 }
 
+.vlBtn.small{
+	font-size: 85%;
+	padding: calc(var(--btn-padding-y) - 0.1rem) calc(var(--btn-padding-x) - 0.4rem);
+}
+.vlBtn.big{
+	font-size: 115%;
+	padding: calc(var(--btn-padding-y) + 0.2rem) calc(var(--btn-padding-x) + 0.5rem);
+}
+
 /**
  * Initial link styles
  */
 .vlLink{
 	color: var(--primary);
 	&:hover{
-		color: var(--primary-darker);
+		color: var(--primary-dark);
 	}
 }
 /**
@@ -45,7 +55,7 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: #fff;
 	user-select: none;
 	&:hover{
-		background-color: var(--primary-darker);
+		background-color: var(--primary-dark);
 		color: #fff; //to remain white if it is a link with .vlBtn
 	}
 }
@@ -59,8 +69,8 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: var(--primary);
 	&:hover{
 		background-color: transparent;
-		color: var(--primary-darker);
-		border: 1px solid var(--primary-darker);
+		color: var(--primary-dark);
+		border: 1px solid var(--primary-dark);
 	}
 }
 
@@ -73,7 +83,7 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: var(--primary);
 	&:hover{
 		background-color: transparent;
-		color: var(--primary-darker);
+		color: var(--primary-dark);
 	}
 }
 
@@ -83,7 +93,7 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 .vlLink.vlSecondary{
 	color: var(--secondary);
 	&:hover{
-		color: var(--secondary-darker);
+		color: var(--secondary-dark);
 	}
 }
 .vlBtn.vlSecondary, a.vlBtn.vlSecondary{
@@ -91,7 +101,7 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: #fff;
 	user-select: none;
 	&:hover{
-		background-color: var(--secondary-darker);
+		background-color: var(--secondary-dark);
 		color: #fff; //to remain white if it is a link with .vlBtn
 	}
 }
@@ -101,8 +111,8 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: var(--secondary);
 	&:hover{
 		background-color: transparent;
-		color: var(--secondary-darker);
-		border: 1px solid var(--secondary-darker);
+		color: var(--secondary-dark);
+		border: 1px solid var(--secondary-dark);
 	}
 }
 .vlBtnPlain.vlSecondary, a.vlBtnPlain.vlSecondary{
@@ -111,7 +121,7 @@ button.vlBtn, a.vlBtn, a.vlLink{ //i had to go 2 levels deep because of normaliz
 	color: var(--secondary);
 	&:hover{
 		background-color: transparent;
-		color: var(--secondary-darker);
+		color: var(--secondary-dark);
 	}
 }
 

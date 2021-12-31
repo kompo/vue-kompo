@@ -22,12 +22,17 @@ export default class TurboClick {
         )
     }
     trigger(){
+        let sidebarScoll = this.getLeftSidebar() ? this.getLeftSidebar().scrollTop : 0 //preserve scroll
         _kompo.toggleSpinner('block')
         axios.get(this.url).then(r => {
 
             _kompo.toggleSpinner('none')
                             
             this.displayResponse(r)
+
+            if (this.getLeftSidebar()) {
+                this.getLeftSidebar().scrollTop = sidebarScoll
+            }
 
         }).catch(e => {
 
@@ -40,6 +45,9 @@ export default class TurboClick {
 
             console.log('Error loading object in Panel:' + e)
         })
+    }
+    getLeftSidebar(){
+        return document.querySelector('.vl-sidebar-l')
     }
     displayResponse(r){
         //parse the GET response HTML
@@ -79,8 +87,15 @@ export default class TurboClick {
         window.history.pushState({url: window._kompo.history}, "", responseURL)
         window.onpopstate = (e) => {
 
+            if (!e.state) { //pure #url-hashes are triggering popstate... this isolates them
+                return;
+            }
+
             window._kompo.history.pop() //remove current url
             let lastUrl = window._kompo.history.pop() //get previous url
+            
+            console.log(lastUrl)
+
             if(!lastUrl) //if no more history from kompo, default to browser's list
                 return history.go(-1)
 

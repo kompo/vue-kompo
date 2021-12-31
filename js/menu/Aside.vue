@@ -3,21 +3,19 @@
         ref="sidebar"
         v-bind="$_menuAttributes"
         v-click-out="close">
+
         <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
-        <vl-support-modal 
-            :kompoid="$_elKompoId"
-        />
+
     </aside>
 </template>
 
 <script>
-import IsMobile from './mixins/IsMobile'
 import IsMenu from './mixins/IsMenu'
 
 export default {
-    mixins: [IsMenu, IsMobile],
+    mixins: [IsMenu],
     props:{
         side: {type: String, required: true}
     },
@@ -57,10 +55,17 @@ export default {
                 this.togglerKompoId = elKompoId
                 this.toggle()
             })
+            this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
+
+                if (eventName == 'closeSidebar') {
+                    this.close()
+                }
+            })
         },
         $_destroyCustomEvents(){
             this.$_vlOff([
-                'vlToggleSidebar'+this.side
+                'vlToggleSidebar'+this.side,
+                'vlEmit'+this.$_elKompoId,
             ])
         },
     },

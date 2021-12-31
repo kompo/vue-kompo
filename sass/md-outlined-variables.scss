@@ -17,7 +17,7 @@
 	--form-control-border-radius: .25rem;
 	--form-control-border-color: gainsboro;
 	--form-control-border: 1px solid var(--form-control-border-color);
-	--form-control-border-color-focused: var(--form-primary-color);
+	--form-control-border-color-focused: var(--primary);
 }
 
 /**
@@ -36,9 +36,3 @@ $form-label-editor-position-t: 2.4rem + $form-label-position-t !default;
 $form-label-editor-focused-position-t: $form-label-focused-position-t !default;
 $form-label-trix-position-t: 1.6rem + $form-label-position-t !default;
 $form-label-trix-focused-position-t: $form-label-focused-position-t !default;
-
-/**
- * Borders
- */
-$form-control-border-width-focused: 2px !default;
-$form-control-box-sizing: border-box !default;

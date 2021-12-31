@@ -9,7 +9,7 @@
                 width: component.imageWidth,
                 height: component.imageHeight
             }" 
-            class="vlInlineBlock" 
+            class="inline-block" 
             :class="$_config('imageClass')" alt="">
             
         <span v-html="$_label" />

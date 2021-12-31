@@ -20,8 +20,8 @@ export default {
         closePanel(){
             this.$emit('closePanel')
         },
-        confirmModal(){
-            this.$emit('confirmModal')
+        confirmSubmit(){
+            this.$emit('confirmSubmit')
         },
     }
 

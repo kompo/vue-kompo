@@ -9,7 +9,7 @@
         }
     }
     .vlChecked{
-        background-color: var(--form-primary-color);
+        background-color: var(--primary);
         >i {
             display: block;
         }        
@@ -51,7 +51,7 @@
         }
     }
     input:checked ~ .vlToggleArea{
-        background-color: var(--form-primary-color);
+        background-color: var(--primary);
         &:after{
             -webkit-transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );
             transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );

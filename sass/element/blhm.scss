@@ -6,14 +6,15 @@
 	--body-color: #434242;
 	--table-color: var(--primary);
 	--modal-header-bg: #a1cfde;
-	--modal-header-h1-color: var(--primary-darker);
+	--modal-header-h1-color: var(--primary-dark);
 }
 
 /***** CSS ********/
 
 body, html {
     height: 100%;
-    color: var(--body-color);
+    background: var(--body-color);
+    color: var(--text-color);
     @extend .mini-scroll;
 }
 

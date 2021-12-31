@@ -4,55 +4,51 @@
 }
 
 .fadeIn-enter-active {
-    transition: opacity .3s ease;
+    transition: opacity .2s ease;
+}
+
+/*********** modal ****************/
+.modal-enter .kompoModal{
+    transform: scale(0);
+    transform: translateY(100px);
+}
+.modal-enter-to .kompoModal{
+    transform: scale(1);
+    transform: translateY(0);
+}
+.modal-enter-active .kompoModal{
+    transition: all .3s ease;
+}
+.modal-leave .kompoModal{
+    transform: scale(1);
+    transform: translateY(0);
+}
+.modal-leave-to .kompoModal{
+    transform: scale(0);
+    transform: translateY(100px);
+}
+.modal-leave-active .kompoModal{
+    transition: all .3s ease;
 }
 
 /*********** slideLeft ************/
 .slideLeft-enter{
-    opacity: 0;
-    transform: translate3d(300px, 0, 0);
+    transform: translateX(300px);
 }
 .slideLeft-enter-to{
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
 }
 .slideLeft-enter-active{
-    transition: transform .3s ease, opacity .5s ease;
-}
-.slideLeft-leave{
-    opacity: 1;
-    transform: translate3d(0px, 0, 0);
-}
-.slideLeft-leave-to{
-    opacity: 0;
-    transform: translate3d(-300px, 0, 0);
-}
-.slideLeft-leave-active{
-    transition: transform .3s ease, opacity .5s ease;
-}
-
-/*********** slideRight ************/
-.slideRight-enter{
-    opacity: 0;
-    transform: translate3d(-300px, 0, 0);
-}
-.slideRight-enter-to{
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-}
-.slideRight-enter-active{
     transition: all .3s ease;
 }
-.slideRight-leave{
-    opacity: 1;
-    transform: translate3d(0px, 0, 0);
+.slideLeft-leave{
+    transform: translateX(0);
 }
-.slideRight-leave-to{
-    opacity: 0;
-    transform: translate3d(300px, 0, 0);
+.slideLeft-leave-to{
+    transform: translateX(300px);
 }
-.slideRight-leave-active{
-    transition: all 0.3s ease;
+.slideLeft-leave-active{
+    transition: all .3s ease;
 }
 
 /*********** slideDown ************/

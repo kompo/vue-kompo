@@ -1,47 +1,37 @@
 <template>
-    <section class="vlDrawer">
-        <div class="vlPanelClose">
-          <button aria-label="Close panel" @click="closeMe">
-            <i class="icon-times"></i>
-          </button>
+    <div 
+        class="fixed inset-0"
+        tabindex="0"
+        @mousedown="mouseDown" 
+        @mouseup="mouseUp"
+        :style="{'z-index': zIndex - 2 }">
+
+        <div class="vlDrawerClose" :style="{'z-index': zIndex + 2 }" @click.stop="closeAction">
+            <i class="icon-times-circle"></i>
         </div>
-        <component 
-            v-if="partial" :is="partial" 
-            :vkompo="component"
-            @success="refreshParent" />
-    </section>
+
+        <section 
+            class="kompoFloat kompoDrawer" 
+            ref="floatingContainer">
+
+            <template v-for="(row,index) in elements">
+                <component 
+                    v-bind="$_attributes(row)" 
+                    @closeModal="closeAction"
+                    @confirmSubmit="confirmSubmit"
+                    @touchedForm="handleTouchedForm"  
+                    @success="handleSubmitSuccess"
+                />
+            </template>
+
+        </section>
+    </div>
 </template>
 
 <script>
-import HasVueComponent from '../mixins/HasVueComponent'
+import IsFloating from '../mixins/IsFloating'
 
 export default {
-    mixins: [HasVueComponent],
-    props: {
-        obj: { type: Object, required: true },
-        kompoid: { type: String, required: true },
-        index: { type: String, required: true },
-    },
-    data(){
-        return {
-            component: null,
-            partial: null
-        }
-    },
-    methods: {
-        closeMe(){
-            this.$emit('close', this.index)
-        },
-        insertFromResponse(){
-            this.component = this.obj
-            this.partial = this.$_komponentTag(this.obj)
-        },
-        refreshParent(){
-            this.$kompo.vlReloadAfterChildAction(this.kompoid)
-        },
-    },
-    created(){
-        this.insertFromResponse()
-    }
+    mixins: [IsFloating],
 }
 </script>

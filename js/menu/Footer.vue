@@ -3,9 +3,6 @@
         <template v-for="component in elements">
             <component v-bind="$_attributes(component)"/>
         </template>
-        <vl-support-modal 
-            :kompoid="$_elKompoId"
-        />
     </footer>
 </template>
 

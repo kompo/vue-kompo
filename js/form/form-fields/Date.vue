@@ -87,6 +87,7 @@ export default {
             this.$refs.flatpickr.fp.showTimeInput = true //fix to show time in datetime
             if(this.$_noCalendar) //for Time, we want it to focus to the hour input
                 setTimeout( () => this.$refs.flatpickr.fp.hourElement.focus(), 50)
+            this.$_focusAction()
         },
         onChange(selectedDates, dateStr, instance) {
 
@@ -113,6 +114,7 @@ export default {
         },
         onClose(obj, value){
             this.$emit('close', value, event)
+            this.$_blurAction()
         }
     }
 }

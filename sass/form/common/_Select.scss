@@ -14,7 +14,7 @@
 .vlOptions{
 	position: absolute;
 	left: 0;
-	background-color: var(--form-control-bg);
+	background-color: var(--body-color);
 	z-index: 50;
 	max-height: 240px;
 	overflow-y: auto;
@@ -25,15 +25,17 @@
 	.vlOption{
 		cursor: pointer;
 		padding: var(--form-control-padding-t) var(--form-control-padding-r) var(--form-control-padding-b) var(--form-control-padding-l);
-		color: #444444;
-		&.vlHoveredOption{
-			background-color: ghostwhite;
-		}
-		&.vlSelected{
-			background-color: mix(blue, #fff, 15);
-		}
-		&.vlSelected.vlHoveredOption{
-			background-color: mix(red, #fff, 15);
-		}
+	}
+}
+
+.vlOption{
+	&.vlHoveredOption{
+		background-color: var(--primary-light);
+	}
+	&.vlSelected{
+		background-color: mix(blue, #fff, 15);
+	}
+	&.vlSelected.vlHoveredOption{
+		background-color: mix(red, #fff, 15);
 	}
 }

@@ -8,16 +8,15 @@
         aria-expanded="false">
 
         <span v-html="$_label"/>
-        <span>&#10005;</span>
+        <div class="vlBlur"></div>
     </div>
 </template>
 
 <script>
 import Element from '../form/mixins/Element'
-import IsMobile from './mixins/IsMobile'
 
 export default {
-    mixins: [Element, IsMobile],
+    mixins: [Element],
     data(){
         return {
             toggleClass: '',

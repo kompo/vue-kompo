@@ -8,7 +8,7 @@
 	    	opacity: 0; /* invisible but it's there! */
 		    width: 100%;
 		    height: 7.9rem;
-		    @extend .vlAbsoluteInset;
+		    @extend .absolute, .inset-0;
 		    cursor: pointer;
 		    //z-index: 5;
 	    }
@@ -20,7 +20,7 @@
 	}
 }
 .vlImageMsg{
-	@extend .vlAbsoluteInset, .flex-center;
+	@extend .absolute, .inset-0, .flex-center;
 	line-height: 1.1rem;
 	color: var(--form-control-placeholder-color);
     i{

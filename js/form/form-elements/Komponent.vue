@@ -5,8 +5,9 @@
         @click.stop="$_clickAction" 
         @closeModal="closeModal"  
         @closePanel="closePanel"  
-        @confirmModal="confirmModal" 
+        @confirmSubmit="confirmSubmit" 
         @touchedForm="$emit('touchedForm')"  
+        @success="(response) => $emit('success', response)"  
         @deleted="$emit('deleted')" 
     />
 
@@ -25,6 +26,7 @@ export default {
                 kompoid: this.$_elKompoId || this.kompoid,
             }
         }
-    }
+    },
+
 }
 </script>

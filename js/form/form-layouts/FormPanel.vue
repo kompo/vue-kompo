@@ -5,18 +5,17 @@
 
         <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
         
-        <transition :name="transition" :mode="mode">
+        <transition-group :name="transition" :mode="mode">
             <div v-if="html" :is="{template: html}" />
-            <template v-for="(row,index) in elements">
-                <component 
-                    v-bind="$_attributes(row)" 
-                    @closeModal="closeModal"
-                    @closePanel="reset"
-                    @confirmModal="confirmModal"
-                    @touchedForm="$emit('touchedForm')"  
-                />
-            </template>
-        </transition>
+            <component 
+                v-for="(row,index) in elements" :key="componentKey(index)"
+                v-bind="$_attributes(row)" 
+                @closeModal="closeModal"
+                @closePanel="reset"
+                @confirmSubmit="confirmSubmit"
+                @touchedForm="$emit('touchedForm')"  
+            />
+        </transition-group>
 
 
     </div>
@@ -55,21 +54,22 @@ export default {
         },
         hasLoadedElements(){
             return this.elements && this.elements.length > 0
-        }
+        },
     },
     methods:{
         reset(){
             this.html = null
             this.elements = []
         },
+        componentKey(key){ return this.$_elKompoId + '-' + key },
         close(){
             this.reset()
         },
         closeModal(){
             this.$emit('closeModal')
         },
-        confirmModal(){
-            this.$emit('confirmModal')
+        confirmSubmit(){
+            this.$emit('confirmSubmit')
         },
         loadPanel(elements){
             

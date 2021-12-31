@@ -1,6 +1,6 @@
 <template>
     <draggable 
-        class="flex flex-shrink-0"
+        class="flex shrink-0"
         v-bind="$_sortingAttributes" 
         v-on="$_sortingEvents">
 

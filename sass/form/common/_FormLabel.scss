@@ -1,5 +1,5 @@
 .vlFormLabel{
-	color: var(--form-primary-color);
+	color: var(--form-label-color);
 	display: inline-block;
 
 	@if variable-exists(form-label-position){
@@ -10,11 +10,15 @@
 		z-index: 5;
 	}
 }
+.vlFocusedField>.vlFormLabel{
+	color: var(--form-label-color-focused);
+	transition: color 0.2s ease;
+}
 
 @if variable-exists(form-label-position){
 	
 	//Initial state
-	.vlSelectButtons, .vlSelectLinks{
+	.vlButtonGroup, .vlLinkGroup{
 		.vlFormLabel{
 			top: $form-label-select-buttons-position-t;
 		}
@@ -57,7 +61,7 @@
 	            }
 	        }
         }
-        &.vlSelectButtons, &.vlSelectLinks{
+        &.vlButtonGroup, &.vlLinkGroup{
 			&:focus-within, &.vlDirtyField{
 				.vlFormLabel{
 					top: $form-label-select-buttons-focused-position-t;
