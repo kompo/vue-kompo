@@ -5,7 +5,7 @@
 
         <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
         
-        <transition-group :name="transition" :mode="mode">
+        <transition-group :name="transition" :mode="mode" tag="div" class="w-full">
             <div v-if="html" :is="{template: html}" />
             <component 
                 v-for="(row,index) in elements" :key="componentKey(index)"
@@ -28,6 +28,7 @@ export default {
     data(){
         return {
             html : null,
+            loaded: false,
         }
     },
     computed:{
@@ -53,13 +54,14 @@ export default {
             ]
         },
         hasLoadedElements(){
-            return this.elements && this.elements.length > 0
+            return this.loaded && this.elements && this.elements.length > 0
         },
     },
     methods:{
         reset(){
             this.html = null
             this.elements = []
+            this.loaded = false
         },
         componentKey(key){ return this.$_elKompoId + '-' + key },
         close(){
@@ -87,7 +89,6 @@ export default {
             this.reset()
         },
         includeObject(object){
-            this.reset()
             this.$nextTick( () => {
                 this.loadPanel(object)
                 this.$nextTick( () => { this.$_togglesForm(this.hidesOnLoad) })
@@ -98,6 +99,8 @@ export default {
             this.$_vlOn('vlFillPanel' + this.$_elementId(), (response, included) => {
 
                 this.reset()
+
+                this.loaded = true
 
                 if(included)
                     return this.includeObject(response) //emit and stop
@@ -120,10 +123,7 @@ export default {
         },
     },
     created() {
-
         this.elements = this.elements || [] //when called in Vue directly (not through a PHP Form)
-        
-        this.loaded = this.elements && this.elements.length
     }
 }
 </script>

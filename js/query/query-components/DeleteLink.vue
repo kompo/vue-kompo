@@ -37,11 +37,12 @@ export default {
     },
     methods: {
         confirmDelete(){
-            console.log('lfel', this.index)
             const modalSpecs = {
                 data: Object.assign({}, this.vkompo, {
                     vueComponent: 'DeleteLinkModalContent',
                     itemIndex: this.index,
+                    class: '',
+                    style: '',
                 })
             }
             this.$kompo.vlFillModal(modalSpecs, this.kompoid, {
