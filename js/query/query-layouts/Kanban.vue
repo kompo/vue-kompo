@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full overflow-x-auto">
+    <div class="w-full">
         <div class="flex space-x-4">
             <div
               v-for="(title, status) in columns"

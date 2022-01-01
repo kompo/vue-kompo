@@ -186,7 +186,6 @@ export default class Action {
         this.vue.$_runInteractionsOfType(this, 'success')
     }
     removeSelfAction(){
-        console.log('removing', this.vue.index)
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
 
         this.vue.$_runInteractionsOfType(this, 'success')
@@ -203,7 +202,7 @@ export default class Action {
             confirmFunc: confirmFunc,
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
-            keepModalOpen: this.vue.$_config('keepModalOpen'),
+            closeAfterSubmit: false, 
         })
     }
     fillModalAction(response, confirmFunc){
@@ -232,7 +231,7 @@ export default class Action {
             confirmFunc: null,
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: true,
-            keepModalOpen: this.vue.$_config('keepModalOpen'),
+            closeAfterSubmit: !this.vue.$_config('keepModalOpen'),
             index: this.vue.index, //not used yet
         })
     }

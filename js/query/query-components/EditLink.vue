@@ -34,7 +34,7 @@ export default {
             this.$kompo.vlFillModal({data: form}, this.kompoid, {
                 confirmFunc: () => {/*nothing for now*/},
                 warnBeforeClose: this.warnBeforeClose,
-                keepModalOpen: this.keepModalOpen,
+                closeAfterSubmit: !this.keepModalOpen,
                 refreshParent: true,
             })
         },

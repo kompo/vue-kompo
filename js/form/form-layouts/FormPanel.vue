@@ -1,11 +1,12 @@
 <template>
-    <div 
-        v-show="!$_hidden" 
-        v-bind="$_layoutWrapperAttributes">
+    <transition :name="transition" :mode="mode">
+        <div 
+            v-if="hasElements"
+            v-show="!$_hidden" 
+            v-bind="$_layoutWrapperAttributes">
 
-        <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
-        
-        <transition-group :name="transition" :mode="mode" tag="div" class="w-full">
+            <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
+            
             <div v-if="html" :is="{template: html}" />
             <component 
                 v-for="(row,index) in elements" :key="componentKey(index)"
@@ -15,10 +16,10 @@
                 @confirmSubmit="confirmSubmit"
                 @touchedForm="$emit('touchedForm')"  
             />
-        </transition-group>
 
 
-    </div>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -34,15 +35,15 @@ export default {
     computed:{
         $_customLayoutAttributes(){
             return {
-                transition: this.$_config('transition'),
-                mode: this.$_config('transitionMode'),
                 closable: this.$_config('closable'),
             }
         },
         hidesOnLoad(){
             return this.component.$_config('hidesOnLoad') // this.$_config(...) not working... ??
         },
-        transition(){ return this.$_config('transition') || 'fadeIn'},
+        transition(){
+            return this.$_config('transition') || 'fadeIn' 
+        },
         mode(){ return this.$_config('transitionMode') || (this.transition == 'fadeIn' ? 'out-in' : '')},
         closable(){ return this.$_config('closable')},
         showCloseButton(){
@@ -54,8 +55,11 @@ export default {
             ]
         },
         hasLoadedElements(){
-            return this.loaded && this.elements && this.elements.length > 0
+            return this.loaded && this.hasElements
         },
+        hasElements(){
+            return this.elements && this.elements.length > 0
+        }
     },
     methods:{
         reset(){

@@ -41,6 +41,7 @@ export default {
 
                 this.$kompo.vlFillModal(r, this.$_elKompoId, {
                     updateSelectOption: true,
+                    closeAfterSubmit: !this.$_config('keepModalOpen'),
                 })
 
             })
@@ -68,9 +69,6 @@ export default {
             this.renderKey += 1
             
             newSelect.$_addOptionToValue(formattedOption) //... is very different from using it in requests.
-
-            if(!this.$_config('keepModalOpen'))
-                this.$kompo.vlModalClose('modal'+this.$_elKompoId)
         },
 
         $_attachCustomEvents(){

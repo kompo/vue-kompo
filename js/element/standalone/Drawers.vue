@@ -61,7 +61,7 @@ export default {
                 this.addDrawer(response.data, kompoid, options)
             })
             this.$_vlOn('vlCloseDrawer', () => {
-                this.closeByIndex(this.slides.length-1)
+                this.closeByIndex(this.drawers.length-1)
             })
         },
         $_destroyEvents(){

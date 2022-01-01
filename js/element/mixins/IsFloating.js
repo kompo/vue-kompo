@@ -18,7 +18,7 @@ export default {
         arrows(){ return this.options.arrows },
         zIndex(){ return this.options.zIndex },
         warnBeforeClose(){ return this.options.warnBeforeClose },
-        keepModalOpen(){ return this.options.keepModalOpen },
+        closeAfterSubmit(){ return this.options.closeAfterSubmit },
         refreshParent(){ return this.options.refreshParent },
         updateSelectOption(){ return this.options.updateSelectOption },
     },
@@ -82,10 +82,9 @@ export default {
                 this.$kompo.vlReloadAfterChildAction(this.kompoid, response)
             }
             if(this.updateSelectOption){
-                this.closeAction()
-                return this.$kompo.vlUpdateSelectOption(this.kompoid, response)
+                this.$kompo.vlUpdateSelectOption(this.kompoid, response)
             }
-            if (!this.keepModalOpen) {
+            if (this.closeAfterSubmit) {
                 this.closeAction()
             }
         },
