@@ -92,6 +92,8 @@ export default class Action {
             this.vue.$_state({ loading: false })
             this.vue.$_state({ hasError: true })
 
+            if (e instanceof axios.Cancel) {return;}
+
             if(e.response.status == 449){
                 if(_.isString(e.response.data)){
                     if(confirm(e.response.data)){

@@ -181,40 +181,38 @@ const Kompo = {
 			}
 		})
 
+		const isDumpScript = (r) => _.isString(r) && r.substr(0,34) == '<script> Sfdump = window.Sfdump ||'
+		const showDumpInModal = (r) => {
+			Kompo.events.$kompo.vlFillModal({
+	            data: {
+	                vueComponent: 'Html',
+	                label: '<iframe height="600" width="768" srcdoc="'+r.replace(/"/g, '&quot;')+'"></iframe>',
+	            }
+	        }, 'dump', { })
+
+		    throw new axios.Cancel('Operation canceled by dump.')
+		}
+
 		//intercept laravel dd()
 		window.axios.interceptors.response.use(function (response) {
 			// Status code within the range of 2xx
-
 			let r = response.data
 
-		    if(_.isString(r) && !!r.match(/<script>Sfdump\(".+"\)<\/script>/)){
-				
-		        Kompo.events.$kompo.vlModalShowFill(
-		        	'vlDefaultModal', 
-		        	'<iframe height="600" width="768" srcdoc="'+r.replace(/"/g, '&quot;')+'"></iframe>'
-		        )
-
-		        throw new axios.Cancel('Operation canceled by dump.')
-
-		    }else{
-				return response;
+			if(isDumpScript(r)){		    	
+	            showDumpInModal(r)
 		    }
+
+		    return response
+
 		}, function (error) {
-			// Status codes outside the range of 2xx
+			// Status codes outside the range of 5xx
 			let r = error.response.data
 
-		    if(_.isString(r) && !!r.match(/<script>Sfdump\(".+"\)<\/script>/)){
-				
-		        Kompo.events.$kompo.vlModalShowFill(
-		        	'vlDefaultModal', 
-		        	'<iframe height="600" width="768" srcdoc="'+r.replace(/"/g, '&quot;')+'"></iframe>'
-		        )
-
-		        throw new axios.Cancel('Operation canceled by dump.')
-
-		    }else{
-				return Promise.reject(error);
+		    if(isDumpScript(r)){
+	            showDumpInModal(r)
 		    }
+		    
+		    return Promise.reject(error)
 		});
 
 	}
