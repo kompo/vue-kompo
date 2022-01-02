@@ -79,3 +79,7 @@ $sidebar-breakpoint: md !default;
 @import 'Gallery';
 @import 'Spinner';
 @import 'Tags';
+
+//Not imported automatically
+//import 'Clock';
+//import 'Calendar';

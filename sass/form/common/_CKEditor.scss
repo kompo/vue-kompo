@@ -1,3 +1,8 @@
+.vlCKEditor{
+	--ck-color-text: var(--text-color);
+	--ck-color-dropdown-panel-background: var(--body-color);
+	--ck-color-button-default-hover-background: var(--body-color);
+}
 
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar{
 	border: 0;

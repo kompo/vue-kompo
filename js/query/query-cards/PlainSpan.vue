@@ -9,9 +9,3 @@ export default {
     mixins: [Card]
 }
 </script>
-
-<style lang="scss" scoped>
-.vlSelected{
-    font-weight: bold;
-}
-</style>

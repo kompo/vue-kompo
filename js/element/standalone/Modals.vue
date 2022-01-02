@@ -35,11 +35,10 @@ export default {
     },
     methods:{
         addModal(obj, kompoid, options){
-
             this.initialId += 1
             
             this.$nextTick(() => this.modals.push({
-                id: 'vl-modal-'+this.initialId,
+                id: 'k-modal-'+(Math.random() + 1).toString(36).substring(7),
                 obj: obj,
                 kompoid: kompoid,
                 options: Object.assign(options, {

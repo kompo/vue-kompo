@@ -11,7 +11,7 @@
                     v-html="title"/>
 
                 <draggable
-                    :list="sortedItems[status]" group="column" :animation="200" ghost-class="VlGhostCard"
+                    :list="sortedItems[status]" group="column" :animation="200" ghost-class="k-ghost-card"
                     @change="changed(status, $event)"
                     :move="checkConfirm">
 
@@ -117,10 +117,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.VlGhostCard{
-    opacity: 0.5;
-    background: #F7FAFC;
-    border: 1px dashed gainsboro;
-}
-</style>

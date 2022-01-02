@@ -37,7 +37,7 @@ export default {
             this.initialId += 1
             
             this.$nextTick(() => this.drawers.push({
-                id: 'vl-drawer-'+this.initialId,
+                id: 'k-drawer-'+(Math.random() + 1).toString(36).substring(7),
                 obj: obj,
                 kompoid: kompoid,
                 options: Object.assign(options, {

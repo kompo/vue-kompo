@@ -52,9 +52,9 @@ export default {
             this.option = r.data.option //The user has to set a public option property on the Form
             this.optionValue = Object.keys(this.option)[0]
 
-            this.$_config({
+            /*this.$_config({
                 ajaxPayload: Object.assign({id: this.optionValue}, this.$_config('ajaxPayload')),
-            })
+            })*/
                 
             let newSelect = this.elements[0]
 
@@ -64,7 +64,11 @@ export default {
                 label: this.option[this.optionValue] 
             }
             newSelect.options.splice(index, 1, formattedOption)
-            newSelect.value = this.optionValue //To review - setting select value...
+            newSelect.$_addOptionToValue(formattedOption)
+            return
+
+            //TO delete if no issues detected...
+            //newSelect.value = this.optionValue //To review - setting select value...
             this.elements.splice(0, 1, newSelect)
             this.renderKey += 1
             

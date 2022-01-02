@@ -3,5 +3,12 @@
 @import 'TableForm';
 @import 'Table';
 @import 'Masonry';
-@import 'RowTitleButtons';
-@import 'ImageWithThumbnails';
+@import 'CalendarMonth';
+@import 'Kanban';
+
+@import 'DeleteLinkModal';
+
+//Not imported automatically
+//@import 'RowTitleButtons';
+//@import 'ImageWithThumbnails';
+//@import 'ImageOverlay';

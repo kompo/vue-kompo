@@ -43,6 +43,9 @@ export default {
     },
     methods: {
         deleted(){
+            this.closeModal()
+        },
+        closeModal(){
             this.$emit('closeModal')
         }
     },
@@ -51,20 +54,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.vlDeleteLinkModal{
-    padding: 1rem;
-    h3{
-        margin-bottom: 1rem;
-    }
-    button{
-        width: 10rem;
-    }
-    >div{
-        width: 21rem;
-        display: flex;
-        justify-content: space-between;
-    }
-}
-</style>

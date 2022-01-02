@@ -1,5 +1,13 @@
 <template>
 	<div class="gallery-item">
+
+		<vl-spinner-icon :loading="!image.src" />
+
+		<img v-if="image.src"
+			:src="image.src" 
+			:alt="image.name" 
+			:style="{height: height}"
+			class="gallery-image">
 		<p
             v-if="previewable" 
             class="thumbnail-preview" 
@@ -9,14 +17,6 @@
 		<p class="thumbnail-delete" @click.stop.prevent="$emit('remove', index)">
 			<i class="icon-times"/>
 		</p>
-
-		<vl-spinner-icon :loading="!image.src" />
-
-		<img v-if="image.src"
-			:src="image.src" 
-			:alt="image.name" 
-			:style="{height: height}"
-			class="gallery-image">
 	</div>
 </template>
 

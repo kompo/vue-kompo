@@ -26,16 +26,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.VlCalendar{
-    .flatpickr-calendar {
-        width: 100%;
-    }
-    .flatpickr-days {width: 100%;}
-    .dayContainer {
-      width: 100%;
-      min-width: none;
-      max-width: none;
-    }
-}
-</style>

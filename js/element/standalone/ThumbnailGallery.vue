@@ -1,23 +1,21 @@
 <template>
-    <div>
-        <draggable 
-        	v-if="images.length > 0" 
-        	:list="images" 
-            class="gallery-list clearfix"
-            :class="images.length > 4 ? 'large-gallery' : '' " >
-            <transition-group name="gallery-transition">
-              	<vl-thumbnail 
-              		v-for="(image, index) in images"
-                    :key="index + 0" 
-                    :image="image" 
-                    :height="calculatedHeight"
-                    :index="index"
-                    :previewable="previewable"
-                    @remove="remove"
-                    @preview="previewAndOpen" />
-            </transition-group>
-        </draggable>
-    </div>
+    <draggable 
+    	v-if="images.length > 0" 
+    	:list="images" 
+        class="gallery-list"
+        :class="images.length > 4 ? 'large-gallery' : '' " >
+        <transition-group name="gallery-transition">
+          	<vl-thumbnail 
+          		v-for="(image, index) in images"
+                :key="index + 0" 
+                :image="image" 
+                :height="calculatedHeight"
+                :index="index"
+                :previewable="previewable"
+                @remove="remove"
+                @preview="previewAndOpen" />
+        </transition-group>
+    </draggable>
 </template>
 
 <script>
@@ -67,7 +65,7 @@ export default {
             }
 
             this.$kompo.vlFillModal(this.previewImage, this.id, {
-                arrows: true,
+                arrows: this.images.length > 1 ? true : false,
             })
         },
         previousImage(){
@@ -77,6 +75,7 @@ export default {
             this.preview(this.previewIndex == this.images.length - 1 ? 0 : this.previewIndex + 1)
         },
         remove(index){
+            console.log(index)
             this.$emit('remove',index)
         },
         close(){
