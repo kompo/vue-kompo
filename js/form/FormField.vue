@@ -10,9 +10,9 @@
 
         <slot name="after"/>
 
-        <vl-form-comment :component="component" />
-
         <vl-form-field-errors :errors="errors" />
+
+        <vl-form-comment :component="component" />
 
     </div>
 </template>

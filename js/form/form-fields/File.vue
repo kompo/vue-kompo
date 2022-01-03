@@ -4,7 +4,7 @@
             v-bind="$_taggableInputAttributes" 
             v-on="$_taggableInputEvents"
             :labelKey="labelKey">
-            <span v-if="$_pristine" class="vlSingle" v-html="$_placeholder" />
+            <span v-if="$_pristine" class="vlSingle" v-html="filePlaceholder" />
             <input
                 v-bind="$_attributes"
                 v-on="$_events"
@@ -26,6 +26,11 @@ export default {
     data(){
         return {
             labelKey: 'name'
+        }
+    },
+    computed: {
+        filePlaceholder(){
+            return this.$_placeholder || ('Upload file'+(this.$_multiple ? 's' : ''))
         }
     },
     methods: {

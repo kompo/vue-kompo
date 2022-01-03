@@ -36,7 +36,6 @@ export default {
             this.$_multiple ? this.thumbnails.push(file) : this.thumbnails = [file]
         },
         remove(index) {
-            console.log(index)
             if(this.$_config('confirmDelete') && !confirm(this.$_config('confirmDelete')))
                 return
 

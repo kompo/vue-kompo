@@ -75,7 +75,6 @@ export default {
             this.preview(this.previewIndex == this.images.length - 1 ? 0 : this.previewIndex + 1)
         },
         remove(index){
-            console.log(index)
             this.$emit('remove',index)
         },
         close(){

@@ -12,4 +12,9 @@
 			z-index: 2; //above the input
 		}
 	}
+	&:not(.vlDirtyField){
+		.vlSingle{
+			color: var(--form-control-placeholder-color);
+		}
+	}
 }

@@ -17,6 +17,29 @@
 		.vlFormControl{
 			height: auto;
 		}
+		.vlImageMsg{
+			i{
+				display: none;
+			}
+		}
+		&:hover{
+			.vlImageMsg{
+				.icon-times{
+					display: block;
+					z-index: 5;
+				}
+			}
+		}
+	}
+}
+.k-rounded-image{
+	.vlInputWrapper{
+		border-radius: 50%;
+		overflow: hidden;
+	}
+	.vlFormControl{
+		padding: 0;
+		height: auto;
 	}
 }
 .vlImageMsg{
