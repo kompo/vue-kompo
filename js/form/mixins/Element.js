@@ -13,7 +13,7 @@ export default {
         $_submitsOnInput(){ return this.$_config('submitsOnInput') },
         $_hideIndicators(){ return this.$_config('hideIndicators') },
 
-        $_keepModalOpen(){ return this.$_config('keepModalOpen') },
+        $_keepOpen(){ return this.$_config('keepOpen') },
         $_getFreshForm(){ return this.$_config('getFreshForm') },
 
         $_sortsQuery(){ return this.$_config('sortsQuery') },

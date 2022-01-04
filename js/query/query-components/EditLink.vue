@@ -18,7 +18,7 @@ export default {
     },
     computed:{
        	linkTag(){ return this.component.linkTag },
-        keepModalOpen(){ return this.$_config('keepModalOpen') },
+        keepOpen(){ return this.$_config('keepOpen') },
         warnBeforeClose(){ return this.$_config('warnBeforeClose') },
         $_attributes(){
             return {
@@ -34,7 +34,7 @@ export default {
             this.$kompo.vlFillModal({data: form}, this.kompoid, {
                 confirmFunc: () => {/*nothing for now*/},
                 warnBeforeClose: this.warnBeforeClose,
-                closeAfterSubmit: !this.keepModalOpen,
+                closeAfterSubmit: !this.keepOpen,
                 refreshParent: true,
             })
         },
@@ -45,7 +45,7 @@ export default {
                 is: 'VlEditLinkModalContent',
                 index: this.index,
                 kompoid: this.kompoid,
-                keepModalOpen: this.keepModalOpen
+                keepOpen: this.keepOpen
             }
         },
         modalProps(){

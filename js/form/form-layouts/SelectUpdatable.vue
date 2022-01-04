@@ -41,7 +41,7 @@ export default {
 
                 this.$kompo.vlFillModal(r, this.$_elKompoId, {
                     updateSelectOption: true,
-                    closeAfterSubmit: !this.$_config('keepModalOpen'),
+                    closeAfterSubmit: !this.$_config('keepOpen'),
                 })
 
             })

@@ -157,6 +157,12 @@ export default class Action {
         const jsFunction = this.$_config('jsFunction')
         this.vue.$nextTick(() => { //yep, run it if you find it
             
+            if (jsFunction.substr(0, 7) == '() => {') {
+                let toExecutre = eval(jsFunction)
+                toExecutre(response)
+                return;
+            }
+
             if(window[jsFunction])
                 window[jsFunction](response) 
 
@@ -204,7 +210,7 @@ export default class Action {
             confirmFunc: confirmFunc,
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
-            closeAfterSubmit: false, 
+            closeAfterSubmit: this.vue.$_config('refreshParent'), 
         })
     }
     fillModalAction(response, confirmFunc){
@@ -233,12 +239,16 @@ export default class Action {
             confirmFunc: null,
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: true,
-            closeAfterSubmit: !this.vue.$_config('keepModalOpen'),
+            closeAfterSubmit: !this.vue.$_config('keepOpen'),
             index: this.vue.index, //not used yet
         })
     }
     fillPanelAction(response, parentAction){
-        this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, this.$_config('included') || parentAction.$_config('included'))
+        this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, {
+            included: this.$_config('included') || parentAction.$_config('included'),
+            refreshParent: this.vue.$_config('refreshParent'),
+            resetAfterSubmit: this.vue.$_config('refreshParent'), //TODO make configurable
+        })
         
         this.vue.$_runInteractionsOfType(this, 'success')
     }

@@ -75,8 +75,8 @@ const Kompo = {
 	    	vlToggleSubmit(kompoid, canSubmit){
 	    		Kompo.events.$emit('vlToggleSubmit'+kompoid, canSubmit)
 	    	},
-	    	vlFillPanel(panelId, response, included){
-	    		Kompo.events.$emit('vlFillPanel'+panelId, response, included)
+	    	vlFillPanel(panelId, response, options){
+	    		Kompo.events.$emit('vlFillPanel'+panelId, response, options)
 	    	},
 	    	vlFillDrawer(response, kompoid, options){
 	    		Kompo.events.$emit('vlFillDrawer', response, kompoid, options)

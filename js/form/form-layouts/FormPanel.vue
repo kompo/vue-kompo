@@ -15,6 +15,7 @@
                 @closePanel="reset"
                 @confirmSubmit="confirmSubmit"
                 @touchedForm="$emit('touchedForm')"  
+                @success="handleSubmitSuccess"
             />
 
 
@@ -30,6 +31,8 @@ export default {
         return {
             html : null,
             loaded: false,
+            refreshParent: false,
+            resetAfterSubmit: false,
         }
     },
     computed:{
@@ -99,14 +102,26 @@ export default {
             })
         },
 
+        handleSubmitSuccess(response){
+            console.log(this.kompoid, response)
+            if(this.refreshParent){
+                this.$kompo.vlReloadAfterChildAction(this.kompoid, response)
+            }
+            if (this.resetAfterSubmit) {
+                this.reset()
+            }
+        },
+
         $_attachCustomEvents(){
-            this.$_vlOn('vlFillPanel' + this.$_elementId(), (response, included) => {
+            this.$_vlOn('vlFillPanel' + this.$_elementId(), (response, options) => {
 
                 this.reset()
 
                 this.loaded = true
+                this.refreshParent = options.refreshParent
+                this.resetAfterSubmit = options.resetAfterSubmit
 
-                if(included)
+                if(options.included)
                     return this.includeObject(response) //emit and stop
 
                 this.$nextTick(() => {
