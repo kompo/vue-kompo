@@ -103,7 +103,6 @@ export default {
         },
 
         handleSubmitSuccess(response){
-            console.log(this.kompoid, response)
             if(this.refreshParent){
                 this.$kompo.vlReloadAfterChildAction(this.kompoid, response)
             }

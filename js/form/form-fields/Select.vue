@@ -68,7 +68,7 @@ export default {
         this.optionsMessage = this.ajaxOptions ? this.enterMoreCharacters : this.noOptionsFound
     },
     created() {
-        this.vkompo.$_addOptionToValue = this.$_addOptionToValue
+        this.vkompo.$_handleAddedOption = this.$_handleAddedOption
     },
     computed: {
         $_events() {
@@ -163,6 +163,10 @@ export default {
                 this.component.value = [option]
             }
             this.$_changeAction()
+        },
+        $_handleAddedOption(option){
+            this.$_addOptionToValue(option)
+            this.$_blurAction()
         },
         $_remove(index) {
             if(this.$_readOnly)

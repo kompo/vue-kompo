@@ -64,7 +64,7 @@ export default {
                 label: this.option[this.optionValue] 
             }
             newSelect.options.splice(index, 1, formattedOption)
-            newSelect.$_addOptionToValue(formattedOption)
+            newSelect.$_handleAddedOption(formattedOption)
             return
 
             //TO delete if no issues detected...

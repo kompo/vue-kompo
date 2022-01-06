@@ -210,7 +210,7 @@ export default class Action {
             confirmFunc: confirmFunc,
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
-            closeAfterSubmit: this.vue.$_config('refreshParent'), 
+            closeAfterSubmit: this.vue.$_config('keepOpen') === true ? false : this.vue.$_config('refreshParent'), 
         })
     }
     fillModalAction(response, confirmFunc){
@@ -247,7 +247,7 @@ export default class Action {
         this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, {
             included: this.$_config('included') || parentAction.$_config('included'),
             refreshParent: this.vue.$_config('refreshParent'),
-            resetAfterSubmit: this.vue.$_config('refreshParent'), //TODO make configurable
+            resetAfterSubmit: this.vue.$_config('keepOpen') === true ? false : this.vue.$_config('refreshParent'),
         })
         
         this.vue.$_runInteractionsOfType(this, 'success')
