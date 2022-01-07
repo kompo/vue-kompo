@@ -84,8 +84,8 @@ const Kompo = {
 	    	vlCloseDrawer(){
 	    		Kompo.events.$emit('vlCloseDrawer')
 	    	},
-	    	vlFillPopup(response){
-	    		Kompo.events.$emit('vlFillPopup', response)
+	    	vlFillPopup(response, options){
+	    		Kompo.events.$emit('vlFillPopup', response, options)
 	    	},
 	    	vlClosePopup(){
 	    		Kompo.events.$emit('vlClosePopup')

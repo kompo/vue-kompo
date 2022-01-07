@@ -261,7 +261,10 @@ export default class Action {
         this.vue.$kompo.vlCloseDrawer()
     }
     fillPopupAction(response){
-        this.vue.$kompo.vlFillPopup(response)
+        this.vue.$kompo.vlFillPopup(response, {
+            draggable: this.$_config('draggable'),
+            resizable: this.$_config('resizable'),
+        })
     }
     closePopupAction(){
         this.vue.$kompo.vlClosePopup()

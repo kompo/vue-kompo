@@ -34,7 +34,7 @@
 		>div{
 			background-color: var(--tags-bg);
 			color: var(--tags-color);
-			font-weight: 700;
+			//font-weight: 500;
 			@include tag();
 			margin: 0.1rem;
 		    padding: 0.1rem 0.5rem 0.1rem 0.2rem; //has to be after @include tag()

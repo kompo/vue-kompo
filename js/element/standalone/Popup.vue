@@ -5,7 +5,7 @@
             <i class="icon-times"/>
           </button>
         </div>
-        <div class="resizer top-left"><i class="icon-arrow-combo"/></div>
+        <div v-if="resizable" class="resizer top-left"><i class="icon-arrow-combo"/></div>
         <!--<div class="resizer top-right"><i class="icon-arrow-combo"/></div>
         <div class="resizer bottom-left"><i class="icon-arrow-combo"/></div>
         <div class="resizer bottom-right"><i class="icon-arrow-combo"/></div>-->
@@ -26,7 +26,9 @@ export default {
     data(){
         return {
             component: null,
-            partial: null
+            partial: null,
+            draggable: false,
+            resizable: false,
         }
     },
     created(){
@@ -48,12 +50,19 @@ export default {
             this.partial = this.$_komponentTag(obj)
 
             this.$nextTick(() => {
-                this.dragElement(this.$refs.popup)
-                this.resizeElement()
+                if (this.draggable || document.getElementById("vlDragPopUp")) {
+                    this.dragElement(this.$refs.popup)
+                }
+
+                if(this.resizable){
+                    this.resizeElement()
+                }
             })
         },
         $_attachEvents(){
-            this.$_vlOn('vlFillPopup', (response) => {
+            this.$_vlOn('vlFillPopup', (response, options) => {
+                this.draggable = options.draggable
+                this.resizable = options.resizable
                 window.vlLastPopup = response
                 this.insertFromResponse(response.data)
             })
