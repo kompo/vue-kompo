@@ -21,6 +21,10 @@ export default {
         $_pristine() {
             return !this.currentTranslation
         },
+
+        $_isEmpty(){
+            return _.values(this.$_value).every(_.isEmpty)
+        },
     },
     methods: {
         $_inputAction(){
@@ -43,9 +47,20 @@ export default {
         },
         
         $_fill(jsonFormData){
+            
+            if (this.$_isEmpty) {
+                jsonFormData[this.$_name] = ''
+            } else {
+                this.$_fillValues(jsonFormData)
+            }
+            
+        },
+
+        $_fillValues(jsonFormData){
             Object.keys(this.$_value).forEach(key => {
-                if(this.$_value[key])
+                if(this.$_value[key]){
                     jsonFormData[this.$_name+'['+key+']'] = this.$_value[key]
+                }
             })
         }
     },

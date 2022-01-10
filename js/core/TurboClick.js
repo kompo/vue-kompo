@@ -38,9 +38,19 @@ export default class TurboClick {
 
             _kompo.toggleSpinner('none')
 
-            if(e.response.status === 401)
-                if(confirm(window._kompo.sessionTimeoutMessage))
-                    window.location.reload()
+            if(e.response.status === 401){
+                window.location.href = this.url //Full redirect to login page 
+                /*
+                Removed this since a trigger is a deliberate will to go elsewhere, so no confirmation is needed...
+                if(confirm(window._kompo.sessionTimeoutMessage)){
+                    if (this.url !== window.location.href) {
+                        window.location.href = this.url
+                    } else {
+                        window.location.reload()
+
+                    }
+                }*/
+            }
 
 
             console.log('Error loading object in Panel:' + e)

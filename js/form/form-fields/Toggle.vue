@@ -4,8 +4,12 @@
             v-model="component.value"
             type="checkbox"
             role="checkbox"
-            v-bind="$_attributes">
-        <div v-on="$_events" class="vlToggleArea" />
+            v-bind="$_attributes"
+            @focus="$_focusAction"
+            @blur="$_blurAction">
+
+        <div v-on="$_events" class="vlSwitch"/>
+        <div class="vlDot" />
     </vl-form-field>
 </template>
 

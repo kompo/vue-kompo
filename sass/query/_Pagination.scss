@@ -12,11 +12,11 @@
     border-color: var(--primary);
 }
 .page-item{
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--form-control-border-color);
     border-left: 0;
-    background-color: #fff;
+    background-color: transparent;
     &:first-child{
-        border-left: 1px solid #dee2e6;
+        border-left: 1px solid var(--form-control-border-color);
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
     }

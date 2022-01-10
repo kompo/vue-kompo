@@ -1,11 +1,12 @@
 .vlCheckbox{
-    .vlToggleArea{
+    .vlSwitch{
         height: var(--form-checkbox-height);
         width: var(--form-checkbox-height);
+        border-radius: var(--form-control-border-radius);
         @extend .flex-center;
         >i{
             display: none;
-            color: var(--form-control-bg);
+            color: white;
         }
     }
     .vlChecked{
@@ -16,10 +17,7 @@
     }
 }
 .vlMultiCheckbox{
-    >.vlInputWrapper{
-        padding: var(--form-control-padding);
-    }
-    &.vlHorizontalMutiCheckbox>.vlInputWrapper{
+    &.vlHorizontalMutiCheckbox>div{
         display: flex;
         flex-wrap: wrap;
         > * ~ * {
@@ -29,38 +27,44 @@
 }
 
 .vlToggle,.vlToggleInput {
-    .vlInputWrapper:not(.vlOptionalInput){
-        border-radius: calc(0.5 * var(--form-toggle-height));
-        border: 0;
+    >div{
+        position: relative;
     }
-    .vlToggleArea{
+    .vlSwitch{
         height: var(--form-toggle-height);
-        width: var(--form-toggle-width);
-        border-radius: calc(0.5 * var(--form-toggle-height));
-        display: flex;
-        align-items: center;
-        padding-left: 2px;
+        width: calc(1.75 * var(--form-toggle-height));
+        border-radius: 9999px;
+        border: 1px solid transparent;
         background-color: var(--form-control-border-color);
-        &:after{
-            content: "";
-            width: calc( var(--form-toggle-height) - 4px);
-            height: calc( var(--form-toggle-height) - 4px);
-            background-color: var(--form-control-bg);
-            border-radius: 50%;
-            transition: all .15s ease-in-out;
-        }
     }
-    input:checked ~ .vlToggleArea{
+    .vlDot{
+        position: absolute;
+        top: calc(0.125 * var(--form-toggle-height));
+        left: calc(0.125 * var(--form-toggle-height));
+        width: calc( var(--form-toggle-height) * 0.75);
+        height: calc( var(--form-toggle-height) * 0.75);
+        background-color: white;
+        border-radius: 50%;
+        transition: all .15s ease-in-out;
+    }
+    input:checked ~ .vlSwitch{
         background-color: var(--primary);
-        &:after{
-            -webkit-transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );
-            transform: translateX( calc(var(--form-toggle-width) - var(--form-toggle-height)) );
-        }
+    }
+    input:checked ~ .vlDot{
+        -webkit-transform: translateX( 100% );
+        transform: translateX( 100% );
+    }
+    input:focus ~ .vlSwitch{
+        border-color: var(--form-control-border-color-focused);
+        box-shadow: var(--focus-box-shadow);
+    }
+    input:checked:focus ~ .vlSwitch{
+        border-color: var(--body-color);
     }
 }
 
 .vlToggleInput {
-    .vlOptionalInput{
+    .vlInputWrapper{
         margin-top: var(--form-control-padding-t);
         order: 3;
         width: 100%;
@@ -81,12 +85,8 @@
         width: calc(100% - var(--remaining));
         flex-shrink: 1;
     }
-    .vlToggleArea{
+    .vlSwitch{
         cursor: pointer;
-    }
-    .vlInputWrapper:not(.vlOptionalInput){
-        display: inline-block;
-        overflow: hidden; //to handle background overflow
         order: 1;
     }
     .vlFormComment{
@@ -94,9 +94,19 @@
     }
     input[type=checkbox]{
         position: absolute;
-        opacity: 0;
-        height: 0;
-        width: 0;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+}
+.vlCheckbox,.vlMultiCheckbox{    
+    &.vlDirtyField .vlInputWrapper:focus-within{
+        border: 1px solid transparent;
     }
 }
 
@@ -105,5 +115,5 @@
 }
 
 .vlToggle .vlFormLabel,.vlToggleInput .vlFormLabel{
-    --remaining: calc(var(--form-toggle-width) + var(--form-control-padding-l) + 2px);
+    --remaining: calc(1.75 * var(--form-toggle-height) + var(--form-control-padding-l) + 2px);
 }

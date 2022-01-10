@@ -6,9 +6,10 @@
             role="checkbox"
             v-bind="$_attributes"
         />
-        <div v-on="$_events" class="vlToggleArea" />
+        <div v-on="$_events" class="vlSwitch" />
+        <div class="vlDot" />
         <template v-slot:after>
-            <div v-show="toggleChecked" class="vlInputWrapper vlOptionalInput">
+            <div v-show="toggleChecked" class="vlInputWrapper">
                 <input
                     v-model="component.value"
                     :placeholder="$_placeholder"

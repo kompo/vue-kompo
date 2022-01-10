@@ -1,7 +1,12 @@
 .vlCKEditor{
 	--ck-color-text: var(--text-color);
 	--ck-color-dropdown-panel-background: var(--body-color);
-	--ck-color-button-default-hover-background: var(--body-color);
+	--ck-color-button-default-hover-background: var(--primary);
+	--ck-color-button-on-hover-background: var(--primary);
+	--ck-color-button-on-background: var(--primary);
+	--ck-color-list-button-hover-background: var(--primary);
+	--ck-color-list-button-on-background: var(--body-color);
+	--ck-color-list-background: transparent;
 }
 
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar{

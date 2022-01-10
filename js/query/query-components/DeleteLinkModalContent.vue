@@ -27,7 +27,7 @@ export default {
     },
     data(){
         return{
-            itemIndex: ''
+            itemIndex: '',
         }
     },
     computed:{
@@ -51,6 +51,7 @@ export default {
     },
     created(){
         this.itemIndex = this.component.itemIndex
+        this.component.label = this.confirmMessage
     }
 }
 </script>

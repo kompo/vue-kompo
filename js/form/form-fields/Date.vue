@@ -33,11 +33,13 @@ export default {
     components: { flatPickr },
     data(){
         return {
-            dateCheck: null
+            dateCheck: null,
+            selectedDates: null, //for storing date range values...otherwise fp makes a string with ...to... (translated)
         }
     },
     mounted(){
         this.dateCheck = this.$_value //to emit accurate change events
+        this.selectedDates = this.$_value
     },
     computed: {
         $_enableTime(){ return this.$_config('enableTime') || false },
@@ -82,6 +84,16 @@ export default {
         //this.$refs.flatpickr.fp.close()
         openCalendar(){
             this.$refs.flatpickr.fp.open()
+        },        
+        $_fill(jsonFormData){
+            if((this.$_dateMode == 'range')) {
+                this.selectedDates.forEach((value, key) => {
+                    let name = _.isArray(this.$_name) ? this.$_name[key] : (this.$_name+'['+key+']')
+                    jsonFormData[name] = _.isNil(this.$_value) ? '' : value
+                })
+            }else{
+                jsonFormData[this.$_name] = _.isNil(this.$_value) ? '' : this.$_value
+            }
         },
         focus(){
             this.$refs.flatpickr.fp.showTimeInput = true //fix to show time in datetime
@@ -91,8 +103,13 @@ export default {
         },
         onChange(selectedDates, dateStr, instance) {
 
-            if(this.$_dateMode == 'range' && selectedDates.length == 1)
-                return //When it's a Date Range I wan't to emit change only when both are selected
+            if(this.$_dateMode == 'range'){
+                if(selectedDates.length == 1){
+                    return //emit only when both are selected
+                }
+
+                this.selectedDates = selectedDates.map((date) => instance.formatDate(date,this.$_config('dateFormat')))
+            }
 
             if(dateStr == this.dateCheck) //Flatpickr emits even if the date does not change... had to do the check myself
                 return

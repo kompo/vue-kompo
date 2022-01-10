@@ -3,10 +3,35 @@
         display: flex;
         align-items: center;
     }
-    input{
+    .vlInputWrapper{
+        border-radius: 50%;
+        margin-right: var(--form-control-padding-r);
         height: var(--form-checkbox-height);
         width: var(--form-checkbox-height);
-        margin-right: var(--form-control-padding-r);
+        ~ .vlFormLabel{
+            margin-bottom: 0;
+        }
+        &:focus-within{
+            border: 1px solid transparent;
+        }
+    }
+    input{
+        height: 100%;
+        width: 100%;
+        color: var(--primary);
+        appearance: none;
+        border-radius: 50%;
+        &:checked{
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: transparent;
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        &:focus{
+            outline: 0;
+        }
     }
 }
 

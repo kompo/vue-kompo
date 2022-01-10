@@ -2,12 +2,14 @@
     <vl-form-field v-bind="$_wrapperAttributes">
 
         <div v-for="(option,key) in options" :key="key" role="radiogroup" :class="optionClass">
-            <input
-                type="radio"
-                v-bind="attributes(option)"
-                :id="$_elementId(key)"
-            />
-            <span @click="toggleValue(option)()" :class="optionLabelClass" v-html="option.label"/>
+            <div class="vlInputWrapper">
+                <input
+                    type="radio"
+                    v-bind="attributes(option)"
+                    :id="$_elementId(key)"
+                />
+            </div>
+            <label class="vlFormLabel" @click="toggleValue(option)()" :class="optionLabelClass" v-html="option.label"/>
         </div>
 
     </vl-form-field>

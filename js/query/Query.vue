@@ -364,8 +364,9 @@ export default {
             ])
         },
         $_fillRecursive(jsonFormData){
-            this.filtersPlacement.forEach(placement => 
+            this.filtersPlacement.forEach(placement => {
                 this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
+            }
             )
         },
         $_resetSort(emitterId){

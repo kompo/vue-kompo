@@ -1,16 +1,18 @@
 <template>
     <vl-form-field v-bind="$_wrapperAttributes">
         <div v-for="(option,key) in options" :key="key"
-            class="vlFormField vlCheckbox vlMargins">
-            <vl-form-label :component="option" @click="toggleValue(key)()"/>
+            class="vlFormField vlCheckbox" :class="optionClass">
+            <vl-form-label :component="option" @click="toggleValue(key)()" :class="optionLabelClass" />
             <div class="vlInputWrapper">
                 <input
                     type="checkbox"
                     role="checkbox"
                     v-bind="attributes(key)"
                     :id="$_elementId(key)"
+                    @focus="$_focusAction"
+                    @blur="$_blurAction"
                 />
-                <div v-on="events(key)" class="vlToggleArea" :class="checkedClass(key)">
+                <div v-on="events(key)" class="vlSwitch" :class="checkedClass(key)">
                     <i class='icon-check'></i>
                 </div>
             </div>
@@ -22,12 +24,12 @@
 import Field from '../mixins/Field'
 export default {
     mixins: [Field],
-    created(){
-    },
     computed: {
         options(){ return this.component.options },
+        optionClass(){ return this.$_config('optionClass') },
         $_pristine() { return this.$_value.length === 0 },
         $_emptyValue() { return [] },
+        optionLabelClass(){ return this.$_config('optionLabelClass') },
     },
     methods: {
         $_setInitialValue(){

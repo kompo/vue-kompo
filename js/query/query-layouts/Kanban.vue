@@ -7,8 +7,11 @@
               :class="columnClass"
               :style="columnStyle"
             >
-                <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
+                <p v-if="isString(title)"
+                    class="text-gray-700 font-semibold font-sans tracking-wide text-sm"
                     v-html="title"/>
+
+                <component v-else v-bind="$_titleAttributes(title)"/>
 
                 <draggable
                     :list="sortedItems[status]" group="column" :animation="200" ghost-class="k-ghost-card"
@@ -100,7 +103,17 @@ export default {
             //set inexisting statuses to empty column component
             if(!this.sortedItems[status] || !this.sortedItems[status].length)
                 this.$set(this.sortedItems, status, [this.emptyColumn]) 
-        }
+        },
+        isString(val){
+            return _.isString(val)
+        },
+        $_titleAttributes(component) {
+            return {
+                is: this.$_vueTag(component),
+                vkompo: component,
+                //kompoid: this.kompoid, //not needed yet
+            }
+        },
     },
     computed: {
         columns(){ return this.component.columns },
