@@ -12,11 +12,11 @@
     border-color: var(--primary);
 }
 .page-item{
-    border: 1px solid var(--form-control-border-color);
+    border: 1px solid var(--pagination-border-color);
     border-left: 0;
     background-color: transparent;
     &:first-child{
-        border-left: 1px solid var(--form-control-border-color);
+        border-left: 1px solid var(--pagination-border-color);
         border-top-left-radius: .25rem;
         border-bottom-left-radius: .25rem;
     }

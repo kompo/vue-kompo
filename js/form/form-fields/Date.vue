@@ -87,7 +87,7 @@ export default {
         },        
         $_fill(jsonFormData){
             if((this.$_dateMode == 'range')) {
-                this.selectedDates.forEach((value, key) => {
+                (this.selectedDates || [null,null]).forEach((value, key) => {
                     let name = _.isArray(this.$_name) ? this.$_name[key] : (this.$_name+'['+key+']')
                     jsonFormData[name] = _.isNil(this.$_value) ? '' : value
                 })

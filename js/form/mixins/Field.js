@@ -71,6 +71,9 @@ export default {
             jsonFormData[this.$_name] = _.isNil(this.$_value) ? '' : this.$_value
         },
         $_validate(errors) {
+            if (!_.isString(this.$_name)) {
+                return; //TODO...
+            }
             var errorName = this.$_name.replace('.', '_')
             this.$_setError(errors[errorName])
             if(this.$_multiple)

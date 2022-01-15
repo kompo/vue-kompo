@@ -18,6 +18,11 @@ export default {
     computed:{
         $_customLayoutAttributes(){
             return this.$_layoutHrefAttributes
+        },
+        $_customClassArray() { 
+            return [
+                this.$_config('alignClass')
+            ]
         }
     }
 }

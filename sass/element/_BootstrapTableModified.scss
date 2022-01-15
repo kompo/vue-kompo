@@ -12,7 +12,7 @@
   }
 
   td {
-    border-top: $table-border-width solid $table-border-color;
+    border-top: $table-border-width solid var(--table-border-color);
   }
 }
 
@@ -34,11 +34,11 @@
 // Add or remove borders all around the table and between all the columns.
 
 .table-bordered {
-  border: $table-border-width solid $table-border-color;
+  border: $table-border-width solid var(--table-border-color);
 
   th,
   td {
-    border: $table-border-width solid $table-border-color;
+    border: $table-border-width solid var(--table-border-color);
   }
 
   thead {
@@ -112,7 +112,7 @@
     th {
       color: $table-head-color;
       background-color: $table-head-bg;
-      border-color: $table-border-color;
+      border-color: var(--table-border-color);
     }
   }
 }

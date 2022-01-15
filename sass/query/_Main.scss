@@ -24,11 +24,13 @@
 }
 .vlPaginationT{
 	grid-column: 2;
-  	grid-row: 2;	
+  	grid-row: 2;
+	margin-bottom: 0.5rem;	
 }
 .vlPaginationB{
 	grid-column: 2;
-  	grid-row: 4;	
+  	grid-row: 4;
+	margin-top: 0.5rem;
 }
 .vlQueryWrapper{
 	grid-column: 2;

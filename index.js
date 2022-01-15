@@ -158,6 +158,12 @@ const Kompo = {
 					if(el.href == 'javascript:void(0)' || el.target == '_blank' || e.ctrlKey)
 						return
 
+			        let targetHost = (new URL(el.href)).hostname
+			        let currentHost = (new URL(window.location.href)).hostname
+			        if (targetHost !== currentHost) {
+			        	return;
+			        }
+
 					if(el == e.target || el.contains(e.target)){
 
 						var url = el.href.split('#'),

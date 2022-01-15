@@ -48,8 +48,9 @@ export default {
             this.$_blurAction()        
         },
         $_handleError(error, index){ //when the _Image() auto-submits, we want to remove the thumb if the image was not set
-            if (this.$_multiple)
+            if (this.$_multiple || !error) //!error means the error was in another field
                 return
+
 
             index = index || 0
             this.removeFromValue(index) //on Error: remove thumbnail, but don't trigger changeAction

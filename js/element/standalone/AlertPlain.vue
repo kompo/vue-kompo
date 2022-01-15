@@ -1,7 +1,7 @@
 <template>
     <div v-if="open" class="vlAlert" :class="alertclass">
-        <div v-if="icon" v-html="icon" />
-        <div v-html="message"/>
+        <div v-if="icon" :is="{template:icon}" class="mr-1"/>
+        <span v-html="message"/>
         <div class="vlAlertClose" @click.stop="close()">
           <i class="icon-times cursor-pointer"></i>
         </div>

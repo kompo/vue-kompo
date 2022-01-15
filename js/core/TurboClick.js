@@ -22,6 +22,7 @@ export default class TurboClick {
         )
     }
     trigger(){
+
         let sidebarScoll = this.getLeftSidebar() ? this.getLeftSidebar().scrollTop : 0 //preserve scroll
         _kompo.toggleSpinner('block')
         axios.get(this.url).then(r => {
