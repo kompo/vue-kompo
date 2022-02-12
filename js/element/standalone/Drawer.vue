@@ -7,7 +7,7 @@
         :style="{'z-index': zIndex - 2 }">
 
         <div class="vlDrawerClose" :style="{'z-index': zIndex + 2 }" @click.stop="closeAction">
-            <i class="icon-times-circle"></i>
+            <i class="icon-times"></i>
         </div>
 
         <section 

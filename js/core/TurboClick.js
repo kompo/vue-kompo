@@ -89,7 +89,15 @@ export default class TurboClick {
         //Kompo.events.$nextTick( () => { //nextTick not enough because of anonymous component in Panel {template: ...}
         setTimeout( () => { //TODO better solution
             Array.from(doc.getElementsByClassName('reloadable-script'))
-                .forEach((script) => { eval(script.innerHTML) })
+                .forEach((script) => { 
+                    if(script.src){
+                        var s = document.createElement('script')
+                        s.setAttribute('src', script.src)
+                        document.body.appendChild(s)
+                    }else{
+                        eval(script.innerHTML) 
+                    }
+                })
         }, 400)
 
         //Change the browser's url and reload if back is pressed

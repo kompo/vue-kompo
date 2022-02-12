@@ -85,7 +85,7 @@ export default {
                 dayElem.innerHTML += '<div>'+eventHints+'</div>'
             }
         },
-        formatDate(date){            
+        formatDate(date){
             //https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
             const offset = date.getTimezoneOffset()
             date = new Date(date.getTime() - (offset*60*1000))
