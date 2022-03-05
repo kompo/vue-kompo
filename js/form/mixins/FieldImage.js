@@ -55,6 +55,10 @@ export default {
             index = index || 0
             this.removeFromValue(index) //on Error: remove thumbnail, but don't trigger changeAction
         },
+        $_fill(jsonFormData) {
+            //Using thumbnails because they keep order
+            this.thumbnails.forEach( (file, i) => this.$_fillJsonData(jsonFormData, file, i))
+        }
     },
     created(){
         this.thumbnails = this.$_value ? _.cloneDeep(this.$_value) : []

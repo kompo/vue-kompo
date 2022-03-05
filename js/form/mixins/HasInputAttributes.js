@@ -10,7 +10,7 @@ export default {
         }},
         $_inputType(){return this.$_config('inputType')},
         $_inputMin(){return this.$_config('inputMin')},
-        $_inputMax(){return this.$_config('inpuMax')},
+        $_inputMax(){return this.$_config('inputMax')},
         $_inputStep(){return this.$_config('inputStep')},
         $_inputPattern(){return this.$_config('inputPattern')},
         $_inputMaxlength(){return this.$_config('inputMaxlength')}

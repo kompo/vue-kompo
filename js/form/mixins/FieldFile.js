@@ -40,15 +40,16 @@ export default {
             if(!this.$_value.length)
                 jsonFormData[this.$_name + (this.$_multiple ? '[]' : '')] = null*/
 
-            this.$_value.forEach( (file, i) => {
-                var name = this.$_name + (this.$_multiple ? '['+i+']' : '')
+            this.$_value.forEach( (file, i) => this.$_fillJsonData(jsonFormData, file, i))
+        },
+        $_fillJsonData(jsonFormData, file, i) {
+            var name = this.$_name + (this.$_multiple ? '['+i+']' : '')
                 
-                if(file.id){
-                    jsonFormData[name]= JSON.stringify(file)
-                }else{
-                    jsonFormData[name]= file 
-                }            
-            })
+            if(file.id){
+                jsonFormData[name]= JSON.stringify(file)
+            }else{
+                jsonFormData[name]= file 
+            } 
         }
     },
 }
