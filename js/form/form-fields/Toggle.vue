@@ -9,7 +9,7 @@
             @blur="$_blurAction">
 
         <div v-on="$_events" class="vlSwitch"/>
-        <div class="vlDot" />
+        <div class="vlDot" @click="toggle" />
     </vl-form-field>
 </template>
 
