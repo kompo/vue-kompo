@@ -45,6 +45,11 @@ export default {
     		return this.$_prop('noOverlay') ? '' : 
     			('vlOverlay' + (this.$_prop('title') ? '' : ' vlOverlaySoft'))
     	},
+    },
+    methods: {
+        $_preview(){
+            this.$emit('preview', this.index)
+        }
     }
 }
 </script>

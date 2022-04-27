@@ -256,6 +256,7 @@ export default class Action {
         this.vue.$kompo.vlFillDrawer(response, this.vue.kompoid, {
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
+            closeAfterSubmit: !this.vue.$_config('keepOpen'),
         })
     }
     closeDrawerAction(){

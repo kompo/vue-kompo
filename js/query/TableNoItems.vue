@@ -1,6 +1,6 @@
 <template>
     <tbody>
-        <tr class="text-center">
+        <tr class="text-center vlNoItems">
             <td v-if="$_noItemsAsHtml" :colspan="headers.length" v-html="$_noItemsFound" />
             <td v-else :colspan="headers.length">
                 <component v-bind="$_noItemsAttributes" />
