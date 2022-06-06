@@ -47,7 +47,7 @@ export default {
         },
         insertFromResponse(obj){
             this.component = obj
-            this.partial = this.$_komponentTag(obj)
+            this.partial = this.$_komponentTag(obj) || this.$_vueTag(obj) //if Komponent or Element
 
             this.$nextTick(() => {
                 if (this.draggable || document.getElementById("vlDragPopUp")) {
