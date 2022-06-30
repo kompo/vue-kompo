@@ -132,7 +132,9 @@ export default class Action {
         this.vue.$kompo.vlSort(this.vue.kompoid, this.vue.$_sortValue, this.vue.$_elKompoId)
     }
     emitFromAction(response){
-        this.vue.$_vlEmitFrom(this.$_config('event'), this.getPayloadFor('emitPayload'))
+        let emitPayload = _.isEmpty(this.getPayloadFor('emitPayload')) ? null : this.getPayloadFor('emitPayload')
+
+        this.vue.$_vlEmitFrom(this.$_config('event'), emitPayload  || (response ? response.data : null))
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
@@ -140,6 +142,13 @@ export default class Action {
         let emitPayload = _.isEmpty(this.getPayloadFor('emitPayload')) ? null : this.getPayloadFor('emitPayload')
 
     	this.vue.$emit(this.$_config('event'), emitPayload  || (response ? response.data : null))
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    emitRootAction(response){
+        let emitPayload = _.isEmpty(this.getPayloadFor('emitPayload')) ? null : this.getPayloadFor('emitPayload')
+
+        this.vue.$kompo.vlEmitRoot(this.$_config('event'), emitPayload  || (response ? response.data : null))
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
@@ -247,7 +256,7 @@ export default class Action {
         this.vue.$kompo.vlFillPanel(this.$_config('panelId'), response.data, {
             included: this.$_config('included') || parentAction.$_config('included'),
             refreshParent: this.vue.$_config('refreshParent'),
-            resetAfterSubmit: this.vue.$_config('keepOpen') === true ? false : this.vue.$_config('refreshParent'),
+            resetAfterSubmit: (this.vue.$_config('keepOpen') === true) ? false : this.vue.$_config('refreshParent'),
         })
         
         this.vue.$_runInteractionsOfType(this, 'success')
@@ -256,7 +265,7 @@ export default class Action {
         this.vue.$kompo.vlFillDrawer(response, this.vue.kompoid, {
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
-            closeAfterSubmit: !this.vue.$_config('keepOpen'),
+            closeAfterSubmit: (this.vue.$_config('keepOpen') === true) ? false : this.vue.$_config('refreshParent'),
         })
     }
     closeDrawerAction(){

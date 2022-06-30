@@ -30,6 +30,9 @@ const Kompo = {
 			vlEmitFrom(kompoid, event, parameters){
 				Kompo.events.$emit('vlEmit'+kompoid, event, parameters)
 			},
+			vlEmitRoot(event, parameters){
+				Kompo.events.$emit(event, parameters)
+			},
 			vlSort(kompoid, sortValue, emitterId){
 				Kompo.events.$emit('vlSort'+kompoid, sortValue, emitterId)
 			},

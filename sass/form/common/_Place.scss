@@ -1,3 +1,14 @@
 .pac-container{
 	z-index: 10000;
 }
+
+.vlPlace{
+	.place-editing{
+		display: none;
+	}
+	&:hover{
+		.place-editing{
+			display: block;
+		}
+	}
+}
