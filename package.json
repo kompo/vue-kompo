@@ -1,6 +1,6 @@
 {
   "name": "vue-kompo",
-  "version": "3.0.14",
+  "version": "3.0.17",
   "license": "MIT",
   "main": "index.js",
   "author": {
@@ -16,12 +16,12 @@
     "lodash": "^4.17.19",
     "sass": "^1.32.2",
     "sass-loader": "^10.1.0",
-    "vue": "^2.5.7",
+    "vue": "^2.6.14",
     "vue-flatpickr-component": "^8.1.5",
     "vue-loader": "^15.9.6",
     "vue-masonry": "^0.11.7",
     "vue-scrollto": "^2.20.0",
-    "vue-template-compiler": "^2.6.10",
+    "vue-template-compiler": "^2.7.7",
     "vuedraggable": "^2.16.0"
   },
   "deprecated": false,

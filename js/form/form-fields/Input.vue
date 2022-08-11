@@ -35,12 +35,17 @@ export default {
                 ...this.$_defaultInputAttributes
             }
         },
+        focusOnLoad(){ return this.$_config('focusOnLoad') },
     },
     methods: {
         focus(){
             this.$refs.input.focus()
         },
-    }
+    },
+    mounted(){
+        if(this.focusOnLoad)
+            this.focus()
+    },
 }
 </script>
 

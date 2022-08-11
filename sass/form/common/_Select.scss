@@ -34,8 +34,9 @@
 	}
 	&.vlSelected{
 		background-color: mix(blue, #fff, 15);
+		opacity: 0.5;
 	}
 	&.vlSelected.vlHoveredOption{
-		background-color: mix(red, #fff, 15);
+		//background-color: mix(red, #fff, 15);
 	}
 }

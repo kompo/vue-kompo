@@ -38,6 +38,8 @@ export default {
         }
     },
     mounted(){
+        this.fixDateValue() //for some reason flatpickr converts to UTC randomly...
+
         this.dateCheck = this.$_value //to emit accurate change events
         this.selectedDates = this.$_value
     },
@@ -46,12 +48,13 @@ export default {
         $_noCalendar(){ return this.$_config('noCalendar') || false },
         $_dateMode(){ return this.$_config('dateMode') || false },
         $_locale(){ return this.$_config('kompo_locale') },
+        $_dateFormat(){ return this.$_config('dateFormat') },
         $_attributes(){
             return {
                 ...this.$_defaultFieldAttributes,
                 config: Object.assign({
                     wrap: true,
-                    dateFormat: this.$_config('dateFormat'),
+                    dateFormat: this.$_dateFormat,
                     enableTime: this.$_enableTime,
                     plugins: this.$_enableTime ? [new confirmDatePlugin({confirmIcon: ''})] : [],
                     noCalendar: this.$_noCalendar,
@@ -132,6 +135,19 @@ export default {
         onClose(obj, value){
             this.$emit('close', value, event)
             this.$_blurAction()
+        },
+        fixDateValue(){
+            if (!this.$_value){
+                return
+            }
+
+            if (this.$_dateFormat == 'Y-m-d') {
+                this.component.value = this.$_value.substr(0, 10)
+            }
+
+            if (this.$_dateFormat == 'Y-m-d H:i') {
+                this.component.value = this.$_value.substr(0, 16)
+            }
         }
     }
 }

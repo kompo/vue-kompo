@@ -66,6 +66,9 @@ export default {
     mounted(){
         this.filteredOptions = this.options
         this.optionsMessage = this.ajaxOptions ? this.enterMoreCharacters : this.noOptionsFound
+        
+        if(this.focusOnLoad)
+            this.focus()
     },
     created() {
         this.vkompo.$_handleAddedOption = this.$_handleAddedOption
@@ -92,7 +95,8 @@ export default {
         ajaxOptions(){ return this.$_config('ajaxOptions') },
         ajaxMinSearchLength(){ return this.$_config('ajaxMinSearchLength') },
         ajaxOptionsFromField(){ return this.$_config('ajaxOptionsFromField') },
-        debouncedAjaxFunction(){ return _.debounce(this.loadOptionsByAjax, 300)}
+        debouncedAjaxFunction(){ return _.debounce(this.loadOptionsByAjax, 300)},
+        focusOnLoad(){ return this.$_config('focusOnLoad') },
     },
     methods: {
         keyDown(key){
@@ -137,6 +141,9 @@ export default {
                 jsonFormData[this.$_name] = this.$_value.length ? this.$_value[0].value : ''
             }
         },
+        focus(){
+            this.$refs.input.focus()
+        },
         blur(){
             this.$_state('focusedField') && this.forceBlur()
         },
@@ -149,7 +156,12 @@ export default {
             if(option.label && _.isObject(option.label) && option.label.$_config('disabled'))
                 return
 
-            this.isSelected(option) ? this.$_remove(this.indexOf(option)) : this.$_addOptionToValue(option)
+            if (this.isSelected(option)) {
+                //this.$_remove(this.indexOf(option)) //disabled remove on click => better UX
+            } else {
+                this.$_addOptionToValue(option)
+            }
+
             this.reset()
             this.$_blurAction()
         },
