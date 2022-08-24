@@ -119,9 +119,11 @@ export default {
 
             this.$_clearErrors()
             this.dateCheck = dateStr
-            this.$_changeAction()
+            setTimeout(() => {
+                this.$_changeAction()
 
-            this.$emit('change', dateStr, event) //there's a magical event variable that is defined when a date changes but not when time changes. seen on SO. used for tasks in condoedge
+                this.$emit('change', dateStr, event) //there's a magical event variable that is defined when a date changes but not when time changes. seen on SO. used for tasks in condoedge
+            }, 100)
         },
         clear(){
             this.component.value = ''

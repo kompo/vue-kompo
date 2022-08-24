@@ -31,9 +31,16 @@ export default {
         close(k){
             this.alerts.splice(k)
         },
-        closeById(id){
+        closeById(id){ //Todelete
             var indexWithId = _.findIndex(this.alerts, (alert) => alert.id == id)
             this.alerts.splice(indexWithId)
+        },
+        closeOldestAlert(){
+            if(!this.alerts.length) {
+                return;
+            }
+
+            this.alerts.splice(0, 1)
         },
         addAlert(alert){
             this.initialId += 1
@@ -41,7 +48,8 @@ export default {
             this.alerts.push(Object.assign(alert, {
                 id: this.initialId
             }))
-            setTimeout(()=> this.closeById(this.initialId), 3000)
+
+            setTimeout(()=> this.closeOldestAlert(), 3000)  
         }
     },
     mounted(){

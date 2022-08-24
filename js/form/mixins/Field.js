@@ -88,7 +88,7 @@ export default {
             this.$_clearErrors()
             
             this.$_runOwnInteractions('keyup')
-            if(key.code === 'Enter'){
+            if((key.code === 'Enter') || (key.code === 'NumpadEnter')){
                 if(this.$_config('noSubmitOnEnter')){
                     this.$_runOwnInteractionsWithoutActions('enter', ['submitForm'])
                 }else{

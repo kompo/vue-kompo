@@ -1,6 +1,6 @@
 {
   "name": "vue-kompo",
-  "version": "3.0.17",
+  "version": "3.0.21",
   "license": "MIT",
   "main": "index.js",
   "author": {
@@ -16,7 +16,7 @@
     "lodash": "^4.17.19",
     "sass": "^1.32.2",
     "sass-loader": "^10.1.0",
-    "vue": "^2.6.14",
+    "vue": "^2.7.8",
     "vue-flatpickr-component": "^8.1.5",
     "vue-loader": "^15.9.6",
     "vue-masonry": "^0.11.7",
