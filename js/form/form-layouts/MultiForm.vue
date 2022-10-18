@@ -1,6 +1,13 @@
 <template>
     <div v-bind="$_layoutWrapperAttributes" v-show="!$_hidden">
         <vl-form-label :component="component" />
+        <component
+            v-if="!noAdding && topAdding"
+            :is="$_vueTag($_config('addLabel'))"
+            :vkompo="$_config('addLabel')"
+            :kompoid="kompoid" 
+            @newitem="addRow"
+        />
         <draggable 
             v-if="!component.headers"
             v-model="elements" 
@@ -31,7 +38,7 @@
             </table>
         </div>
         <component
-            v-if="!noAdding"
+            v-if="!noAdding && !topAdding"
             :is="$_vueTag($_config('addLabel'))"
             :vkompo="$_config('addLabel')"
             :kompoid="kompoid" 

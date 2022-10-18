@@ -7,9 +7,11 @@
                     type="radio"
                     v-bind="attributes(option)"
                     :id="$_elementId(key)"
+                    @change="$_changeAction"
+                    :disabled="isDisabled(option)"
                 />
             </div>
-            <label class="vlFormLabel" @click="toggleValue(option)()" :class="optionLabelClass" v-html="option.label"/>
+            <label class="vlFormLabel" @click="toggleValue(option)()" :class="getOptionClass(option)" v-html="getOptionLabel(option)"/>
         </div>
 
     </vl-form-field>
@@ -26,6 +28,18 @@ export default {
         optionLabelClass(){ return this.$_config('optionLabelClass') },
     },
     methods: {
+        isDisabled(option){
+            return option.label && _.isObject(option.label) && option.label.config && option.label.config.disabled
+        },
+        getOptionLabel(option){
+            return option.label && _.isObject(option.label) ? option.label.label : option.label
+        },
+        getOptionClass(option){
+            return this.$_classString([
+                option.label && _.isObject(option.label) ? option.label.class : '',
+                this.optionLabelClass,
+            ])
+        },
         attributes(option){
             return {
                 ...this.$_attributes,
@@ -38,7 +52,11 @@ export default {
         },
         toggleValue(option){
             return ($event) => {
+                if(this.isDisabled(option))
+                    return
+
                 this.component.value = this.checked(option) ? null : option.value
+                this.$_changeAction()
                 this.$_blurAction()
             }
         },

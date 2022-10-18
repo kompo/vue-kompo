@@ -15,12 +15,14 @@ export default {
             onDayCreate: function(dObj, dStr, fp, dayElem){
                 // Utilize dayElem.dateObj, which is the corresponding Date
 
+                /*
                 // dummy logic
                 if (Math.random() < 0.15)
                     dayElem.innerHTML += "<span class='text-red-500'>x</span>";
 
                 else if (Math.random() > 0.85)
                     dayElem.innerHTML += "<span class='text-red-500'>e</span>";
+                */
             }
         })
     }

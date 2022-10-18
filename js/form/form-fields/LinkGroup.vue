@@ -79,8 +79,11 @@ export default {
         componentKey(key){ return this.$_elKompoId + key },
         setValue(selectedKey) {
 
+            let selectedOption = this.component.options[selectedKey]
+            if(selectedOption.label && _.isObject(selectedOption.label) && selectedOption.label.$_config('disabled'))
+                return
+
             if(this.$_multiple){
-                let selectedOption = this.component.options[selectedKey]
                 let valueIndex = _.findIndex(this.$_value, (val) => { return val == selectedOption.value })
 
                 if(valueIndex == -1){

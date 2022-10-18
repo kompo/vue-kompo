@@ -5,7 +5,8 @@ export default {
         })
     },
     computed: {
-        noAdding(){ return this.$_config('noAdding') }
+        noAdding(){ return this.$_config('noAdding') },
+        topAdding(){ return this.$_config('topAdding') },
     },
     methods:{
         getRandomKey(){
@@ -17,7 +18,17 @@ export default {
             
             this.$_kAxios.$_loadKomponent(payload).then(r => {
 
-                this.elements.push(Object.assign(r.data, {key: this.getRandomKey()}))
+                let newElement = Object.assign(r.data, {key: this.getRandomKey()})
+
+                if (this.topAdding) {
+
+                    this.elements.unshift(newElement)
+
+                }else {
+
+                    this.elements.push(newElement)
+
+                }
 
             })
         },
