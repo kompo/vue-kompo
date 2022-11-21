@@ -139,7 +139,7 @@ export default {
             this.$_blurAction()
         },
         fixDateValue(){
-            if (!this.$_value){
+            if (!this.$_value || !_.isString(this.$_value)){
                 return
             }
 
