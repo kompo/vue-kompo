@@ -220,6 +220,7 @@ export default class Action {
             warnBeforeClose: this.vue.$_config('warnBeforeClose'),
             refreshParent: this.vue.$_config('refreshParent'),
             closeAfterSubmit: this.vue.$_config('keepOpen') === true ? false : this.vue.$_config('refreshParent'), 
+            closeLastModal: this.vue.$_config('closeLastModal'),
         })
     }
     fillModalAction(response, confirmFunc){

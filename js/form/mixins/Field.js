@@ -34,7 +34,7 @@ export default {
         $_multiple() { return this.component.multiple },
         
         $_attributes() { return this.$_defaultFieldAttributes },
-        $_defaultFieldAttributes() { 
+        $_defaultFieldAttributes() {
             return Object.assign({
                 ...this.$_defaultElementAttributes,
                     id: this.$_elementId() || this.$_elKompoId,

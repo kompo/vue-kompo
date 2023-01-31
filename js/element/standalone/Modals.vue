@@ -68,6 +68,9 @@ export default {
         $_attachEvents(){
             this.$_vlOn('vlFillModal', (response, kompoid, options) => {
                 this.confirmSubmitFunction = options.confirmFunc
+                if (options.closeLastModal) {
+                    this.closeLast()
+                }
                 this.addModal(response.data, kompoid, options)
             })
             this.$_vlOn('vlCloseModal', () => {
