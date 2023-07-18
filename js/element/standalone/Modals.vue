@@ -73,14 +73,14 @@ export default {
                 }
                 this.addModal(response.data, kompoid, options)
             })
-            this.$_vlOn('vlCloseModal', () => {
+            this.$_vlOn('vlCloseLastModal', () => {
                 this.closeLast()
             })
         },
         $_destroyEvents(){
             this.$_vlOff([
               'vlFillModal',
-              'vlCloseModal'
+              'vlCloseLastModal'
             ])
         }
     },

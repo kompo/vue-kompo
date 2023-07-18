@@ -76,6 +76,7 @@ export default {
         }
 
         this.$_runOwnInteractions('load')
+        this.$_filterOutInteractions('load')
     },
     computed: {
 

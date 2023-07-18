@@ -117,7 +117,10 @@ const Kompo = {
 	    	vlModalShow(modal, ajaxContent, warnbeforeclose, confirmFunc){
 	    		Kompo.events.$emit('vlModalShow' + modal, ajaxContent, warnbeforeclose, confirmFunc)
 	    	},
-	    	vlModalClose(modal){
+	    	vlCloseLastModal(){
+	    		Kompo.events.$emit('vlCloseLastModal')
+	    	},
+	    	vlModalClose(modal){ //Discontinued
 	    		Kompo.events.$emit('vlModalClose' + modal)
 	    	},
 	    	vlModalShowFill(modal, html){

@@ -35,6 +35,11 @@ export default {
                 })
 
         },
+        $_filterOutInteractions(type, parameters){
+            if(this.$_hasInteractions)
+                this.vkompo.interactions = this.$_interactions.filter( interaction => interaction.interactionType != type)
+
+        },
         $_runOwnInteractionsWithAction(type, action){
             if(this.$_hasInteractions)
                 this.$_interactions.forEach( interaction => {
