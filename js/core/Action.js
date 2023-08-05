@@ -55,7 +55,7 @@ export default class Action {
         })
     }
     submitFormAction(){
-        
+
         this.vue.$_state({ loading: true })
         this.vue.$_state({ isSuccess: false })
         this.vue.$_state({ hasError: false })
@@ -95,8 +95,10 @@ export default class Action {
             if (e instanceof axios.Cancel) {return;}
 
             if(e.response.status == 449){
-                if(_.isString(e.response.data)){
-                    if(confirm(e.response.data)){
+                let message = e.response.data.message || e.response.data
+
+                if(_.isString(message)){
+                    if(confirm(message)){
                         this.warningConfirmed = true
                         this.submitFormAction()
                     }

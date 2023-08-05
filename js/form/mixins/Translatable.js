@@ -62,7 +62,15 @@ export default {
                     jsonFormData[this.$_name+'['+key+']'] = this.$_value[key]
                 }
             })
-        }
+        },
+        $_validate(errors) {
+            var errorName = this.$_name.replace('.', '_')
+            this.$_setError(errors[errorName])
+            Object.keys(this.locales).forEach( (locale) => {
+                if(errors[errorName+'.'+locale])
+                    this.$_setError(errors[errorName+'.'+locale]) //showing the last error only
+            })
+        },
     },
     created(){
         this.activeLocale = this.currentLocale
