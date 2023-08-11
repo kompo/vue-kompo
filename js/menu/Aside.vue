@@ -39,10 +39,14 @@ export default {
             this.open = !this.open
             
             this.$kompo.vlToggleSidebarToggler(this.togglerKompoId)
+
+            $ && $('.vl-sidebar-l').toggleClass('vlOpen') //hack for vue bug not re-rendering..
         },
         close(){
             if(!this.open)
                 return 
+
+            $ && $('.vl-sidebar-l').removeClass('vlOpen') //hack for vue bug not re-rendering..
 
             this.sidebarClass = ''
 
