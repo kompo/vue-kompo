@@ -8,6 +8,7 @@
         <div :class="containerClass" v-bind="$_attributes">
 
             <div :class="optionClass(option)" 
+                :style="optionStyle(option)"
                 @click.stop="setValue(key)"
                 @keyup.enter.stop="setValue(key)"
                 tabindex="0"
@@ -59,6 +60,9 @@ export default {
                 option.selected ? this.$_selectedClass : this.$_unselectedClass,
                 this.$_commonClass,
             ])
+        },
+        optionStyle(option){ 
+            return option.selected ? this.$_selectedStyle : this.$_unselectedStyle
         },
         optionInnerClass(option, key){ 
             return this.$_classString([
