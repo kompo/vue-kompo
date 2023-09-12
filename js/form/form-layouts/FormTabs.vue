@@ -59,6 +59,8 @@ export default {
         },
         selectTab(index) {
             this.activeTab = index
+
+            this.$_runOwnInteractions('click')
         },
         tabActive(index) {
             return index == this.activeTab
