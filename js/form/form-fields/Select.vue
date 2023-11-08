@@ -18,7 +18,7 @@
                 autocomplete="off"
             />
             <template v-slot:append v-if="appendIcon && !$_readOnly">
-                <i :class="appendIcon"/>
+                <div v-html="appendIcon"/>
             </template>
         </vlTaggableInput>
         <div class="vlOptions" :key="optionsKey">
@@ -85,8 +85,8 @@ export default {
                 is: {template: this.$_icon}
             }
         },
-        appendIcon(){ return this.$_config('searchInput') ? null : 
-            (this.$_state('focusedField') ? 'icon-up' : 'icon-down') },
+        appendIcon(){ return this.$_config('searchInput') ? null :
+            (this.$_state('focusedField') ? this.$_config('iconUp') : this.$_config('iconDown')) },
         noOptionsFound(){ return this.$_config('noOptionsFound')},
         enterMoreCharacters(){ return this.$_config('enterMoreCharacters')},
         ajaxOptions(){ return this.$_config('ajaxOptions') },
@@ -234,7 +234,7 @@ export default {
                 this.$set(this, 'filteredOptions', response.data)
                 this.optionsMessage = this.noOptionsFound
                 this.optionsKey += 1
-                
+
             })
         }
     }
