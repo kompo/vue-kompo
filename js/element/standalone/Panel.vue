@@ -101,7 +101,7 @@ export default {
     },
     created(){
 
-        this.usedTransition = this._$config('transationName') || this.transition || 'fadeIn'
+        this.usedTransition = this.transition || 'fadeIn'
         this.usedMode = this.mode || (this.usedTransition == 'fadeIn' ? 'out-in' : '')
 
         this.$_destroyEvents()
