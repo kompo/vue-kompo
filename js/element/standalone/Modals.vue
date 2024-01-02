@@ -1,7 +1,7 @@
 <template>
     <transition name="fadeIn">
         <div class="vlMask" v-show="modals.length">
-            <transition-group name="modal">
+            <transition-group :name="transitionName">
                 <vl-modal
                     v-for="(modal, key) in modals"
                     :key="modal.id"
@@ -20,18 +20,20 @@
 
 <script>
 import EmitsEvents from '../mixins/EmitsEvents'
+import HasConfig from '../mixins/HasConfig'
 
 export default {
-    mixins: [EmitsEvents],
+    mixins: [EmitsEvents, HasConfig],
     data(){
         return {
             modals: [],
             initialId: 0,
             confirmSubmitFunction: null,
+            transitionName: 'modal',
         }
     },
     computed: {
-
+        
     },
     methods:{
         addModal(obj, kompoid, options){
@@ -44,7 +46,9 @@ export default {
                 options: Object.assign(options, {
                     zIndex: 2000 + 100*this.initialId,
                 }),
-            }))
+            }));
+
+            this.transitionName = options.transitionName;
         },
         closeByIndex(index){
             this.modals.splice(index)
