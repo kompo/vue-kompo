@@ -54,11 +54,12 @@ export default {
                 ...this.$_defaultFieldAttributes,
                 config: Object.assign({
                     wrap: true,
+                    clickOpens: this.$_config('attrs')?.['disabled'] ? false : true,
                     dateFormat: this.$_dateFormat,
                     enableTime: this.$_enableTime,
                     plugins: this.$_enableTime ? [new confirmDatePlugin({confirmIcon: ''})] : [],
                     noCalendar: this.$_noCalendar,
-                    allowInput: true,
+                    allowInput: this.$_config('attrs')?.['disabled'] ? false : true,
                     altInput: true,
                     altInputClass: 'vlFormControl',
                     altFormat: this.$_config('altFormat'),
