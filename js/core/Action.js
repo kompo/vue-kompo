@@ -34,7 +34,7 @@ export default class Action {
     	this.vue.$_state({ loading: true })
         this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, false) //disable submit while loading
 
-        let additionalPayload = (this.vue.$_config('withAllFormValues') || this.$_config('withAllFormValues')) ? this.getParentKomponentInfo().jsonFormData : null
+        let additionalPayload = this.getParentKomponentFormData()
         let checkedItemIds = this.vue.$_config('withCheckedItemIds') ? this.getParentKomponentInfo().data : null
 
         this.$_kAxios.$_actionAxiosRequest(payload, Object.assign(additionalPayload || {}, checkedItemIds || {}))
@@ -53,6 +53,15 @@ export default class Action {
             this.handleErrorInteraction(e)
 
         })
+    }
+    getParentKomponentFormData(){
+        if(!this.vue.$_config('withAllFormValues') && !this.$_config('withAllFormValues')){
+            return
+        }
+
+        let parentKomponentInfo = this.getParentKomponentInfo()
+
+        return parentKomponentInfo.jsonFormData || parentKomponentInfo.data
     }
     submitFormAction(){
 
