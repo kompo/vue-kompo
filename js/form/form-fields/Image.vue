@@ -14,6 +14,7 @@
                 v-on="$_events"
                 type="file"
                 ref="input" 
+                accept="image/jpeg,image/png,image/gif,image/bmp,image/webp"
             />
 
 
