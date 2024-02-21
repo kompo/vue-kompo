@@ -69,6 +69,12 @@ export default {
                 this.setRedirecting()
                 setTimeout( () => {this.redirect(this.redirectUrl)}, 300)
             }
+            
+            //redirect route coming from response
+            if (r?.data?.kompoRedirectTo) {
+                setTimeout( () => {this.redirect(r?.data?.kompoRedirectTo)}, 50)
+            }
+
             //redirect route coming from controller
             if(this.formUrl != r.request.responseURL){
 
@@ -90,6 +96,7 @@ export default {
             }
         },
         submitError(e){
+            
             this.$emit('error', e)
 
             if (e.response.status == 422){

@@ -217,12 +217,15 @@ const Kompo = {
 		    return response
 
 		}, function (error) {
-			// Status codes outside the range of 5xx
-			let r = error.response.data
 
-		    if(isDumpScript(r)){
-	            showDumpInModal(r)
-		    }
+			if (error.response) {
+				// Status codes outside the range of 5xx
+				let r = error.response.data
+
+			    if(isDumpScript(r)){
+		            showDumpInModal(r)
+			    }				
+			}
 		    
 		    return Promise.reject(error)
 		});
