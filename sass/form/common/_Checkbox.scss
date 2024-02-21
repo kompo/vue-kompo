@@ -111,9 +111,9 @@
 }
 
 .vlCheckbox .vlFormLabel{
-    --remaining: calc(var(--form-checkbox-height) + var(--form-control-padding-l) + 2px);
+    --remaining: calc(var(--form-checkbox-height) + var(--form-control-padding-l) + 4px);
 }
 
 .vlToggle .vlFormLabel,.vlToggleInput .vlFormLabel{
-    --remaining: calc(1.75 * var(--form-toggle-height) + var(--form-control-padding-l) + 2px);
+    --remaining: calc(1.75 * var(--form-toggle-height) + var(--form-control-padding-l) + 4px);
 }
