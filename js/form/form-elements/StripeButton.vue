@@ -25,6 +25,8 @@ export default {
     },
     methods: {
         redirectCheckout(response){
+
+            window.weAreRedirectingToStripe = true
             
             const result = this.stripe.redirectToCheckout({ sessionId: response.id })
 

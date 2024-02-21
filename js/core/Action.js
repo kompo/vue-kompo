@@ -176,6 +176,10 @@ export default class Action {
     runJsAction(response){
         const jsFunction = this.$_config('jsFunction')
         this.vue.$nextTick(() => { //yep, run it if you find it
+
+            if (!jsFunction) {
+                return;
+            }
             
             if (jsFunction.substr(0, 7) == '() => {') {
                 let toExecutre = eval(jsFunction)
