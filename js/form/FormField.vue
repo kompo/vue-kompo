@@ -5,7 +5,7 @@
 
         <slot name="before"/>
 
-        <div v-if="!$_noInputWrapper" :class="$_wrapperClass"><slot /></div>
+        <div v-if="!$_noInputWrapper" :class="$_inputWrapperClass"><slot /></div>
         <div v-else><slot /></div>
 
         <slot name="after"/>
@@ -61,8 +61,8 @@ export default {
         $_readOnly(){
             return this.component.$_config('readOnly')
         },
-        $_wrapperClass(){
-            return 'vlInputWrapper ' + (this.component.$_config('_wrapperClass') || '')
+        $_inputWrapperClass(){
+            return 'vlInputWrapper ' + (this.component.$_config('inputWrapperClass') || '')
         },
     }
 }
