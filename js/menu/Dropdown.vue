@@ -22,8 +22,8 @@
                 <component 
                     v-for="(col,index) in elements"
                     :key="index"
+                    v-on="{ ...col.on, click: () => $emit('click', col)}"
                     v-bind="$_defaultLayoutAttributes(col)" 
-                    @click="$emit('click', col)"
                 />
         
             </div>
@@ -43,6 +43,14 @@ export default {
         return {
             open: false,
             forcedOpen: false,
+        }
+    },
+    watch:{
+        'vkompo.elements': function () {
+            this.elements = { ...this.vkompo.elements }
+        },
+        'vkompo.label': function () {
+            this.component = { ...this.component, label: this.vkompo.label }
         }
     },
     computed: {        
