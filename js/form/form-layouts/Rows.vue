@@ -5,7 +5,9 @@
         @click="$_clickAction"
         v-turbo-click="component.turbo">
         <template v-for="(row,index) in elements">
-            <component v-bind="$_attributes(row)" />
+            <component 
+                v-bind="$_attributes(row)"
+                @touchedForm="touchedForm" />
         </template>
     </component>
 </template>
@@ -24,6 +26,11 @@ export default {
                 this.$_config('alignClass')
             ]
         }
+    },
+    methods: {
+        touchedForm(){
+            this.$emit('touchedForm')
+        },
     }
 }
 </script>
