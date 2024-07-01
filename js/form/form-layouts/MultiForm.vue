@@ -17,6 +17,7 @@
                 :vkompo="comp"
                 :key="comp.key"
                 v-bind="$_attributes(comp)" 
+                @touchedForm="touchedForm"
                 @deleted="deleteRow(index)"
             />
         </draggable>
@@ -57,6 +58,11 @@ import DoesAxiosRequests from '../mixins/DoesAxiosRequests'
 export default {
     mixins: [Layout, HasName, DoesAxiosRequests, HasMultiForms],
     components: { draggable },
+    methods: {
+        touchedForm(){
+            this.$kompo.vlUpdateErrorState(this.kompoid)
+        },
+    }
     
 }
 </script>
