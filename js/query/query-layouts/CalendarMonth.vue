@@ -3,7 +3,7 @@
         <div ref="calendar" />
         <div class="vlEventsList mini-scroll">
         	<template v-for="(events, eventsDate) in sortedItems">
-                <div class="font-bold text-xs text-gray-500 pb-2 pt-4" 
+                <div class="font-bold text-xs text-gray-500 pb-2 pt-4 vlDateGroupHeader" 
                 	:id="dateId(eventsDate)"
                 	v-html="eventsDate"
                 />
@@ -20,6 +20,7 @@
 <script>
 import Layout from '../mixins/Layout'
 import Flatpickr from 'flatpickr'
+import dateFormat from "dateformat";
 
 import { French } from "flatpickr/dist/l10n/fr.js"
 
@@ -110,7 +111,7 @@ export default {
 
             _.sortBy(this.items, (item) => this.itemAttributes(item).start_date), 
 
-            (item) => this.itemAttributes(item).start_date.substr(0,10)
+            (item) => dateFormat(this.itemAttributes(item).start_date, this.component.groupDateFormat ?? "yyyy-mm-dd")
         )
 
         var fp = new Flatpickr(this.$refs.calendar, Object.assign({
