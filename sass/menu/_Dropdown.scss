@@ -29,11 +29,11 @@
 	transition: all .2s ease-in-out;
 	opacity: 0;
 	transform-origin: top left;
-	flex-direction: column;	
+	flex-direction: column;
+	border-radius: var(--form-control-border-radius);
 	&:not(.vlNoBorder){
 		border: var(--form-control-border);
 	}
-	border-radius: var(--form-control-border-radius);
     &.vlMenuClosed{
         display: flex; //cancel mobile effect
     }
