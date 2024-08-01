@@ -75,7 +75,8 @@ export default {
             this.reset()
         },
         closeModal(){
-            this.$emit('closeModal')
+            //this.$emit('closeModal')
+            this.$_vlEmitFrom('closeModal', null)
         },
         confirmSubmit(){
             this.$emit('confirmSubmit')
