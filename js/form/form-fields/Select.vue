@@ -21,9 +21,9 @@
                 <div v-html="appendIcon"/>
             </template>
         </vlTaggableInput>
-        <div class="vlOptions" :key="optionsKey">
+        <div class="vlOptions" :key="optionsKey" ref="selectOptions">
             <template v-if="filteredOptions.length">
-                <div v-for="(option,key) in filteredOptions" :key="option.value"
+                <div v-for="(option,key) in filteredOptions" :key="option.value" :ref="key"
                     class="vlOption"
                     :class="{
                         'vlSelected' : isSelected(option),
@@ -204,10 +204,51 @@ export default {
         },
         prevOption(){
             this.hoveredOption = this.hoveredOption == 0 ? this.filteredOptions.length - 1 : this.hoveredOption - 1
+
+            this.correctScrollToHovered('previous');
         },
         nextOption(){
             this.hoveredOption = this.hoveredOption == this.filteredOptions.length - 1 ? 0 : this.hoveredOption + 1
+
+            this.correctScrollToHovered('next');
         },
+        correctScrollToHovered(nextOrPrev = 'next') {
+            const hoveredEl = this.$refs[this.hoveredOption][0]
+            const optionsContainerEl = this.$refs.selectOptions;
+
+            if(nextOrPrev == 'next' && this.hoveredOption == 0) {
+                this.scrollToHoveredPrevious(hoveredEl, optionsContainerEl, true);
+                return;
+            }
+
+            if (nextOrPrev == 'previous' && this.hoveredOption == this.filteredOptions.length - 1) {
+                this.correctScrollToHoveredNext(hoveredEl, optionsContainerEl, true);
+                return;
+            }
+
+            nextOrPrev == 'next' ? this.correctScrollToHoveredNext(hoveredEl, optionsContainerEl)
+                    : this.scrollToHoveredPrevious(hoveredEl, optionsContainerEl);
+        },
+        correctScrollToHoveredNext(hoveredEl, optionsContainerEl, skipValidation = false) {
+            const hoveredPosition = hoveredEl.offsetTop
+            const actualPosition = optionsContainerEl.scrollTop
+            const heightContainer = optionsContainerEl.offsetHeight
+            const heightHovered = hoveredEl.offsetHeight;
+
+            if(skipValidation || hoveredPosition + heightHovered > actualPosition + heightContainer) {
+                optionsContainerEl.scrollTop = hoveredPosition - heightContainer + heightHovered
+            }
+        },
+
+        scrollToHoveredPrevious(hoveredEl, optionsContainerEl, skipValidation = false) {
+            const hoveredPosition = hoveredEl.offsetTop
+            const actualPosition = optionsContainerEl.scrollTop
+
+            if(skipValidation || hoveredPosition < actualPosition) {
+                optionsContainerEl.scrollTop = hoveredPosition
+            }
+        },
+
         setHoveredOption(key){
             this.hoveredOption = key
         },
