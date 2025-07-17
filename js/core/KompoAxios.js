@@ -164,11 +164,11 @@ export default class KompoAxios{
         })
     }
     $_searchOptions(search){
-
         return this.$_axiosWithErrorHandling({
             url: this.$_kompoRoute, 
             method: 'POST',
             data: {
+                ...this.$_ajaxPayload,
                 search: search
             },
             headers: {
