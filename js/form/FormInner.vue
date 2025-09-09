@@ -12,6 +12,7 @@ import Alert from '../core/Alert'
 import IsKomponent from '../mixins/IsKomponent'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
 import TurboClick from '../core/TurboClick'
+import KompoResponseHandler from '../core/KompoResponseHandler'
 
 export default {
     mixins: [Layout, IsKomponent, DoesAxiosRequests],
@@ -63,6 +64,12 @@ export default {
         submitSuccess(r, submitElement){
 
             this.$emit('success', r, submitElement)
+
+            // Handle dynamic Kompo responses first
+            if (r.data.kompoResponseType) {
+                // KompoResponseHandler.handle(r.data, this) Already managing it in Action.js
+                return
+            }
             
             //redirect route predefined in form
             if(this.redirectUrl){

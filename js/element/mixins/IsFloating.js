@@ -49,10 +49,13 @@ export default {
             e.stopPropagation() //so that parent modals don't close too
         },
         closeAction(){
-            this.$emit('close')
+            if (this.canClose())
+                this.$emit('close')
         },
         canClose(){ 
-            return !this.warnBeforeClose || (this.warnBeforeClose && !this.isDirty) || (this.warnBeforeClose && confirm(this.warnBeforeClose))
+            const result = !this.warnBeforeClose || (this.warnBeforeClose && !this.isDirty) || (this.warnBeforeClose && confirm(this.warnBeforeClose))
+
+            return result
         },
         confirmSubmit(){
             this.closeAction()

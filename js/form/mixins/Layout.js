@@ -82,6 +82,16 @@ export default {
         $_deliverJsonTo(componentId, json){
             this.elements.forEach( item => item.$_deliverJsonTo(componentId, json) )
         },
+        $_attachEvents(){
+            this.$_vlOn('vlEmit'+this.kompoid, (eventName, eventPayload) => {
+                this.$emit(eventName, eventPayload)
+            })
+        },
+        $_destroyEvents(){
+            this.$_vlOff([
+                'vlEmit'+this.kompoid,
+            ])
+        }
 	},
     mounted(){
         if(this.$_toggleOnLoad)
