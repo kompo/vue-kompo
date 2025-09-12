@@ -25,8 +25,15 @@ export default {
     },
     methods: {
         redirectCheckout(response){
-
+            
             window.weAreRedirectingToStripe = true
+
+            if (response.openinmodalinstead) {
+                this.$kompo.vlFillModal({
+                    data : response.openinmodalinstead,
+                }, this.kompoid)
+                return
+            }
             
             const result = this.stripe.redirectToCheckout({ sessionId: response.id })
 

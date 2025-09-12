@@ -5,7 +5,7 @@
 
         <component v-bind="filtersAttributes('Top')" />
 
-        <component v-if="showTopPagination" @browse="browseQuery" v-bind="paginationAttributes(paginationClassT)" />
+        <component v-if="showTopPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassT)" />
 
         <div class="vlQueryWrapper"
             :class="itemsWrapperClass"
@@ -14,7 +14,7 @@
             @scroll="onScroll">
 
             <table v-if="isTableLayout" class="w-full table vlTable" :class="tableClass">
-                <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" />
+                <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" :key="headersKey" />
                 <component v-bind="layoutAttributes" />
                 <vl-table-footers :vkompo="component" :kompoid="$_elKompoId" />
             </table>
@@ -25,7 +25,7 @@
             />
         </div>
 
-        <component v-if="showBottomPagination" @browse="browseQuery" v-bind="paginationAttributes(paginationClassB)" />
+        <component v-if="showBottomPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassB)" />
 
         <component v-bind="filtersAttributes('Bottom')" />
 
@@ -52,6 +52,7 @@ export default {
         cards: [],
         pagination: null,
         headers: [],
+        headersKey: '',
         cardsKey: '',
         filtersKey: 1,
         checkedItemIds: [],
@@ -59,6 +60,7 @@ export default {
     }),
     created() {
         this.cardsKey = 'cards' + this.component.id
+        this.headersKey = 'headers' + this.component.id
         this.filters = this.component.filters
         this.cards = this.getCards(this.component)
         this.pagination = this.getPagination(this.component)
@@ -226,6 +228,10 @@ export default {
                 if (scrollTop == 0)
                     this.browseQuery(this.currentPage + 1, true)
         },
+        browseQueryFromPagination(page) {
+            this.browseQuery(page)
+            this.headersKey += 1
+        },
         browseQuery(page, additive) {
             
             this.isBrowsing = true
@@ -234,6 +240,7 @@ export default {
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
                 
                 this.loadItems(r.data, additive)
+
 
                 this.isBrowsing = false
 
