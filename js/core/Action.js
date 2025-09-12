@@ -1,6 +1,7 @@
 import KompoAxios from './KompoAxios'
 import Alert from './Alert'
 import TurboClick from './TurboClick'
+import KompoResponseHandler from './KompoResponseHandler'
 
 export default class Action {
 	constructor(action, vue){
@@ -42,6 +43,11 @@ export default class Action {
 
 			this.vue.$_state({ loading: false })
             this.vue.$kompo.vlToggleSubmit(this.vue.kompoid, true)
+
+            // Check for dynamic response first
+            if (this.handleDynamicResponse(r)) {
+                return
+            }
 
             this.vue.$_runInteractionsOfType(this, 'success', r)
 
@@ -93,6 +99,12 @@ export default class Action {
             this.vue.$_state({ isSuccess: true })
 
             this.vue.$kompo.vlSubmitSuccess(this.vue.kompoid, r, this.vue)
+            
+            // Check for dynamic response first
+            if (this.handleDynamicResponse(r)) {
+                return
+            }
+            
             this.vue.$_runInteractionsOfType(this, 'success', r)
 
         })
@@ -344,6 +356,17 @@ export default class Action {
         }else{
            this.$_kAxios.$_handleAjaxError(e) 
         }
+    }
+    
+    // New method to handle dynamic responses
+    handleDynamicResponse(response) {
+        if (response.data && response.data.kompoResponseType) {
+            // Use the global response handler
+            KompoResponseHandler.handle(response.data, this.vue)
+            return true
+        }
+
+        return false
     }
     getParentKomponentInfo(kompoid, resetFilters){
 
