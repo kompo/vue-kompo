@@ -81,18 +81,6 @@ export default {
         },
         $_deliverJsonTo(componentId, json){
             this.elements.forEach( item => item.$_deliverJsonTo(componentId, json) )
-        },
-        // Using kompoid instead of _elKompoId. when it emits the event for close it the another way doesn't work.
-        // This give the possiblity to use the Layour as a root element/modal and has the possibility to catch events like close
-        $_attachCustomEvents(){
-            this.$_vlOn('vlEmit'+this.kompoid, (eventName, eventPayload) => {
-                this.$emit(eventName, eventPayload)
-            })
-        },
-        $_destroyCustomEvents(){
-            this.$_vlOff([
-                'vlEmit'+this.kompoid,
-            ])
         }
 	},
     mounted(){
