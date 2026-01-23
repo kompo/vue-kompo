@@ -57,6 +57,12 @@ const Kompo = {
 	    	vlRefreshKomponent(kompoid, responseData){
 	    		Kompo.events.$emit('vlRefreshKomponent'+kompoid, responseData)
 	    	},
+	    	vlUpdateElements(kompoid, elements, transition){
+	    		Kompo.events.$emit('vlUpdateElements'+kompoid, elements, transition)
+	    	},
+	    	vlUpdateElement(elementId, updates){
+	    		Kompo.events.$emit('vlUpdateElement'+elementId, updates)
+	    	},
 	    	vlLoadItems(kompoid, responseData){
 	    		Kompo.events.$emit('vlLoadItems'+kompoid, responseData)
 	    	},
