@@ -917,8 +917,8 @@ class KompoQueryHelper {
     }
 
     // Hybrid filtering
-    hybridFilter(value, debounce = 300, attribute = 'data-filter', mode = 'hybrid') {
-        this.$k.$kompo.vlHybridFilter(this.queryId, value, debounce, attribute, mode)
+    hybridFilter(value, debounce = 300, attribute = 'data-filter', mode = 'hybrid', name = null) {
+        this.$k.$kompo.vlHybridFilter(this.queryId, value, debounce, attribute, mode, name)
         return this
     }
 

@@ -31,9 +31,16 @@ export default {
             const debounce = config.debounce || 300
             const attribute = config.attribute || 'data-filter'
             const mode = config.mode || 'hybrid'
+            const name = config.name || null
 
             // Emit to target query
-            this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode)
+            if (Array.isArray(queryId)) {
+                queryId.forEach(id => {
+                    this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, name)
+                })
+            } else {
+                this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode, name)
+            }
         },
         $_doJsInstantFilter(value) {
             const config = this.$_jsInstantFilterConfig

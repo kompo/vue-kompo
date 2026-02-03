@@ -84,11 +84,16 @@ export default class KompoAxios{
     }
 
     /******* Elements *********/
-    $_browseQuery(page, sort){
+    $_browseQuery(page, sort, filterData = {}){
+        const formData = this.$_element.preparedFormData()
+        for (const key in filterData) {
+            formData.append(key, filterData[key])
+        }
+
         return this.$_axios({
             url: this.$_kompoRoute, 
             method: 'POST',
-            data: this.$_element.preparedFormData(),
+            data: formData,
             headers: {
                 'X-Kompo-Info': this.$_getKompoInfo(),
                 'X-Kompo-Page': page,

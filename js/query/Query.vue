@@ -355,14 +355,14 @@ export default {
                 this.cards.splice(index, 1)
             })
 
-            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode) => {
+            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode, name) => {
                 if (attribute) {
                     this.hybridFilterAttribute = attribute
                 }
                 if (!this.hybridOriginalCards) {
                     this.hybridOriginalCards = [...this.cards]
                 }
-                this.$_hybridFilter(value, debounce, mode)
+                this.$_hybridFilter(value, debounce, mode, name)
             })
 
             this.$_vlOn('vlJsInstantFilter'+this.$_elKompoId, (value, attribute) => {
