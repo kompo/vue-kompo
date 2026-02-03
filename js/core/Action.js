@@ -353,6 +353,49 @@ export default class Action {
     closePopupAction(){
         this.vue.$kompo.vlClosePopup()
     }
+    appendInQueryAction(response){
+        const queryId = this.$_config('queryId')
+        const itemId = this.$_config('itemId')
+        const position = this.$_config('position') || 'append'
+
+        // Wrap response in card structure
+        const card = this.wrapAsQueryCard(response.data, itemId)
+
+        if (position === 'prepend') {
+            this.vue.$kompo.vlPrependItem(queryId, card)
+        } else {
+            this.vue.$kompo.vlAddItem(queryId, card, position)
+        }
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    updateInQueryResponseAction(response){
+        const queryId = this.$_config('queryId')
+        const itemId = this.$_config('itemId')
+
+        // Wrap response in card structure
+        const card = this.wrapAsQueryCard(response.data, itemId)
+
+        this.vue.$kompo.vlUpdateItem(queryId, itemId, card)
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    wrapAsQueryCard(content, itemId = null) {
+        // If already a card structure, return it
+        if (content && content.render && content.attributes) {
+            return content
+        }
+
+        // Try to get ID from content if not provided
+        if (itemId === null && content && content.id) {
+            itemId = content.id
+        }
+
+        return {
+            attributes: { id: itemId },
+            render: content,
+        }
+    }
     addAlertAction(){
         new Alert().asObject(this.$_config('alert')).emitFrom(this.vue)
     }

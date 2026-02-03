@@ -1,5 +1,5 @@
 <template>
-    <div v-bind="queryAttributes" :class="queryClass">
+    <div v-bind="queryAttributes" :class="[queryClass, $_filterLoadingClass]">
 
         <component v-bind="filtersAttributes('Left')" />
 
@@ -7,19 +7,27 @@
 
         <component v-if="showTopPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassT)" />
 
+        <!-- Filter Loading Bar (always visible when filtering) -->
+        <transition name="fade">
+            <div v-if="filterIsLoading" class="vlQuery__loading-bar">
+                <div class="vlQuery__loading-bar-progress"></div>
+            </div>
+        </transition>
+
         <div class="vlQueryWrapper"
-            :class="itemsWrapperClass"
+            :class="[itemsWrapperClass, { 'vlQueryWrapper--loading': filterIsLoading && filterMode === 'server' }]"
             :style="itemsWrapperStyle"
             ref="vlQueryWrapper"
             @scroll="onScroll">
 
+            <!-- Items (in server mode, cards are cleared while loading but structure remains) -->
             <table v-if="isTableLayout" class="w-full table vlTable" :class="tableClass">
                 <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" :key="headersKey" />
                 <component v-bind="layoutAttributes" />
                 <vl-table-footers :vkompo="component" :kompoid="$_elKompoId" />
             </table>
 
-            <component v-else 
+            <component v-else
                 v-bind="layoutAttributes"
                 @browse="browseQuery"
             />
@@ -38,9 +46,10 @@
 import BaseElement from '../element/mixins/BaseElement'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
 import IsKomponent from '../mixins/IsKomponent'
+import HybridFilter from './mixins/HybridFilter'
 
 export default {
-    mixins: [BaseElement, IsKomponent, DoesAxiosRequests],
+    mixins: [BaseElement, IsKomponent, DoesAxiosRequests, HybridFilter],
     props: {
         kompoid: { type: String, required: false }
     },
@@ -140,7 +149,7 @@ export default {
             return this.hasItems ? 'vl-' + this.component.layout : this.noItemsComponent 
         },
         isTableLayout(){ return this.component.layout.indexOf('Table') > -1 },
-        hasItems(){ return this.cards.length > 0 },
+        hasItems(){ return this.cards.length > 0 || this.filterIsLoading },
         noItemsComponent(){ return this.isTableLayout ? 'vl-table-no-items' : 'vl-no-items' },
     },
     methods: {
@@ -346,6 +355,66 @@ export default {
                 this.cards.splice(index, 1)
             })
 
+            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode) => {
+                if (attribute) {
+                    this.hybridFilterAttribute = attribute
+                }
+                if (!this.hybridOriginalCards) {
+                    this.hybridOriginalCards = [...this.cards]
+                }
+                this.$_hybridFilter(value, debounce, mode)
+            })
+
+            this.$_vlOn('vlJsInstantFilter'+this.$_elKompoId, (value, attribute) => {
+                if (attribute) {
+                    this.hybridFilterAttribute = attribute
+                }
+                if (!this.hybridOriginalCards) {
+                    this.hybridOriginalCards = [...this.cards]
+                }
+                this.$_instantFilter(value)
+            })
+
+            this.$_vlOn('vlAddItem'+this.$_elKompoId, (item, position, itemId) => {
+                const card = this.$_wrapAsCard(item, itemId)
+
+                if (position === 'prepend' || position === 0) {
+                    this.cards.unshift(card)
+                } else if (typeof position === 'number') {
+                    this.cards.splice(position, 0, card)
+                } else {
+                    this.cards.push(card)
+                }
+                this.cardsKey += 1
+            })
+
+            this.$_vlOn('vlPrependItem'+this.$_elKompoId, (item, itemId) => {
+                const card = this.$_wrapAsCard(item, itemId)
+                this.cards.unshift(card)
+                this.cardsKey += 1
+            })
+
+            this.$_vlOn('vlUpdateItem'+this.$_elKompoId, (itemId, item) => {
+                const index = this.cards.findIndex(c =>
+                    (c.attributes?.id === itemId) || (c.id === itemId) || (c.config?.id === itemId)
+                )
+                if (index !== -1) {
+                    const card = this.$_wrapAsCard(item, itemId)
+                    Vue.set(this.cards, index, card)
+                    this.cardsKey += 1
+                }
+            })
+
+            this.$_vlOn('vlRemoveItemById'+this.$_elKompoId, (itemId) => {
+                const index = this.cards.findIndex(c =>
+                    (c.attributes?.id === itemId) || (c.id === itemId) || (c.config?.id === itemId)
+                )
+                if (index !== -1) {
+                    this.cards.splice(index, 1)
+                    this.cardsKey += 1
+                }
+            })
+
             this.$_vlOn('vlSort'+this.$_elKompoId, (sortValue, emitterId) => {
                 this.currentSort = sortValue == this.currentSort ? '' : sortValue
                 this.currentPage = 1
@@ -366,10 +435,30 @@ export default {
                 'vlRefreshKomponent'+this.$_elKompoId,
                 'vlLoadItems'+this.$_elKompoId,
                 'vlRemoveItem'+this.$_elKompoId,
+                'vlHybridFilter'+this.$_elKompoId,
+                'vlJsInstantFilter'+this.$_elKompoId,
+                'vlAddItem'+this.$_elKompoId,
+                'vlPrependItem'+this.$_elKompoId,
+                'vlUpdateItem'+this.$_elKompoId,
+                'vlRemoveItemById'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,
                 'vlToggle'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
+        },
+        $_wrapAsCard(item, itemId = null) {
+            // Already a card structure?
+            if (item && item.attributes !== undefined && item.render !== undefined) {
+                return item
+            }
+
+            // Try to get ID from item if not provided
+            const id = itemId || item?.id || item?.config?.id || item?.attributes?.id || null
+
+            return {
+                attributes: { id: id },
+                render: item,
+            }
         },
         $_fillRecursive(jsonFormData){
             this.filtersPlacement.forEach(placement => {

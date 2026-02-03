@@ -110,6 +110,36 @@ export default class KompoResponseHandler {
                 })
                 break
 
+            case 'addToQuery':
+                vueInstance.$kompo.vlAddItem(
+                    responseData.queryId,
+                    responseData.element,
+                    responseData.position
+                )
+                break
+
+            case 'prependToQuery':
+                vueInstance.$kompo.vlPrependItem(
+                    responseData.queryId,
+                    responseData.element
+                )
+                break
+
+            case 'removeFromQuery':
+                vueInstance.$kompo.vlRemoveItemById(
+                    responseData.queryId,
+                    responseData.itemId
+                )
+                break
+
+            case 'updateInQuery':
+                vueInstance.$kompo.vlUpdateItem(
+                    responseData.queryId,
+                    responseData.itemId,
+                    responseData.element
+                )
+                break
+
             case 'run':
                 const jsFunction = responseData.jsFunction
                 const runData = responseData.data

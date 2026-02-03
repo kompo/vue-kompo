@@ -915,6 +915,62 @@ class KompoQueryHelper {
         this.$k.$kompo.vlBrowseQuery(this.queryId, null, filters)
         return this
     }
+
+    // Hybrid filtering
+    hybridFilter(value, debounce = 300, attribute = 'data-filter', mode = 'hybrid') {
+        this.$k.$kompo.vlHybridFilter(this.queryId, value, debounce, attribute, mode)
+        return this
+    }
+
+    // Instant JS filter only
+    instantFilter(value, attribute = 'data-filter') {
+        this.$k.$kompo.vlHybridFilter(this.queryId, value, 0, attribute, 'hybrid')
+        return this
+    }
+
+    // Add item to query
+    add(item, position = 'append', itemId = null) {
+        this.$k.$kompo.vlAddItem(this.queryId, item, position, itemId)
+        return this
+    }
+
+    // Prepend item
+    prepend(item, itemId = null) {
+        this.$k.$kompo.vlPrependItem(this.queryId, item, itemId)
+        return this
+    }
+
+    // Remove item by ID
+    remove(itemId) {
+        this.$k.$kompo.vlRemoveItemById(this.queryId, itemId)
+        return this
+    }
+
+    // Remove item by index
+    removeAt(index) {
+        this.$k.$kompo.vlRemoveItem(this.queryId, index)
+        return this
+    }
+
+    // Update item
+    update(itemId, item) {
+        this.$k.$kompo.vlUpdateItem(this.queryId, itemId, item)
+        return this
+    }
+
+    // Get all current items (if accessible via DOM)
+    get items() {
+        const el = document.querySelector(`[data-id="${CSS.escape(this.queryId)}"]`)
+        if (el && el.__vue__) {
+            return el.__vue__.cards || []
+        }
+        return []
+    }
+
+    // Get item count
+    get count() {
+        return this.items.length
+    }
 }
 
 // ==========================================
