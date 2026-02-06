@@ -19,6 +19,7 @@ export default {
             state: {},
             elementStore: {},
             parentKomponentInfo: {},
+            kompoInfo: null, // Stores X-Kompo-Info from parent Komponent (delivered via vlDeliverKompoInfo event)
             label2: false,
         }
     },

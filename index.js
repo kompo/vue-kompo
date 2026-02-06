@@ -81,6 +81,15 @@ const Kompo = {
 			vlRemoveItemById(queryId, itemId){
 				Kompo.events.$emit('vlRemoveItemById'+queryId, itemId)
 			},
+			vlSelectionChanged(queryId, data){
+				Kompo.events.$emit('vlSelectionChanged'+queryId, data)
+			},
+			vlSetSelectionMode(queryId, data){
+				Kompo.events.$emit('vlSetSelectionMode'+queryId, data)
+			},
+			vlQueryBrowsed(queryId, data){
+				Kompo.events.$emit('vlQueryBrowsed'+queryId, data)
+			},
 	    	vlLoadItems(kompoid, responseData){
 	    		Kompo.events.$emit('vlLoadItems'+kompoid, responseData)
 	    	},

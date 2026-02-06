@@ -1007,8 +1007,496 @@ class KompoModalHelper {
     }
 }
 
+// ==========================================
+// HTTP REQUEST HELPER CLASS
+// ==========================================
+
+class KompoHttpRequest {
+    constructor(kompoHelper, method, target, payload = {}, options = {}) {
+        this.$k = kompoHelper
+        this.method = method
+        this.target = target
+        this.payload = payload
+        this.options = options
+        this._chain = []
+        this._promise = null
+    }
+
+    // Get just the data from response
+    data() {
+        return this._execute().then(result => result)
+    }
+
+    // Chainable: Show response in modal
+    inModal(modalId = null) {
+        this._chain.push({ type: 'modal', modalId })
+        return this._execute()
+    }
+
+    // Chainable: Show response in drawer
+    inDrawer() {
+        this._chain.push({ type: 'drawer' })
+        return this._execute()
+    }
+
+    // Chainable: Fill panel with response
+    inPanel(panelId) {
+        this._chain.push({ type: 'panel', panelId })
+        return this._execute()
+    }
+
+    // Chainable: Prepend to query
+    prependToQuery(queryId, itemId = null) {
+        this._chain.push({ type: 'prependToQuery', queryId, itemId })
+        return this._execute()
+    }
+
+    // Chainable: Append to query
+    appendToQuery(queryId, itemId = null) {
+        this._chain.push({ type: 'appendToQuery', queryId, itemId })
+        return this._execute()
+    }
+
+    // Chainable: Update in query
+    updateInQuery(queryId, itemId) {
+        this._chain.push({ type: 'updateInQuery', queryId, itemId })
+        return this._execute()
+    }
+
+    // Chainable: Remove from query
+    removeFromQuery(queryId, itemId) {
+        this._chain.push({ type: 'removeFromQuery', queryId, itemId })
+        return this._execute()
+    }
+
+    // Chainable: Refresh component
+    thenRefresh(kompoid) {
+        this._chain.push({ type: 'refresh', kompoid })
+        return this._execute()
+    }
+
+    // Chainable: Show alert
+    thenAlert(message, type = 'success') {
+        this._chain.push({ type: 'alert', message, type })
+        return this._execute()
+    }
+
+    // Make it thenable (await support)
+    then(onFulfilled, onRejected) {
+        return this._execute().then(onFulfilled, onRejected)
+    }
+
+    catch(onRejected) {
+        return this._execute().catch(onRejected)
+    }
+
+    // Execute the request and process chain
+    async _execute() {
+        if (this._promise) return this._promise
+
+        this._promise = this._doRequest()
+        return this._promise
+    }
+
+    async _doRequest() {
+        try {
+            const url = this._buildUrl()
+            const headers = this._buildHeaders()
+
+            let requestConfig = {
+                url,
+                method: this.method,
+                headers,
+            }
+
+            // Add data for non-GET requests
+            if (this.method !== 'GET') {
+                const formData = new FormData()
+                const data = this._buildData()
+                for (const key in data) {
+                    if (Array.isArray(data[key])) {
+                        data[key].forEach((item, k) => {
+                            formData.append(key + '[' + k + ']', item)
+                        })
+                    } else if (data[key] !== null && data[key] !== undefined) {
+                        formData.append(key, data[key])
+                    }
+                }
+                requestConfig.data = formData
+            }
+
+            const response = await axios(requestConfig)
+
+            // Process response chain
+            await this._processChain(response)
+
+            // Return just the data
+            return response.data
+        } catch (error) {
+            if (this.options.onError) {
+                this.options.onError(error)
+            }
+            throw error
+        }
+    }
+
+    _buildUrl() {
+        // kompoRoute is always /_kompo - it's the standard Kompo endpoint
+        // (See kompo/src/Routing/RouteFinder.php line 137)
+        const kompoRoute = '/_kompo'
+
+        if (this.method === 'GET' && Object.keys(this.payload).length > 0) {
+            return kompoRoute + '?' + new URLSearchParams(this.payload).toString()
+        }
+
+        return kompoRoute
+    }
+
+    _buildHeaders() {
+        const vue = this.$k.vue
+        let kompoInfo = null
+
+        // Get kompoInfo using the same pattern as KompoAxios.$_getKompoInfo()
+        // This uses Kompo's event system to get the parent Komponent's encrypted info
+
+        // 1. Check if current component IS a Komponent (has $_kompoInfo computed property)
+        //    Elements also have $_kompoInfo if they received 'kompoinfo' prop (e.g., from blade menu)
+        if (vue.$_kompoInfo) {
+            kompoInfo = vue.$_kompoInfo
+        }
+
+        // 2. Use the event system to request from parent Komponent
+        // This is how KompoAxios does it - elements have a kompoid that identifies their parent
+        if (!kompoInfo && vue.$kompo && vue.kompoid && vue.$_elKompoId) {
+            // Trigger the synchronous event chain:
+            // vlGetKomponentInfo -> parent Komponent -> vlDeliverKompoInfo -> sets vue.kompoInfo
+            vue.$kompo.vlGetKomponentInfo(vue.kompoid, vue.$_elKompoId)
+            kompoInfo = vue.kompoInfo
+        }
+
+        // 3. Fallback: check if kompoInfo was already set from a previous request
+        if (!kompoInfo && vue.kompoInfo) {
+            kompoInfo = vue.kompoInfo
+        }
+
+        if (!kompoInfo) {
+            console.warn('KompoHttpRequest: Could not find X-Kompo-Info.', {
+                hasKompoInfo: !!vue.$_kompoInfo,
+                hasKompo: !!vue.$kompo,
+                kompoid: vue.kompoid,
+                elKompoId: vue.$_elKompoId,
+            })
+        }
+
+        // Look up encrypted method name from component's selfMethods config
+        // The PHP component must declare callable methods via $this->selfMethods(['methodName'])
+        const encryptedTarget = this._getEncryptedTarget(vue)
+
+        return {
+            'X-Kompo-Info': kompoInfo || '',
+            'X-Kompo-Action': 'self-method',
+            'X-Kompo-Target': encryptedTarget,
+        }
+    }
+
+    _getEncryptedTarget(vue) {
+        // Try to find _selfMethods in the component config
+        // Check multiple paths since the component structure varies
+        const selfMethods =
+            vue.component?.config?._selfMethods ||
+            vue.vkompo?.config?._selfMethods ||
+            vue.$_config?.('_selfMethods') ||
+            null
+
+        if (!selfMethods) {
+            throw new Error(
+                `selfGet/selfPost: Method "${this.target}" is not declared as callable. ` +
+                `Add $this->selfMethods(['${this.target}']) in your Komponent's created() method.`
+            )
+        }
+
+        const encrypted = selfMethods[this.target]
+        if (!encrypted) {
+            throw new Error(
+                `selfGet/selfPost: Method "${this.target}" is not in the selfMethods list. ` +
+                `Available methods: ${Object.keys(selfMethods).join(', ')}`
+            )
+        }
+
+        return encrypted
+    }
+
+    _buildData() {
+        let data = { ...this.payload }
+
+        if (this.options.withFormValues) {
+            data = { ...data, ...this.$k.form.data() }
+        }
+
+        return data
+    }
+
+    async _processChain(response) {
+        const vue = this.$k.vue
+        const kompoid = vue.kompoid || vue.$_elKompoId
+
+        for (const action of this._chain) {
+            switch (action.type) {
+                case 'modal':
+                    // Validate response format for modal
+                    if (response.data && !response.data.vueComponent) {
+                        console.error('inModal() error: The PHP method must return a Komponent (Form, Panel, Html, etc.) with a vueComponent property. Got:', response.data)
+                        throw new Error('inModal() requires the PHP method to return a Komponent component')
+                    }
+                    // Pass response directly like fillModalNewAction does
+                    this.$k.$kompo.vlFillModal(response, action.modalId || kompoid, {})
+                    break
+
+                case 'drawer':
+                    if (response.data && !response.data.vueComponent) {
+                        console.error('inDrawer() error: The PHP method must return a Komponent. Got:', response.data)
+                        throw new Error('inDrawer() requires the PHP method to return a Komponent component')
+                    }
+                    this.$k.$kompo.vlFillDrawer(response, kompoid, {})
+                    break
+
+                case 'panel':
+                    this.$k.$kompo.vlFillPanel(action.panelId, response.data)
+                    break
+
+                case 'prependToQuery':
+                    this.$k.$kompo.vlPrependItem(action.queryId, response.data, action.itemId)
+                    break
+
+                case 'appendToQuery':
+                    this.$k.$kompo.vlAddItem(action.queryId, response.data, 'append', action.itemId)
+                    break
+
+                case 'updateInQuery':
+                    this.$k.$kompo.vlUpdateItem(action.queryId, action.itemId, response.data)
+                    break
+
+                case 'removeFromQuery':
+                    this.$k.$kompo.vlRemoveItemById(action.queryId, action.itemId)
+                    break
+
+                case 'refresh':
+                    this.$k.refresh(action.kompoid)
+                    break
+
+                case 'alert':
+                    this.$k.alert(action.message, action.type)
+                    break
+            }
+        }
+
+        if (this.options.onSuccess) {
+            this.options.onSuccess(response.data, response)
+        }
+    }
+}
+
+// Factory function to create self* methods
+function createSelfMethod(kompoHelper, method) {
+    return (target, payload = {}, options = {}) => {
+        return new KompoHttpRequest(kompoHelper, method, target, payload, options)
+    }
+}
+
+// ==========================================
+// REACTIVE DATA HELPER CLASS
+// ==========================================
+
+// Global reactive store for component-scoped data (keyed by component ID)
+if (!window._kompoComponentData) {
+    window._kompoComponentData = new Vue({
+        data: () => ({
+            components: {}
+        })
+    })
+}
+
+class KompoDataHelper {
+    constructor(vueInstance) {
+        this.vue = vueInstance
+        this.componentId = vueInstance.$_elKompoId || vueInstance.kompoid || 'default'
+
+        // Initialize store for this component if needed
+        if (!window._kompoComponentData.components[this.componentId]) {
+            Vue.set(window._kompoComponentData.components, this.componentId, {})
+        }
+    }
+
+    get _store() {
+        return window._kompoComponentData.components[this.componentId]
+    }
+
+    set(key, value) {
+        Vue.set(this._store, key, value)
+        return this
+    }
+
+    get(key, defaultValue = null) {
+        return this._store[key] !== undefined ? this._store[key] : defaultValue
+    }
+
+    has(key) {
+        return this._store[key] !== undefined
+    }
+
+    delete(key) {
+        Vue.delete(this._store, key)
+        return this
+    }
+
+    increment(key, amount = 1) {
+        const current = this.get(key, 0)
+        this.set(key, current + amount)
+        return this.get(key)
+    }
+
+    decrement(key, amount = 1) {
+        return this.increment(key, -amount)
+    }
+
+    toggle(key) {
+        this.set(key, !this.get(key, false))
+        return this.get(key)
+    }
+
+    push(key, value) {
+        const arr = this.get(key, [])
+        if (!Array.isArray(arr)) {
+            throw new Error(`data.push: "${key}" is not an array`)
+        }
+        arr.push(value)
+        this.set(key, arr)
+        return this
+    }
+
+    remove(key, value) {
+        const arr = this.get(key, [])
+        if (!Array.isArray(arr)) {
+            throw new Error(`data.remove: "${key}" is not an array`)
+        }
+        const index = arr.indexOf(value)
+        if (index !== -1) {
+            arr.splice(index, 1)
+            this.set(key, arr)
+        }
+        return this
+    }
+
+    merge(key, obj) {
+        const current = this.get(key, {})
+        this.set(key, { ...current, ...obj })
+        return this
+    }
+
+    all() {
+        return { ...this._store }
+    }
+
+    clear() {
+        Object.keys(this._store).forEach(key => {
+            Vue.delete(this._store, key)
+        })
+        return this
+    }
+
+    watch(key, callback) {
+        return window._kompoComponentData.$watch(
+            () => this._store[key],
+            (newVal, oldVal) => callback(newVal, oldVal)
+        )
+    }
+}
+
+// ==========================================
+// GLOBAL STORE HELPER CLASS
+// ==========================================
+
+class KompoStoreHelper {
+    constructor() {
+        if (!window._kompoStore) {
+            window._kompoStore = new Vue({
+                data: () => ({
+                    store: {}
+                })
+            })
+        }
+        this._vue = window._kompoStore
+    }
+
+    get _store() {
+        return this._vue.store
+    }
+
+    set(key, value) {
+        Vue.set(this._store, key, value)
+        return this
+    }
+
+    get(key, defaultValue = null) {
+        return this._store[key] !== undefined ? this._store[key] : defaultValue
+    }
+
+    has(key) {
+        return this._store[key] !== undefined
+    }
+
+    delete(key) {
+        Vue.delete(this._store, key)
+        return this
+    }
+
+    increment(key, amount = 1) {
+        const current = this.get(key, 0)
+        this.set(key, current + amount)
+        return this.get(key)
+    }
+
+    watch(key, callback) {
+        return this._vue.$watch(
+            () => this._store[key],
+            (newVal, oldVal) => callback(newVal, oldVal)
+        )
+    }
+
+    namespace(ns) {
+        if (!this._store[ns]) {
+            Vue.set(this._store, ns, {})
+        }
+        const store = this._store
+        return {
+            set: (key, value) => { Vue.set(store[ns], key, value); return this },
+            get: (key, def = null) => store[ns][key] !== undefined ? store[ns][key] : def,
+            has: (key) => store[ns][key] !== undefined,
+            all: () => ({ ...store[ns] }),
+        }
+    }
+}
+
 function buildJsCtx(vueInstance, response = {}) {
     const $k = new KompoHelper(vueInstance, vueInstance.$kompo)
+
+    // Create HTTP helpers
+    const selfGet = createSelfMethod($k, 'GET')
+    const selfPost = createSelfMethod($k, 'POST')
+    const selfPut = createSelfMethod($k, 'PUT')
+    const selfDelete = createSelfMethod($k, 'DELETE')
+
+    // Create reactive data helpers
+    const data = new KompoDataHelper(vueInstance)
+    const store = new KompoStoreHelper()
+
+    // Generic HTTP helper
+    const http = {
+        get: (url, params = {}) => $k.fetch(url, params, 'GET'),
+        post: (url, data = {}) => $k.fetch(url, data, 'POST'),
+        put: (url, data = {}) => $k.fetch(url, data, 'PUT'),
+        delete: (url, data = {}) => $k.fetch(url, data, 'DELETE'),
+    }
 
     // Build rich context with destructurable helpers
     const ctx = {
@@ -1037,7 +1525,18 @@ function buildJsCtx(vueInstance, response = {}) {
         // State
         state: $k.state,
 
-        // Reactive
+        // Reactive data (NEW)
+        data,
+        store,
+
+        // HTTP methods (NEW)
+        selfGet,
+        selfPost,
+        selfPut,
+        selfDelete,
+        http,
+
+        // Reactive watching
         watch: (field, cb) => $k.watch(field, cb),
         watchAll: (fields, cb) => $k.watchAll(fields, cb),
 
@@ -1062,4 +1561,14 @@ function buildJsCtx(vueInstance, response = {}) {
 }
 
 // Export for use in Action.js
-export { KompoHelper, KompoFieldHelper, KompoFormHelper, KompoPanelHelper, KompoElementHelper, buildJsCtx }
+export {
+    KompoHelper,
+    KompoFieldHelper,
+    KompoFormHelper,
+    KompoPanelHelper,
+    KompoElementHelper,
+    KompoHttpRequest,
+    KompoDataHelper,
+    KompoStoreHelper,
+    buildJsCtx
+}
