@@ -15,3 +15,25 @@ th{
 		}
 	}
 }
+
+// Column filter styles (Excel-like filters on Th)
+.vlThContent{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.vlThFilterSelect,
+.vlThFilterInput{
+	font-size: 11px;
+	padding: 2px 4px;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	width: 100%;
+	max-width: 150px;
+	background: white;
+	font-weight: normal;
+	&:focus{
+		outline: none;
+		border-color: #6366f1;
+	}
+}
