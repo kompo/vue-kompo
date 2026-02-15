@@ -16,24 +16,63 @@ th{
 	}
 }
 
-// Column filter styles (Excel-like filters on Th)
-.vlThContent{
+// Th header with dropdown
+th{ position: relative; }
+
+.vlThInteractive{ cursor: pointer; }
+
+.vlThHeader{
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 	gap: 4px;
+	white-space: nowrap;
 }
-.vlThFilterSelect,
-.vlThFilterInput{
-	font-size: 11px;
-	padding: 2px 4px;
-	border: 1px solid #d1d5db;
-	border-radius: 4px;
-	width: 100%;
-	max-width: 150px;
+.vlThDropdownIcon{
+	font-size: 10px;
+	opacity: 0.5;
+	transition: opacity 0.2s;
+	&.active{ opacity: 1; color: #4f46e5; }
+}
+th:hover .vlThDropdownIcon{ opacity: 1; }
+
+// Dropdown menu
+.vlThDropdown{
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 110;
+	min-width: 200px;
+	max-height: 300px;
+	overflow-y: auto;
 	background: white;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	padding: 8px 0;
 	font-weight: normal;
-	&:focus{
-		outline: none;
-		border-color: #6366f1;
-	}
+	font-size: 13px;
+}
+.vlThDropdownSection{
+	padding: 4px 12px;
+	&:not(:last-child){ border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 4px; }
+}
+.vlThSortBtn{
+	display: flex; align-items: center; gap: 6px;
+	width: 100%; padding: 4px 0; cursor: pointer;
+	&:hover{ color: #4f46e5; }
+	&.active{ color: #4f46e5; font-weight: 600; }
+}
+.vlThSlicerSelectAll{
+	display: flex; align-items: center; gap: 6px; padding: 2px 0; cursor: pointer; font-weight: 600;
+}
+.vlThSlicerList{
+	max-height: 180px; overflow-y: auto;
+	label{ display: flex; align-items: center; gap: 6px; padding: 2px 0; cursor: pointer; font-weight: normal; }
+}
+.vlThFilterInput{
+	width: 100%; padding: 4px 8px;
+	border: 1px solid #d1d5db; border-radius: 4px;
+	font-size: 12px;
+	background: white;
+	&:focus{ outline: none; border-color: #6366f1; }
 }

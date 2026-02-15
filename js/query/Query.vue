@@ -191,7 +191,13 @@ export default {
                 jsonFormData = this.getJsonFormDataWithFilters()
                 
             for ( var key in jsonFormData ) {
-                formData.append(key, jsonFormData[key])
+                if (_.isArray(jsonFormData[key])) {
+                    jsonFormData[key].forEach((item, k) => {
+                        formData.append(key+'['+k+']', item)
+                    })
+                } else {
+                    formData.append(key, jsonFormData[key])
+                }
             }
             return formData
         },
