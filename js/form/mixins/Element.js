@@ -1,7 +1,9 @@
 import BaseElement from '../../element/mixins/BaseElement'
+import HasPolling from '../../element/mixins/HasPolling'
+import HasSocketEvents from '../../element/mixins/HasSocketEvents'
 
 export default {
-    mixins: [ BaseElement ],
+    mixins: [ BaseElement, HasPolling, HasSocketEvents ],
     props: {
         kompoid: { type: String, required: false },
         kompoinfo: { type: String, required: false }

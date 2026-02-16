@@ -25,12 +25,32 @@ export default class Action {
         if(!this.actionType)
             return
 
+        const delay = this.$_config('actionDelay')
+        const throttle = this.$_config('throttle')
+
+        if (throttle) {
+            const throttleKey = (this.vue.$_elKompoId || '') + ':' + this.actionType
+            const now = Date.now()
+            const lastRun = Action._throttleTimestamps && Action._throttleTimestamps[throttleKey]
+            if (lastRun && (now - lastRun) < throttle) return
+            if (!Action._throttleTimestamps) Action._throttleTimestamps = {}
+            Action._throttleTimestamps[throttleKey] = now
+            this._executeAction(parameters)
+        } else if (delay) {
+            setTimeout(() => {
+                this._executeAction(parameters)
+            }, delay)
+        } else {
+            this._executeAction(parameters)
+        }
+	}
+    _executeAction(parameters){
 		var actionFunction = this.actionType + 'Action'
         this[actionFunction](
-            parameters ? parameters.response : null, 
-            parameters ? parameters.parentAction : null, 
+            parameters ? parameters.response : null,
+            parameters ? parameters.parentAction : null,
             parameters ? parameters.payload : null
-        ) 
+        )
 	}
     axiosRequestAction(r, p, payload){
     	this.vue.$_state({ loading: true })

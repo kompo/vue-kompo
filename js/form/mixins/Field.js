@@ -129,6 +129,11 @@ export default {
 
             //other actions are debounced
             this.$_runOwnInteractionsWithAction('input', 'runJs')
+
+            // Trigger whisper if configured
+            if (this.$_config('socketWhisper')) {
+                this.$_triggerWhisper()
+            }
         },
         $_focusAction(){
             if(this.$_readOnly)
