@@ -265,11 +265,11 @@ export default {
                 jsonFormData = this.getJsonFormDataWithFilters()
 
             for ( var key in jsonFormData ) {
-                if (Array.isArray(jsonFormData[key])) {
-                    jsonFormData[key].forEach((item, index) => {
-                        formData.append(key + '[' + index + ']', item)
+                if (_.isArray(jsonFormData[key])) {
+                    jsonFormData[key].forEach((item, k) => {
+                        formData.append(key+'['+k+']', item)
                     })
-                } else if (jsonFormData[key] !== null && jsonFormData[key] !== undefined) {
+                } else {
                     formData.append(key, jsonFormData[key])
                 }
             }
@@ -586,8 +586,15 @@ export default {
         $_fillRecursive(jsonFormData){
             this.filtersPlacement.forEach(placement => {
                 this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
+            })
+            // Also collect header filter values (column filters)
+            if (this.headers) {
+                this.headers.forEach(item => {
+                    if (item && item.$_fillRecursive) {
+                        item.$_fillRecursive(jsonFormData)
+                    }
+                })
             }
-            )
         },
         $_resetSort(emitterId){
             this.filtersPlacement.forEach(placement => 
