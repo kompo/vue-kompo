@@ -5,9 +5,10 @@ import HasClasses from './HasClasses'
 import HasStyles from './HasStyles'
 import HasConfig from './HasConfig'
 import RunsInteractions from './RunsInteractions'
+import HasJsFeatures from './HasJsFeatures'
 
 export default {
-    mixins: [ HasVueComponent, EmitsEvents, HasId, HasClasses, HasStyles, HasConfig, RunsInteractions],
+    mixins: [ HasVueComponent, EmitsEvents, HasId, HasClasses, HasStyles, HasConfig, RunsInteractions, HasJsFeatures],
     props: {
         vkompo: { type: Object, required: true },
         index: { type: Number },
@@ -18,6 +19,7 @@ export default {
             state: {},
             elementStore: {},
             parentKomponentInfo: {},
+            kompoInfo: null, // Stores X-Kompo-Info from parent Komponent (delivered via vlDeliverKompoInfo event)
             label2: false,
         }
     },
@@ -86,7 +88,7 @@ export default {
             if(!this.$_elKompoId)
                 return
 
-            this.$_vlOn('vlDeliverKomponentInfo'+this.$_elKompoId, (senderId, komponentInfo) => { //for submit 
+            this.$_vlOn('vlDeliverKomponentInfo'+this.$_elKompoId, (senderId, komponentInfo) => { //for submit
 
                 this.parentKomponentInfo = Object.assign({}, this.parentKomponentInfo, {
                     [senderId] : komponentInfo
@@ -98,12 +100,63 @@ export default {
                 this.kompoInfo = kompoInfo
 
             })
+
+            // Listen for direct element updates (global element update system)
+            this.$_vlOn('vlUpdateElement'+this.$_elKompoId, (updates) => {
+                this.$_applyElementUpdates(updates)
+            })
         },
         $_destroyEvents(){
             this.$_vlOff([
                 'vlDeliverKomponentInfo'+this.$_elKompoId,
-                'vlDeliverKompoInfo'+this.$_elKompoId
+                'vlDeliverKompoInfo'+this.$_elKompoId,
+                'vlUpdateElement'+this.$_elKompoId
             ])
+        },
+        /**
+         * Apply updates to this element (label, value, config, classes, etc.)
+         */
+        $_applyElementUpdates(updates) {
+            if (!updates) return
+
+            // Update label (for Html, Button, Link, etc.)
+            if (updates.label !== undefined) {
+                this.component.label = updates.label
+            }
+
+            // Update label2 (for dual-state elements)
+            if (updates.label2 !== undefined) {
+                this.component.label2 = updates.label2
+                this.label2 = updates.label2
+            }
+
+            // Update value (for form fields)
+            if (updates.value !== undefined && this.component.value !== undefined) {
+                this.component.value = updates.value
+            }
+
+            // Update config properties
+            if (updates.config) {
+                this.component.config = Object.assign({}, this.component.config, updates.config)
+            }
+
+            // Add/remove classes
+            if (updates.addClass) {
+                this.$_addClass(updates.addClass)
+            }
+            if (updates.removeClass) {
+                this.$_removeClass(updates.removeClass)
+            }
+
+            // Update state
+            if (updates.state) {
+                this.$_state(updates.state)
+            }
+
+            // Replace entire element if provided
+            if (updates.element) {
+                this.component = updates.element
+            }
         },
         $_attachCustomEvents(){}, //to be overriden
         $_destroyCustomEvents(){}, //to be overriden

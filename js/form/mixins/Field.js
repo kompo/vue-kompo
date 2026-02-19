@@ -1,8 +1,9 @@
 import Element from './Element'
 import HasName from './HasName'
+import HasHybridFilter from './HasHybridFilter'
 
 export default {
-    mixins: [ Element, HasName ],
+    mixins: [ Element, HasName, HasHybridFilter ],
 
     data(){
         return {
@@ -13,6 +14,10 @@ export default {
     computed: {
 
         $_placeholder() { return this.component.placeholder },
+
+        debouncedHybridFilterOnInput(){
+            return _.debounce(this.hybridFilterOnInput, this.$_config('hybridFilter')?.debounce || 0)
+        },
 
         $_readOnly(){ return this.$_config('readOnly') },
         $_noAutocomplete(){ return this.$_config('noAutocomplete') },
@@ -63,6 +68,14 @@ export default {
         }},
     },
     methods: {
+        hybridFilterOnInput(){
+            if (this.$_hybridFilterConfig) {
+                this.$_doHybridFilter(this.component.value)
+            }
+            if (this.$_jsInstantFilterConfig) {
+                this.$_doJsInstantFilter(this.component.value)
+            }
+        },
         $_fillRecursive(jsonFormData){
             if(!this.$_hidden && !this.$_doesNotFill)
                 this.$_fill(jsonFormData)
@@ -112,6 +125,7 @@ export default {
             this.debouncedFilterOnInput()
 
             this.debouncedAxiosOnInput()
+            this.debouncedHybridFilterOnInput()
 
             //other actions are debounced
             this.$_runOwnInteractionsWithAction('input', 'runJs')

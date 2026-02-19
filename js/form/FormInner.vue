@@ -126,23 +126,35 @@ export default {
         redirect(url) {
             window.location.href = url
         },
-        triggerRefreshForm(){
+        triggerRefreshForm(ajaxPayload){
             if(this.refreshing)
                 return
 
             this.refreshing = true
 
-            this.$_kAxios.$_refreshSelf(this.formUrl).then(r => {
-                
+            this.$_kAxios.$_refreshSelf(this.formUrl, ajaxPayload).then(r => {
+
                 this.handleRefreshResponse(r.data)
-                
+
                 this.refreshing = false
             })
         },
         handleRefreshResponse(responseData){
+            // Save scroll position before update
+            const scrollTop = this.$el ? this.$el.scrollTop : 0
+            const scrollLeft = this.$el ? this.$el.scrollLeft : 0
+
             this.$_destroyEvents()
             this.$_removeLiveKomponent()
             this.$emit('refreshForm', responseData)
+
+            // Restore scroll after render
+            this.$nextTick(() => {
+                if (this.$el) {
+                    this.$el.scrollTop = scrollTop
+                    this.$el.scrollLeft = scrollLeft
+                }
+            })
         },
         $_echoTrigger(){
 
@@ -195,8 +207,12 @@ export default {
                 this.handleRefreshResponse(responseData)
             })
 
-            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, (response) => {
-                this.triggerRefreshForm()
+            this.$_vlOn('vlReloadAfterChildAction'+this.$_elKompoId, (ajaxPayload) => {
+                this.triggerRefreshForm(ajaxPayload)
+            })
+
+            this.$_vlOn('vlUpdateElements'+this.$_elKompoId, (elementUpdates, transition) => {
+                this.$_updateElementsById(elementUpdates, transition)
             })
 
             this.$_deliverKompoInfoOn()
@@ -213,8 +229,22 @@ export default {
                 'vlRequestKomponentInfo'+this.$_elKompoId,
                 'vlRefreshKomponent'+this.$_elKompoId,
                 'vlReloadAfterChildAction'+this.$_elKompoId,
+                'vlUpdateElements'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
+        },
+        $_updateElementsById(updates, transition) {
+            Object.keys(updates).forEach(id => {
+                const index = this.elements.findIndex(el => el.id === id)
+                if (index !== -1) {
+                    // Apply transition config to element if provided
+                    const element = updates[id]
+                    if (transition && element.config) {
+                        element.config.transition = transition
+                    }
+                    this.$set(this.elements, index, element)
+                }
+            })
         }
 
     }

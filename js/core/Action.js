@@ -2,6 +2,7 @@ import KompoAxios from './KompoAxios'
 import Alert from './Alert'
 import TurboClick from './TurboClick'
 import KompoResponseHandler from './KompoResponseHandler'
+import { buildJsCtx, KompoHelper } from './KompoHelper'
 
 export default class Action {
 	constructor(action, vue){
@@ -185,25 +186,39 @@ export default class Action {
     hideSelfAction(){
         this.vue.$_toggleSelf()
     }
-    runJsAction(response){
+    runJsAction(response = {}) {
         const jsFunction = this.$_config('jsFunction')
-        this.vue.$nextTick(() => { //yep, run it if you find it
 
-            if (!jsFunction) {
-                return;
-            }
-            
-            if (jsFunction.substr(0, 7) == '() => {') {
-                let toExecutre = eval(jsFunction)
-                toExecutre(response)
-                return;
+        this.vue.$nextTick(() => {
+            if (!jsFunction) return
+
+            const ctx = {
+                ...response,
+                ...buildJsCtx(this.vue, response),
             }
 
-            if(window[jsFunction])
-                window[jsFunction](response) 
+            // Detect arrow functions
+            const isArrowFunction = /^\s*(\([^)]*\)|[a-zA-Z_$][a-zA-Z0-9_$]*)\s*=>/.test(jsFunction)
 
-            if(this.vue[jsFunction]) //never used yet but maybe one day. The idea is interesting
-                this.vue[jsFunction](response) 
+            if (isArrowFunction) {
+                try {
+                    const fn = eval(jsFunction)
+                    fn(ctx)
+                } catch (e) {
+                    console.error('Kompo run() error:', e, '\nFunction:', jsFunction)
+                }
+                return
+            }
+
+            // Named function on window
+            if (window[jsFunction]) {
+                window[jsFunction](ctx)
+            }
+
+            // Vue component method
+            if (this.vue[jsFunction]) {
+                this.vue[jsFunction](ctx)
+            }
         })
     }
     scrollToAction(){
@@ -231,6 +246,36 @@ export default class Action {
     }
     removeSelfAction(){
         this.vue.$kompo.vlRemoveItem(this.vue.kompoid, this.vue.index)
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    updateElementsAction(response){
+        // Get elements from response - expects { id: element } format or array of elements with ids
+        let elements = response ? response.data : null
+
+        if (!elements) {
+            console.warn('updateElements: No elements in response')
+            return
+        }
+
+        // If response is an array of elements, convert to { id: element } format
+        if (Array.isArray(elements)) {
+            const mapped = {}
+            elements.forEach(el => {
+                if (el && el.id) {
+                    mapped[el.id] = el
+                }
+            })
+            elements = mapped
+        }
+
+        // Get target kompoid - from action config, or element's kompoid
+        const targetKompoid = this.$_config('kompoid') || this.vue.kompoid || this.vue.$_elKompoId
+        const transition = this.$_config('transition')
+
+        if (targetKompoid) {
+            this.vue.$kompo.vlUpdateElements(targetKompoid, elements, transition)
+        }
 
         this.vue.$_runInteractionsOfType(this, 'success')
     }
@@ -307,6 +352,49 @@ export default class Action {
     }
     closePopupAction(){
         this.vue.$kompo.vlClosePopup()
+    }
+    appendInQueryAction(response){
+        const queryId = this.$_config('queryId')
+        const itemId = this.$_config('itemId')
+        const position = this.$_config('position') || 'append'
+
+        // Wrap response in card structure
+        const card = this.wrapAsQueryCard(response.data, itemId)
+
+        if (position === 'prepend') {
+            this.vue.$kompo.vlPrependItem(queryId, card)
+        } else {
+            this.vue.$kompo.vlAddItem(queryId, card, position)
+        }
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    updateInQueryResponseAction(response){
+        const queryId = this.$_config('queryId')
+        const itemId = this.$_config('itemId')
+
+        // Wrap response in card structure
+        const card = this.wrapAsQueryCard(response.data, itemId)
+
+        this.vue.$kompo.vlUpdateItem(queryId, itemId, card)
+
+        this.vue.$_runInteractionsOfType(this, 'success')
+    }
+    wrapAsQueryCard(content, itemId = null) {
+        // If already a card structure, return it
+        if (content && content.render && content.attributes) {
+            return content
+        }
+
+        // Try to get ID from content if not provided
+        if (itemId === null && content && content.id) {
+            itemId = content.id
+        }
+
+        return {
+            attributes: { id: itemId },
+            render: content,
+        }
     }
     addAlertAction(){
         new Alert().asObject(this.$_config('alert')).emitFrom(this.vue)

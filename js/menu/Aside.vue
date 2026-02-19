@@ -4,8 +4,19 @@
         v-bind="$_menuAttributes"
         v-click-out="close">
 
-        <template v-for="component in elements">
-            <component v-bind="$_attributes(component)"/>
+        <transition-group
+            v-if="$_hasTransition"
+            :name="$_transition"
+            tag="div"
+            class="vlMenuElements">
+            <component
+                v-for="component in elements"
+                :key="component.id"
+                v-bind="$_attributes(component)"
+            />
+        </transition-group>
+        <template v-else v-for="component in elements">
+            <component :key="component.id" v-bind="$_attributes(component)"/>
         </template>
 
     </aside>
@@ -30,6 +41,12 @@ export default {
         $_customClassArray() { return [
             this.sidebarClass
         ] },
+        $_hasTransition() {
+            return !!this.$_config('transition')
+        },
+        $_transition() {
+            return this.$_config('transition') || ''
+        },
     },
     methods:{
         toggle(){

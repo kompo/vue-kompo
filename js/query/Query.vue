@@ -1,5 +1,5 @@
 <template>
-    <div v-bind="queryAttributes" :class="queryClass">
+    <div v-bind="queryAttributes" :class="[queryClass, $_filterLoadingClass]">
 
         <component v-bind="filtersAttributes('Left')" />
 
@@ -7,19 +7,27 @@
 
         <component v-if="showTopPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassT)" />
 
+        <!-- Filter Loading Bar (always visible when filtering) -->
+        <transition name="fade">
+            <div v-if="filterIsLoading" class="vlQuery__loading-bar">
+                <div class="vlQuery__loading-bar-progress"></div>
+            </div>
+        </transition>
+
         <div class="vlQueryWrapper"
-            :class="itemsWrapperClass"
+            :class="[itemsWrapperClass, { 'vlQueryWrapper--loading': filterIsLoading && filterMode === 'server' }]"
             :style="itemsWrapperStyle"
             ref="vlQueryWrapper"
             @scroll="onScroll">
 
+            <!-- Items (in server mode, cards are cleared while loading but structure remains) -->
             <table v-if="isTableLayout" class="w-full table vlTable" :class="tableClass">
                 <vl-table-headers :vkompo="component" :kompoid="$_elKompoId" :key="headersKey" />
                 <component v-bind="layoutAttributes" />
                 <vl-table-footers :vkompo="component" :kompoid="$_elKompoId" />
             </table>
 
-            <component v-else 
+            <component v-else
                 v-bind="layoutAttributes"
                 @browse="browseQuery"
             />
@@ -38,9 +46,10 @@
 import BaseElement from '../element/mixins/BaseElement'
 import DoesAxiosRequests from '../form/mixins/DoesAxiosRequests'
 import IsKomponent from '../mixins/IsKomponent'
+import HybridFilter from './mixins/HybridFilter'
 
 export default {
-    mixins: [BaseElement, IsKomponent, DoesAxiosRequests],
+    mixins: [BaseElement, IsKomponent, DoesAxiosRequests, HybridFilter],
     props: {
         kompoid: { type: String, required: false }
     },
@@ -57,7 +66,61 @@ export default {
         filtersKey: 1,
         checkedItemIds: [],
         isBrowsing: false,
+        // Selection bar support
+        selectionMode: 'specific',      // 'specific' | 'all'
+        selectionExcludedIds: [],       // When mode='all', IDs to exclude
+        lastCheckedId: null,            // Track last checked/unchecked for SelectionBar
+        lastUncheckedId: null,
     }),
+    watch: {
+        checkedItemIds: {
+            handler(newIds, oldIds) {
+                // Determine what changed
+                let checkedId = null
+                let uncheckedId = null
+
+                if (oldIds && newIds.length > oldIds.length) {
+                    checkedId = newIds.find(id => !oldIds.includes(id))
+                    this.lastCheckedId = checkedId
+                    this.lastUncheckedId = null
+
+                    // In 'all' mode, re-checking an item removes it from exclusions
+                    if (this.selectionMode === 'all' && checkedId) {
+                        if (this.selectionExcludedIds.includes(checkedId)) {
+                            // Create NEW array to ensure reactivity
+                            this.selectionExcludedIds = this.selectionExcludedIds.filter(id => id !== checkedId)
+                        }
+                    }
+                } else if (oldIds && newIds.length < oldIds.length) {
+                    uncheckedId = oldIds.find(id => !newIds.includes(id))
+                    this.lastUncheckedId = uncheckedId
+                    this.lastCheckedId = null
+
+                    // In 'all' mode, unchecking ANY item exits 'all' mode
+                    // This makes the UI consistent: "All selected" means ALL are checked
+                    if (this.selectionMode === 'all') {
+                        this.selectionMode = 'specific'
+                        this.selectionExcludedIds = []
+                        // Keep the remaining checked items as the new selection (newIds)
+                    }
+                }
+
+                // Emit selection changed event for SelectionBar
+                // Clone arrays to avoid shared references causing reactivity issues
+                this.$kompo.vlSelectionChanged(this.$_elKompoId, {
+                    selectedIds: [...newIds],
+                    pageSelectedCount: newIds.length,
+                    pageItemCount: this.cards.length,
+                    totalCount: this.pagination?.total || 0,
+                    checkedId: checkedId,
+                    uncheckedId: uncheckedId,
+                    selectionMode: this.selectionMode,
+                    excludedIds: [...this.selectionExcludedIds],
+                })
+            },
+            deep: true,
+        },
+    },
     created() {
         this.cardsKey = 'cards' + this.component.id
         this.headersKey = 'headers' + this.component.id
@@ -140,7 +203,7 @@ export default {
             return this.hasItems ? 'vl-' + this.component.layout : this.noItemsComponent 
         },
         isTableLayout(){ return this.component.layout.indexOf('Table') > -1 },
-        hasItems(){ return this.cards.length > 0 },
+        hasItems(){ return this.cards.length > 0 || this.filterIsLoading },
         noItemsComponent(){ return this.isTableLayout ? 'vl-table-no-items' : 'vl-no-items' },
     },
     methods: {
@@ -178,18 +241,29 @@ export default {
                 return this.initialFilters
             }
 
+            // Build selection data
+            let selectionData = {}
+            if (this.checkedItemIds.length || this.selectionMode === 'all') {
+                selectionData = {
+                    itemIds: this.checkedItemIds,
+                    _selection_mode:  this.selectionMode,
+                    _selectedIds: this.selectionMode === 'specific' ? this.checkedItemIds : [],
+                    _excludedIds: this.selectionMode === 'all' ? this.selectionExcludedIds : [],
+                }
+            }
+
             return this.getJsonFormData(
                 Object.assign(
-                    {}, 
-                    this.initialFilters, 
-                    this.checkedItemIds.length ? {itemIds: this.checkedItemIds } : {}
+                    {},
+                    this.initialFilters,
+                    selectionData
                 )
             )
         },
         preparedFormData(){
-            var formData = new FormData(), 
+            var formData = new FormData(),
                 jsonFormData = this.getJsonFormDataWithFilters()
-                
+
             for ( var key in jsonFormData ) {
                 if (_.isArray(jsonFormData[key])) {
                     jsonFormData[key].forEach((item, k) => {
@@ -244,13 +318,21 @@ export default {
 
             this.currentPage = page || this.currentPage
             this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
-                
-                this.loadItems(r.data, additive)
 
+                this.loadItems(r.data, additive)
 
                 this.isBrowsing = false
 
-                this.checkedItemIds = []
+                // Handle selection after page change
+                if (this.selectionMode === 'all') {
+                    // In 'all' mode, check all items on new page (minus excluded)
+                    this.checkedItemIds = r.data.data
+                        .map(item => item.attributes?.id)
+                        .filter(id => id && !this.selectionExcludedIds.includes(id))
+                } else {
+                    // In 'specific' mode, clear selection on page change
+                    this.checkedItemIds = []
+                }
 
             })
             .catch(e => {
@@ -269,9 +351,9 @@ export default {
             this.$_state({ loading: false })
 
             this.pagination = responseData
-            Vue.set(this, 'cards', 
-                additive ? 
-                    this.cards.concat(responseData.data) : 
+            Vue.set(this, 'cards',
+                additive ?
+                    this.cards.concat(responseData.data) :
                     responseData.data
             )
             this.cardsKey += 1 //to re-render cards
@@ -281,20 +363,32 @@ export default {
             )
 
             this.$_runOwnInteractions('load')
+
+            // Notify SelectionBar about query browse (update totalCount)
+            this.$kompo.vlQueryBrowsed(this.$_elKompoId, {
+                totalCount: responseData.total || 0,
+                pageItemCount: responseData.data?.length || 0,
+            })
         },
         $_attachEvents(){
             this.$_vlOn('vlEmit'+this.$_elKompoId, (eventName, eventPayload) => {
 
                 if (eventName == 'checkItemId') {
                     let itemId = eventPayload.id
-                    this.checkedItemIds.includes(itemId) ? 
-                        this.checkedItemIds.splice(this.checkedItemIds.indexOf(itemId), 1) : 
-                        this.checkedItemIds.push(itemId)
+                    if (this.checkedItemIds.includes(itemId)) {
+                        // Remove - create NEW array (critical for watcher to detect change)
+                        this.checkedItemIds = this.checkedItemIds.filter(id => id !== itemId)
+                    } else {
+                        // Add - create NEW array (critical for watcher to detect change)
+                        this.checkedItemIds = [...this.checkedItemIds, itemId]
+                    }
                 }
 
                 if (eventName == 'checkAllItems') {
-                    this.checkedItemIds = (this.checkedItemIds.length == this.cards.length) ? [] :
-                        this.cards.map((item) => item.attributes.id)
+                    // Don't update checkedItemIds here!
+                    // The checkAllCheckboxes function will click each child checkbox,
+                    // which triggers checkItemId events that properly update checkedItemIds.
+                    // This keeps Vue state in sync with DOM state.
                 }
 
                 this.$emit(eventName, eventPayload)
@@ -352,6 +446,66 @@ export default {
                 this.cards.splice(index, 1)
             })
 
+            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode, name) => {
+                if (attribute) {
+                    this.hybridFilterAttribute = attribute
+                }
+                if (!this.hybridOriginalCards) {
+                    this.hybridOriginalCards = [...this.cards]
+                }
+                this.$_hybridFilter(value, debounce, mode, name)
+            })
+
+            this.$_vlOn('vlJsInstantFilter'+this.$_elKompoId, (value, attribute) => {
+                if (attribute) {
+                    this.hybridFilterAttribute = attribute
+                }
+                if (!this.hybridOriginalCards) {
+                    this.hybridOriginalCards = [...this.cards]
+                }
+                this.$_instantFilter(value)
+            })
+
+            this.$_vlOn('vlAddItem'+this.$_elKompoId, (item, position, itemId) => {
+                const card = this.$_wrapAsCard(item, itemId)
+
+                if (position === 'prepend' || position === 0) {
+                    this.cards.unshift(card)
+                } else if (typeof position === 'number') {
+                    this.cards.splice(position, 0, card)
+                } else {
+                    this.cards.push(card)
+                }
+                this.cardsKey += 1
+            })
+
+            this.$_vlOn('vlPrependItem'+this.$_elKompoId, (item, itemId) => {
+                const card = this.$_wrapAsCard(item, itemId)
+                this.cards.unshift(card)
+                this.cardsKey += 1
+            })
+
+            this.$_vlOn('vlUpdateItem'+this.$_elKompoId, (itemId, item) => {
+                const index = this.cards.findIndex(c =>
+                    (c.attributes?.id === itemId) || (c.id === itemId) || (c.config?.id === itemId)
+                )
+                if (index !== -1) {
+                    const card = this.$_wrapAsCard(item, itemId)
+                    Vue.set(this.cards, index, card)
+                    this.cardsKey += 1
+                }
+            })
+
+            this.$_vlOn('vlRemoveItemById'+this.$_elKompoId, (itemId) => {
+                const index = this.cards.findIndex(c =>
+                    (c.attributes?.id === itemId) || (c.id === itemId) || (c.config?.id === itemId)
+                )
+                if (index !== -1) {
+                    this.cards.splice(index, 1)
+                    this.cardsKey += 1
+                }
+            })
+
             this.$_vlOn('vlSort'+this.$_elKompoId, (sortValue, emitterId) => {
                 this.currentSort = sortValue == this.currentSort ? '' : sortValue
                 this.currentPage = 1
@@ -361,6 +515,37 @@ export default {
             this.$_vlOn('vlToggle'+this.$_elKompoId, (toggleId) => {
                 this.$_toggle(toggleId)
             })
+
+            // Selection bar mode changes
+            this.$_vlOn('vlSetSelectionMode'+this.$_elKompoId, (data) => {
+                this.selectionMode = data.mode
+
+                if (data.mode === 'specific') {
+                    // Only update checkedItemIds if explicitly provided
+                    // This allows clearSelection to keep current page items checked
+                    if (data.selectedIds !== undefined) {
+                        this.checkedItemIds = data.selectedIds
+                    }
+                    this.selectionExcludedIds = []
+
+                    // Emit current state so SelectionBar can sync its selectedIds
+                    this.$kompo.vlSelectionChanged(this.$_elKompoId, {
+                        selectedIds: [...this.checkedItemIds],
+                        pageSelectedCount: this.checkedItemIds.length,
+                        pageItemCount: this.cards.length,
+                        totalCount: this.pagination?.total || 0,
+                        selectionMode: this.selectionMode,
+                        excludedIds: [],
+                    })
+                } else if (data.mode === 'all') {
+                    // In 'all' mode, visually check all items on current page
+                    this.checkedItemIds = this.cards
+                        .map(item => item.attributes?.id)
+                        .filter(Boolean)
+                    this.selectionExcludedIds = data.excludedIds || []
+                }
+            })
+
             this.$_deliverKompoInfoOn()
         },
         $_destroyEvents(){
@@ -372,10 +557,31 @@ export default {
                 'vlRefreshKomponent'+this.$_elKompoId,
                 'vlLoadItems'+this.$_elKompoId,
                 'vlRemoveItem'+this.$_elKompoId,
+                'vlHybridFilter'+this.$_elKompoId,
+                'vlJsInstantFilter'+this.$_elKompoId,
+                'vlAddItem'+this.$_elKompoId,
+                'vlPrependItem'+this.$_elKompoId,
+                'vlUpdateItem'+this.$_elKompoId,
+                'vlRemoveItemById'+this.$_elKompoId,
                 'vlSort'+this.$_elKompoId,
                 'vlToggle'+this.$_elKompoId,
+                'vlSetSelectionMode'+this.$_elKompoId,
                 this.$_deliverKompoInfoOff
             ])
+        },
+        $_wrapAsCard(item, itemId = null) {
+            // Already a card structure?
+            if (item && item.attributes !== undefined && item.render !== undefined) {
+                return item
+            }
+
+            // Try to get ID from item if not provided
+            const id = itemId || item?.id || item?.config?.id || item?.attributes?.id || null
+
+            return {
+                attributes: { id: id },
+                render: item,
+            }
         },
         $_fillRecursive(jsonFormData){
             this.filtersPlacement.forEach(placement => {

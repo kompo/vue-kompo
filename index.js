@@ -57,6 +57,39 @@ const Kompo = {
 	    	vlRefreshKomponent(kompoid, responseData){
 	    		Kompo.events.$emit('vlRefreshKomponent'+kompoid, responseData)
 	    	},
+	    	vlUpdateElements(kompoid, elements, transition){
+	    		Kompo.events.$emit('vlUpdateElements'+kompoid, elements, transition)
+	    	},
+	    	vlUpdateElement(elementId, updates){
+	    		Kompo.events.$emit('vlUpdateElement'+elementId, updates)
+	    	},
+			vlHybridFilter(queryId, value, debounce, attribute, mode, name){
+				Kompo.events.$emit('vlHybridFilter'+queryId, value, debounce, attribute, mode, name)
+			},
+			vlJsInstantFilter(queryId, value, attribute){
+				Kompo.events.$emit('vlJsInstantFilter'+queryId, value, attribute)
+			},
+			vlAddItem(queryId, item, position, itemId){
+				Kompo.events.$emit('vlAddItem'+queryId, item, position, itemId)
+			},
+			vlPrependItem(queryId, item, itemId){
+				Kompo.events.$emit('vlPrependItem'+queryId, item, itemId)
+			},
+			vlUpdateItem(queryId, itemId, item){
+				Kompo.events.$emit('vlUpdateItem'+queryId, itemId, item)
+			},
+			vlRemoveItemById(queryId, itemId){
+				Kompo.events.$emit('vlRemoveItemById'+queryId, itemId)
+			},
+			vlSelectionChanged(queryId, data){
+				Kompo.events.$emit('vlSelectionChanged'+queryId, data)
+			},
+			vlSetSelectionMode(queryId, data){
+				Kompo.events.$emit('vlSetSelectionMode'+queryId, data)
+			},
+			vlQueryBrowsed(queryId, data){
+				Kompo.events.$emit('vlQueryBrowsed'+queryId, data)
+			},
 	    	vlLoadItems(kompoid, responseData){
 	    		Kompo.events.$emit('vlLoadItems'+kompoid, responseData)
 	    	},

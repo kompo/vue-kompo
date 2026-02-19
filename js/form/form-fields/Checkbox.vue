@@ -7,6 +7,7 @@
             v-bind="$_attributes"
             @focus="$_focusAction"
             @blur="$_blurAction"
+            @change="$_changeAction"
         />
         <div v-on="$_events" class="vlSwitch" :class="checkedClass">
             <i class='icon-check'></i>

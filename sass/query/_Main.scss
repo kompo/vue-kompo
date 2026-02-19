@@ -51,3 +51,111 @@
 		grid-column: 1 / 4;
 	}
 }
+
+// Query Filter Loading States
+.vlQuery__loading-bar {
+    grid-column: 2;
+    grid-row: 3;
+    position: relative;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    z-index: 10;
+}
+
+.vlQuery__loading-bar-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+    background-size: 200% 100%;
+    animation: vlQueryLoadingBar 1.5s ease-in-out infinite;
+}
+
+@keyframes vlQueryLoadingBar {
+    0% {
+        left: -30%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+// Hybrid loading: items visible with subtle overlay
+.vlQuery--hybrid-loading .vlQueryWrapper {
+    position: relative;
+}
+
+.vlQuery--hybrid-loading .vlQueryWrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    z-index: 1;
+}
+
+// Server loading: wrapper faded
+.vlQueryWrapper--loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+// Skeleton loader
+.vlQuery__skeleton {
+    padding: 1rem;
+}
+
+.vlQuery__skeleton-item {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: #f9fafb;
+    border-radius: 0.375rem;
+}
+
+.vlQuery__skeleton-line {
+    height: 0.75rem;
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: vlQuerySkeleton 1.5s ease-in-out infinite;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.vlQuery__skeleton-line--long {
+    width: 80%;
+}
+
+.vlQuery__skeleton-line--medium {
+    width: 60%;
+}
+
+.vlQuery__skeleton-line--short {
+    width: 40%;
+}
+
+@keyframes vlQuerySkeleton {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// Fade transition
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
