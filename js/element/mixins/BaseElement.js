@@ -80,7 +80,7 @@ export default {
                 this.elementStore = json
         },
         //do nothing because fields/trigger functions
-        $_fillRecursive(formData) {}, 
+        $_fillRecursive(formData, options) {},
         $_validate(errors) {}, 
         $_getErrors(errors) {},
         $_resetSort(exceptId) {},

@@ -69,14 +69,27 @@ export default {
     },
     methods: {
         hybridFilterOnInput(){
+            var value = this.$_getFilterableValue()
             if (this.$_hybridFilterConfig) {
-                this.$_doHybridFilter(this.component.value)
+                this.$_doHybridFilter(value)
             }
             if (this.$_jsInstantFilterConfig) {
-                this.$_doJsInstantFilter(this.component.value)
+                this.$_doJsInstantFilter(value)
             }
         },
-        $_fillRecursive(jsonFormData){
+        $_getFilterableValue(){
+            var val = this.$_value
+            // Select/MultiSelect store [{value, label}] option objects - extract raw values
+            if (_.isArray(val)) {
+                if (val.length && _.isObject(val[0]) && 'value' in val[0]) {
+                    var values = val.map(function(item){ return item.value })
+                    return this.$_multiple ? values : values[0]
+                }
+                return this.$_multiple ? val : (val[0] || '')
+            }
+            return _.isNil(val) ? '' : val
+        },
+        $_fillRecursive(jsonFormData, options){
             if(!this.$_hidden && !this.$_doesNotFill)
                 this.$_fill(jsonFormData)
         },
@@ -112,7 +125,11 @@ export default {
         $_changeAction(){
             this.$kompo.vlUpdateErrorState(this.kompoid)
 
-            this.$_runOwnInteractions('change')
+            if (!this._silentChange) {
+                this.$_runOwnInteractions('change')
+                this.hybridFilterOnInput()
+            }
+            this._silentChange = false
 
             this.$_clearErrors()
 
@@ -129,6 +146,11 @@ export default {
 
             //other actions are debounced
             this.$_runOwnInteractionsWithAction('input', 'runJs')
+
+            // Trigger whisper if configured
+            if (this.$_config('socketWhisper')) {
+                this.$_triggerWhisper()
+            }
         },
         $_focusAction(){
             if(this.$_readOnly)

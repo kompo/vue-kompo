@@ -16,8 +16,8 @@ th{
 	}
 }
 
-// Th header with dropdown
-th{ position: relative; }
+// Th header with dropdown — defaults to --level3 from Tailwind, override via --vl-th-accent (hex)
+th{ position: relative; --vl-th-accent: var(--level3, #6de5aa); }
 
 .vlThInteractive{ cursor: pointer; }
 
@@ -26,53 +26,156 @@ th{ position: relative; }
 	align-items: center;
 	gap: 4px;
 	white-space: nowrap;
+	user-select: none;
 }
+
+// Dropdown chevron — always visible, active/open color via Tailwind text-level3
 .vlThDropdownIcon{
-	font-size: 10px;
+	width: 14px; height: 14px;
+	flex-shrink: 0;
+	color: #9ca3af;
 	opacity: 0.5;
-	transition: opacity 0.2s;
-	&.active{ opacity: 1; color: #4f46e5; }
+	transition: all 0.2s;
+	&.open{ transform: rotate(180deg); opacity: 1; }
 }
 th:hover .vlThDropdownIcon{ opacity: 1; }
 
-// Dropdown menu
+// Dropdown panel
 .vlThDropdown{
 	position: absolute;
-	top: 100%;
+	top: calc(100% + 2px);
 	left: 0;
 	z-index: 110;
-	min-width: 200px;
-	max-height: 300px;
+	min-width: 224px;
+	max-height: 400px;
 	overflow-y: auto;
-	background: white;
-	border: 1px solid #d1d5db;
-	border-radius: 6px;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-	padding: 8px 0;
+	background: #fff;
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 10px -5px rgba(0,0,0,0.04);
+	padding: 4px;
 	font-weight: normal;
 	font-size: 13px;
+	color: #374151;
+	animation: vlThDropdownFadeIn 0.15s ease-out;
 }
+@keyframes vlThDropdownFadeIn {
+	from { opacity: 0; transform: translateY(-4px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
 .vlThDropdownSection{
-	padding: 4px 12px;
-	&:not(:last-child){ border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 4px; }
+	padding: 2px;
+	&:not(:last-child){ border-bottom: 1px solid #f3f4f6; padding-bottom: 4px; margin-bottom: 4px; }
 }
+
+// Sort — active bg/text/font via Tailwind classes, hover via color-mix
 .vlThSortBtn{
-	display: flex; align-items: center; gap: 6px;
-	width: 100%; padding: 4px 0; cursor: pointer;
-	&:hover{ color: #4f46e5; }
-	&.active{ color: #4f46e5; font-weight: 600; }
+	display: flex; align-items: center; gap: 8px;
+	width: 100%; padding: 6px 8px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.15s;
+	&:hover{ background: color-mix(in srgb, var(--vl-th-accent) 4%, transparent); }
 }
+.vlThSortIcon{
+	display: inline-flex; align-items: center; justify-content: center;
+	width: 22px; height: 22px;
+	border-radius: 5px;
+	background: color-mix(in srgb, var(--vl-th-accent) 6%, transparent);
+	flex-shrink: 0;
+	svg{ width: 12px; height: 12px; }
+	.vlThSortBtn:hover &{ background: color-mix(in srgb, var(--vl-th-accent) 10%, transparent); }
+	.vlThSortBtn.active &{ background: color-mix(in srgb, var(--vl-th-accent) 14%, transparent); }
+}
+
+// Custom checkboxes
+.vlThDropdown input[type="checkbox"]{
+	-webkit-appearance: none;
+	appearance: none;
+	width: 16px; height: 16px; min-width: 16px;
+	border: 1.5px solid color-mix(in srgb, var(--vl-th-accent) 30%, transparent);
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+	position: relative;
+	transition: all 0.15s;
+	margin: 0;
+
+	&:checked{
+		background: color-mix(in srgb, var(--vl-th-accent) 85%, transparent);
+		border-color: color-mix(in srgb, var(--vl-th-accent) 85%, transparent);
+	}
+	&:checked::after{
+		content: '';
+		position: absolute;
+		left: 4px; top: 1px;
+		width: 5px; height: 9px;
+		border: solid #fff;
+		border-width: 0 1.5px 1.5px 0;
+		transform: rotate(45deg);
+	}
+	&:hover:not(:checked){ border-color: color-mix(in srgb, var(--vl-th-accent) 50%, transparent); }
+	&:focus{ outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--vl-th-accent) 12%, transparent); }
+}
+
+// Slicer
 .vlThSlicerSelectAll{
-	display: flex; align-items: center; gap: 6px; padding: 2px 0; cursor: pointer; font-weight: 600;
+	display: flex; align-items: center; gap: 8px;
+	padding: 6px 8px;
+	border-radius: 6px;
+	cursor: pointer; font-weight: 500;
+	transition: background 0.15s;
+	&:hover{ background: color-mix(in srgb, var(--vl-th-accent) 4%, transparent); }
+}
+.vlThSlicerCount{
+	margin-left: auto;
+	font-size: 11px;
+	color: color-mix(in srgb, var(--vl-th-accent) 45%, transparent);
+	font-weight: 400;
+}
+.vlThSlicerSearch{
+	width: 100%; padding: 6px 10px;
+	border: 1.5px solid #e5e7eb; border-radius: 6px;
+	font-size: 12px;
+	background: #f9fafb;
+	margin-bottom: 4px;
+	transition: all 0.15s;
+	&:focus{ outline: none; border-color: color-mix(in srgb, var(--vl-th-accent) 50%, transparent); background: #fff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--vl-th-accent) 8%, transparent); }
+	&::placeholder{ color: #9ca3af; }
 }
 .vlThSlicerList{
-	max-height: 180px; overflow-y: auto;
-	label{ display: flex; align-items: center; gap: 6px; padding: 2px 0; cursor: pointer; font-weight: normal; }
+	max-height: 200px; overflow-y: auto;
+	label{
+		display: flex; align-items: center; gap: 8px;
+		padding: 5px 8px;
+		border-radius: 6px;
+		cursor: pointer; font-weight: normal;
+		transition: background 0.15s;
+		&:hover{ background: color-mix(in srgb, var(--vl-th-accent) 4%, transparent); }
+	}
+	&::-webkit-scrollbar{ width: 6px; }
+	&::-webkit-scrollbar-track{ background: transparent; }
+	&::-webkit-scrollbar-thumb{ background: color-mix(in srgb, var(--vl-th-accent) 15%, transparent); border-radius: 3px; }
+	&::-webkit-scrollbar-thumb:hover{ background: color-mix(in srgb, var(--vl-th-accent) 30%, transparent); }
 }
-.vlThFilterInput{
-	width: 100%; padding: 4px 8px;
-	border: 1px solid #d1d5db; border-radius: 4px;
-	font-size: 12px;
-	background: white;
-	&:focus{ outline: none; border-color: #6366f1; }
+
+// Filter inputs
+.vlThFilterInput, .vlThFilterSelect{
+	width: 100%; padding: 7px 10px;
+	border: 1.5px solid #e5e7eb; border-radius: 6px;
+	font-size: 13px;
+	background: #fff;
+	transition: all 0.15s;
+	&:focus{ outline: none; border-color: color-mix(in srgb, var(--vl-th-accent) 50%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--vl-th-accent) 8%, transparent); }
+	&::placeholder{ color: #9ca3af; }
+}
+.vlThFilterSelect{
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+	padding-right: 28px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 8px center;
 }

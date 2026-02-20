@@ -47,14 +47,14 @@ export default {
                 form.$_validate(formErrors)
             })            
         },
-        $_fillRecursive(jsonFormData){
+        $_fillRecursive(jsonFormData, options){
             if(this.$_hidden)
-                return 
+                return
 
-            var name = this.$_name, results = [] 
+            var name = this.$_name, results = []
             this.elements.forEach( (item,k) => {
                 var json = {}
-                item.$_fillRecursive(json)
+                item.$_fillRecursive(json, options)
                 if(item.multiFormKey)
                     json.multiFormKey = item.multiFormKey
                 results.push(json)

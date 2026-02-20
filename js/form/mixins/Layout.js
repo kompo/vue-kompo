@@ -66,9 +66,9 @@ export default {
                 this.elements.forEach( item => item.$_toggle(toggleId) )
             }
         },
-        $_fillRecursive(jsonFormData){
+        $_fillRecursive(jsonFormData, options){
             if(!this.$_hidden)
-                this.elements.forEach( item => item.$_fillRecursive(jsonFormData) )
+                this.elements.forEach( item => item.$_fillRecursive(jsonFormData, options) )
         },
         $_validate(errors) {
             this.elements.forEach( item => item.$_validate(errors) )

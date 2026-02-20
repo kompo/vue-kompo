@@ -1,67 +1,382 @@
-/*********** fadeIn ************/
-.fadeIn-enter,.fadeIn-leave-to {
+/*********** fadeIn (default for panels) ************/
+.fadeIn-enter, .fadeIn-leave-to {
     opacity: 0;
 }
-
-.fadeIn-enter-active {
-    transition: opacity .2s ease;
+.fadeIn-enter-active, .fadeIn-leave-active {
+    transition: opacity .25s ease;
 }
 
-/*********** modal ****************/
-.modal-enter .kompoModal{
-    transform: scale(0);
-    transform: translateY(100px);
+/*********** fade (slower, more elegant) ************/
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
-.modal-enter-to .kompoModal{
-    transform: scale(1);
-    transform: translateY(0);
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.modal-enter-active .kompoModal{
-    transition: all .3s ease;
+
+/*********** slideRight (content enters from right, exits to left) ************/
+.slideRight-enter {
+    opacity: 0;
+    transform: translateX(40px);
 }
-.modal-leave .kompoModal{
-    transform: scale(1);
-    transform: translateY(0);
+.slideRight-enter-to {
+    opacity: 1;
+    transform: translateX(0);
 }
-.modal-leave-to .kompoModal{
-    transform: scale(0);
-    transform: translateY(100px);
+.slideRight-leave {
+    opacity: 1;
+    transform: translateX(0);
 }
-.modal-leave-active .kompoModal{
-    transition: all .3s ease;
+.slideRight-leave-to {
+    opacity: 0;
+    transform: translateX(-40px);
+}
+.slideRight-enter-active, .slideRight-leave-active {
+    transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*********** slideLeft ************/
-.slideLeft-enter{
-    transform: translateX(300px);
+.slideLeft-enter {
+    opacity: 0;
+    transform: translateX(-40px);
 }
-.slideLeft-enter-to{
+.slideLeft-enter-to {
+    opacity: 1;
     transform: translateX(0);
 }
-.slideLeft-enter-active{
-    transition: all .3s ease;
-}
-.slideLeft-leave{
+.slideLeft-leave {
+    opacity: 1;
     transform: translateX(0);
 }
-.slideLeft-leave-to{
-    transform: translateX(300px);
+.slideLeft-leave-to {
+    opacity: 0;
+    transform: translateX(40px);
 }
-.slideLeft-leave-active{
-    transition: all .3s ease;
+.slideLeft-enter-active, .slideLeft-leave-active {
+    transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** slideUp (content slides up) ************/
+.slideUp-enter {
+    opacity: 0;
+    transform: translateY(30px);
+}
+.slideUp-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+}
+.slideUp-leave {
+    opacity: 1;
+    transform: translateY(0);
+}
+.slideUp-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+.slideUp-enter-active, .slideUp-leave-active {
+    transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*********** slideDown ************/
-.slideDown-enter, .slideDown-leave-to{
+.slideDown-enter, .slideDown-leave-to {
     opacity: 0;
     max-height: 0;
-    transform: translateY(-100px);
+    transform: translateY(-30px);
 }
-.slideDown-enter-to, .slideDown-leave{
+.slideDown-enter-to, .slideDown-leave {
     opacity: 1;
     max-height: 100vh;
     transform: translateY(0);
 }
-.slideDown-enter-active, .slideDown-leave-active{
-    transition: all .3s ease;
+.slideDown-enter-active, .slideDown-leave-active {
+    transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** scale (zoom in/out) ************/
+.scale-enter {
+    opacity: 0;
+    transform: scale(0.85);
+}
+.scale-enter-to {
+    opacity: 1;
+    transform: scale(1);
+}
+.scale-leave {
+    opacity: 1;
+    transform: scale(1);
+}
+.scale-leave-to {
+    opacity: 0;
+    transform: scale(0.85);
+}
+.scale-enter-active, .scale-leave-active {
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** scaleUp (zoom from small, exit scaling up) ************/
+.scaleUp-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+.scaleUp-enter-to {
+    opacity: 1;
+    transform: scale(1);
+}
+.scaleUp-leave {
+    opacity: 1;
+    transform: scale(1);
+}
+.scaleUp-leave-to {
+    opacity: 0;
+    transform: scale(1.05);
+}
+.scaleUp-enter-active, .scaleUp-leave-active {
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** magic (scale + fade + subtle rotation) ************/
+.magic-enter {
+    opacity: 0;
+    transform: scale(0.92) rotate(-1deg) translateY(10px);
+}
+.magic-enter-to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translateY(0);
+}
+.magic-leave {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translateY(0);
+}
+.magic-leave-to {
+    opacity: 0;
+    transform: scale(0.92) rotate(1deg) translateY(-10px);
+}
+.magic-enter-active, .magic-leave-active {
+    transition: all .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/*********** flip (3D flip effect) ************/
+.flip-enter {
+    opacity: 0;
+    transform: perspective(600px) rotateY(-15deg);
+}
+.flip-enter-to {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg);
+}
+.flip-leave {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg);
+}
+.flip-leave-to {
+    opacity: 0;
+    transform: perspective(600px) rotateY(15deg);
+}
+.flip-enter-active, .flip-leave-active {
+    transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** blur (fade with blur effect) ************/
+.blur-enter {
+    opacity: 0;
+    filter: blur(8px);
+}
+.blur-enter-to {
+    opacity: 1;
+    filter: blur(0);
+}
+.blur-leave {
+    opacity: 1;
+    filter: blur(0);
+}
+.blur-leave-to {
+    opacity: 0;
+    filter: blur(8px);
+}
+.blur-enter-active, .blur-leave-active {
+    transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*********** elegant (slow, smooth, with subtle scale) ************/
+.elegant-enter {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+}
+.elegant-enter-to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.elegant-leave {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+.elegant-leave-to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+}
+.elegant-enter-active {
+    transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.elegant-leave-active {
+    transition: all .3s cubic-bezier(0.4, 0, 1, 1);
+}
+
+/*********** bounce (playful spring effect) ************/
+.bounce-enter {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+}
+.bounce-enter-to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+.bounce-leave {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+.bounce-leave-to {
+    opacity: 0;
+    transform: scale(0.8) translateY(-15px);
+}
+.bounce-enter-active {
+    transition: all .45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bounce-leave-active {
+    transition: all .25s cubic-bezier(0.4, 0, 1, 1);
+}
+
+/*********** none (instant, no transition) ************/
+.none-enter-active, .none-leave-active {
+    transition: none;
+}
+
+/*********** Content animations (CSS @keyframes, for Panel contentTransition) ************/
+/* These play once on DOM insert when contentKey changes. Duration overridable via --vl-content-duration. */
+
+.vlContentAnim-fadeIn {
+    animation: vlContentFadeIn var(--vl-content-duration, .25s) ease both;
+}
+@keyframes vlContentFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.vlContentAnim-fade {
+    animation: vlContentFade var(--vl-content-duration, .4s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.vlContentAnim-slideRight {
+    animation: vlContentSlideRight var(--vl-content-duration, .35s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentSlideRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.vlContentAnim-slideLeft {
+    animation: vlContentSlideLeft var(--vl-content-duration, .35s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentSlideLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.vlContentAnim-slideUp {
+    animation: vlContentSlideUp var(--vl-content-duration, .35s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.vlContentAnim-slideDown {
+    animation: vlContentSlideDown var(--vl-content-duration, .35s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentSlideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.vlContentAnim-scale {
+    animation: vlContentScale var(--vl-content-duration, .3s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentScale {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.vlContentAnim-scaleUp {
+    animation: vlContentScaleUp var(--vl-content-duration, .3s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentScaleUp {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.vlContentAnim-elegant {
+    animation: vlContentElegant var(--vl-content-duration, .5s) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes vlContentElegant {
+    from { opacity: 0; transform: translateY(15px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.vlContentAnim-magic {
+    animation: vlContentMagic var(--vl-content-duration, .4s) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes vlContentMagic {
+    from { opacity: 0; transform: scale(0.92) rotate(-1deg) translateY(10px); }
+    to { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); }
+}
+
+.vlContentAnim-flip {
+    animation: vlContentFlip var(--vl-content-duration, .4s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentFlip {
+    from { opacity: 0; transform: perspective(600px) rotateY(-15deg); }
+    to { opacity: 1; transform: perspective(600px) rotateY(0deg); }
+}
+
+.vlContentAnim-blur {
+    animation: vlContentBlur var(--vl-content-duration, .35s) cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes vlContentBlur {
+    from { opacity: 0; filter: blur(8px); }
+    to { opacity: 1; filter: blur(0); }
+}
+
+.vlContentAnim-bounce {
+    animation: vlContentBounce var(--vl-content-duration, .45s) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes vlContentBounce {
+    from { opacity: 0; transform: scale(0.8) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/*********** modal ****************/
+.modal-enter .kompoModal {
+    transform: scale(0.9) translateY(30px);
+    opacity: 0;
+}
+.modal-enter-to .kompoModal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+.modal-enter-active .kompoModal {
+    transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.modal-leave .kompoModal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+.modal-leave-to .kompoModal {
+    transform: scale(0.9) translateY(30px);
+    opacity: 0;
+}
+.modal-leave-active .kompoModal {
+    transition: all .25s cubic-bezier(0.4, 0, 1, 1);
 }

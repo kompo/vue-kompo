@@ -6,28 +6,35 @@
     >
         <div class="vlThHeader" @click.stop="toggleDropdown">
             <span v-html="$_label"></span>
-            <i v-if="hasSort" :class="iconClass"></i>
-            <span v-if="hasInteraction" class="vlThDropdownIcon" :class="{ active: hasActiveFilter }">&#9660;</span>
+            <svg v-if="hasInteraction" class="vlThDropdownIcon" :class="{ '!text-sortcolor text-level3 opacity-100': hasActiveFilter || dropdownOpen, open: dropdownOpen }" viewBox="0 0 16 16" fill="currentColor"><path d="M3.2 5.7a.7.7 0 011-.05L8 9.2l3.8-3.55a.7.7 0 01.95 1.03l-4.25 4a.7.7 0 01-.96 0l-4.25-4a.7.7 0 01-.05-1z"/></svg>
         </div>
 
         <div v-if="dropdownOpen" class="vlThDropdown" @click.stop>
 
             <div v-if="hasSort" class="vlThDropdownSection">
-                <div class="vlThSortBtn" :class="{ active: sortingAsc }" @click="applySort('ASC')">
-                    <span>&#8593;</span> <span>Sort A&#8594;Z</span>
+                <div class="vlThSortBtn" :class="{ active: sortingAsc, '!bg-sortcolor/10 bg-level3/10 !text-sortcolor text-level3 font-medium': sortingAsc }" @click="applySort('ASC')">
+                    <span class="vlThSortIcon"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 3.5a.7.7 0 01.5.2l4 4.3a.7.7 0 01-1 1L8 5.3 4.5 9a.7.7 0 01-1-1l4-4.3a.7.7 0 01.5-.2z"/></svg></span>
+                    <span>Sort A &rarr; Z</span>
                 </div>
-                <div class="vlThSortBtn" :class="{ active: sortingDesc }" @click="applySort('DESC')">
-                    <span>&#8595;</span> <span>Sort Z&#8594;A</span>
+                <div class="vlThSortBtn" :class="{ active: sortingDesc, '!bg-sortcolor/10 bg-level3/10 !text-sortcolor text-level3 font-medium': sortingDesc }" @click="applySort('DESC')">
+                    <span class="vlThSortIcon"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.2 5.7a.7.7 0 011-.05L8 9.2l3.8-3.55a.7.7 0 01.95 1.03l-4.25 4a.7.7 0 01-.96 0l-4.25-4a.7.7 0 01-.05-1z"/></svg></span>
+                    <span>Sort Z &rarr; A</span>
                 </div>
             </div>
 
             <div v-if="hasSlicer" class="vlThDropdownSection">
+                <input v-if="slicerItems.length > 6"
+                    class="vlThSlicerSearch"
+                    v-model="slicerSearch"
+                    placeholder="Search..."
+                />
                 <label class="vlThSlicerSelectAll">
                     <input type="checkbox" :checked="allSelected" @change="toggleSelectAll" />
                     <span>Select All</span>
+                    <span class="vlThSlicerCount">{{ slicerSelected.length }}/{{ slicerItems.length }}</span>
                 </label>
                 <div class="vlThSlicerList">
-                    <label v-for="item in slicerItems" :key="item.key">
+                    <label v-for="item in filteredSlicerItems" :key="item.key">
                         <input type="checkbox" :value="item.key" v-model="slicerSelected" @change="onSlicerChange" />
                         <span>{{ item.label }}</span>
                     </label>
@@ -35,7 +42,14 @@
             </div>
 
             <div v-if="hasFilter" class="vlThDropdownSection">
-                <input
+                <select v-if="hasFilterOptions"
+                    class="vlThFilterSelect"
+                    v-model="filterValue"
+                    @change="onFilterSelect">
+                    <option value="">--</option>
+                    <option v-for="(label, key) in filterOptions" :key="key" :value="key">{{ label }}</option>
+                </select>
+                <input v-else
                     class="vlThFilterInput"
                     v-model="filterValue"
                     @input="onFilterInput"
@@ -54,29 +68,29 @@ import Trigger from '../../form/mixins/Trigger'
 export default {
     mixins: [Trigger],
     data(){
-    	return {
-    		sortColumn: '',
-    		sortDirection: '',
-    		initialDirection: '',
+        return {
+            sortColumn: '',
+            sortDirection: '',
+            initialDirection: '',
             dropdownOpen: false,
             slicerSelected: [],
+            slicerSearch: '',
             filterValue: '',
             filterDebounce: null,
-    	}
+        }
     },
     created(){
-    	if(this.$_sortsQuery){
-	    	var sortSpecs = this.$_sortsQuery.split(':')
-	    	this.sortColumn = sortSpecs[0]
-	    	this.initialDirection = sortSpecs.length == 2 ? sortSpecs[1] : ''
-	    }
+        if(this.$_sortsQuery){
+            var sortSpecs = this.$_sortsQuery.split(':')
+            this.sortColumn = sortSpecs[0]
+            this.initialDirection = sortSpecs.length == 2 ? sortSpecs[1] : ''
+        }
     },
     computed: {
-        $_customClassArray() { 
+        $_customClassArray() {
             return [
-                //this.$_sortsQuery ? 'cursor-pointer' : null
                 this.hasInteraction ? 'vlThInteractive' : null
-            ] 
+            ]
         },
         hasSort(){ return !!this.$_sortsQuery },
         hasSlicer(){ return !!this.$_config('slicerName') },
@@ -88,19 +102,15 @@ export default {
                    (this.hasFilter && this.filterValue)
         },
         activeSort(){
-        	return this.$_sortsQuery && this.$_state('activeSort')
+            return this.$_sortsQuery && this.$_state('activeSort')
         },
         sortingDesc(){ return this.activeSort && this.sortDirection == 'DESC' },
         sortingAsc(){ return this.activeSort && this.sortDirection == 'ASC' },
-        thLabel(){
-            return this.$_label + '<i class="' + this.iconClass + '"></i>'
-        },
-        iconClass(){
-        	return this.sortingDesc ? 'icon-down' : (this.sortingAsc ? 'icon-up' : '')
-        },
         $_sortValue(){
-        	return this.sortDirection ? (this.sortColumn+':'+this.sortDirection) : ''
+            return this.sortDirection ? (this.sortColumn+':'+this.sortDirection) : ''
         },
+        filterOptions(){ return this.$_config('filterOptions') || null },
+        hasFilterOptions(){ return this.filterOptions && Object.keys(this.filterOptions).length > 0 },
         slicerOptions(){ return this.$_config('slicerOptions') || {} },
         hasSlicerOptions(){ return Object.keys(this.slicerOptions).length > 0 },
         slicerItems(){
@@ -109,24 +119,23 @@ export default {
             }
             return this.extractColumnValues().map(v => ({ key: v, label: v }))
         },
+        filteredSlicerItems(){
+            if(!this.slicerSearch) return this.slicerItems
+            var search = this.slicerSearch.toLowerCase()
+            return this.slicerItems.filter(item => item.label.toString().toLowerCase().indexOf(search) > -1)
+        },
         allSelected(){
             return this.slicerItems.length > 0 && this.slicerSelected.length == this.slicerItems.length
         },
     },
     methods: {
-    	customBeforeSort(){
-            
-    	},
-        /*
-        customBeforeSort(){
-            // Sort direction is already set by applySort
-        },*/
         toggleDropdown(){
             if(!this.hasInteraction) return
             this.dropdownOpen = !this.dropdownOpen
         },
         closeDropdown(){
             this.dropdownOpen = false
+            this.slicerSearch = ''
         },
         applySort(direction){
             if(this.sortDirection == direction){
@@ -135,6 +144,9 @@ export default {
                 this.sortDirection = direction
             }
             this.$_clickAction()
+        },
+        customBeforeSort(){
+            // Sort direction is already set by applySort
         },
         $_resetSortValue(){
             this.sortDirection = ''
@@ -149,6 +161,9 @@ export default {
                 this.slicerSelected = this.slicerItems.map(i => i.key)
             }
             this.onSlicerChange()
+        },
+        onFilterSelect(){
+            this.$kompo.vlBrowseQuery(this.kompoid, 1)
         },
         onFilterInput(){
             clearTimeout(this.filterDebounce)

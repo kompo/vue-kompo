@@ -7,9 +7,9 @@
 
         <component v-if="showTopPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassT)" />
 
-        <!-- Filter Loading Bar (always visible when filtering) -->
+        <!-- Loading Bar (visible when filtering or browsing) -->
         <transition name="fade">
-            <div v-if="filterIsLoading" class="vlQuery__loading-bar">
+            <div v-if="filterIsLoading || isBrowsing" class="vlQuery__loading-bar">
                 <div class="vlQuery__loading-bar-progress"></div>
             </div>
         </transition>
@@ -583,11 +583,23 @@ export default {
                 render: item,
             }
         },
-        $_fillRecursive(jsonFormData){
+        $_fillRecursive(jsonFormData, options){
             this.filtersPlacement.forEach(placement => {
                 this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
             })
-            // Also collect header filter values (column filters)
+
+            if (options && options.nestedFields) {
+                this.cards.forEach(card => {
+                    if (card.render && card.render.elements) {
+                        card.render.elements.forEach(el => {
+                            if (el.$_fillRecursive) {
+                                el.$_fillRecursive(jsonFormData, options)
+                            }
+                        })
+                    }
+                })
+            }
+
             if (this.headers) {
                 this.headers.forEach(item => {
                     if (item && item.$_fillRecursive) {

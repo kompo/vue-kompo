@@ -1,23 +1,25 @@
 <template>
-    
+
     <div :id="id" :class="panelClass">
 
         <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
-        
+
         <transition :name="usedTransition" :mode="usedMode">
-            <slot />
-            <div v-if="html" :is="{template: html}" />
-            <template v-for="(row,index) in elements">
-                <component 
-                    v-bind="$_attributes(row)" 
-                    @closeModal="closeModal"
-                    @closePanel="reset"
-                    @confirmSubmit="confirmSubmit"
-                    @touchedForm="$emit('touchedForm')"  
-                />
-            </template>
+            <div :key="contentVersion" class="vlPanelContent">
+                <slot v-if="contentVersion === 0 && !html && (!elements || !elements.length)" />
+                <div v-if="html" :is="{template: html}" />
+                <template v-for="(row,index) in elements">
+                    <component
+                        v-bind="$_attributes(row)"
+                        @closeModal="closeModal"
+                        @closePanel="reset"
+                        @confirmSubmit="confirmSubmit"
+                        @touchedForm="$emit('touchedForm')"
+                    />
+                </template>
+            </div>
         </transition>
-        
+
     </div>
 
 </template>
@@ -39,6 +41,7 @@ export default {
         return {
             html : null,
             component: {},
+            contentVersion: 0,
             usedTransition: null,
             usedMode: null
         }
@@ -56,7 +59,7 @@ export default {
         hasLoadedElements(){
             return this.elements && this.elements.length > 0
         }
-    }, 
+    },
     methods: {
         reset(){
             this.component = {}
@@ -66,6 +69,7 @@ export default {
         },
         close(){
             this.reset()
+            this.contentVersion++
         },
         closeModal(){
             this.$emit('closeModal')
@@ -89,6 +93,7 @@ export default {
                     }else{
                         this.html = response
                     }
+                    this.contentVersion++
                     this.$emit('loaded')
                 })
             })
@@ -102,7 +107,7 @@ export default {
     created(){
 
         this.usedTransition = this.transition || 'fadeIn'
-        this.usedMode = this.mode || (this.usedTransition == 'fadeIn' ? 'out-in' : '')
+        this.usedMode = this.mode || 'out-in'
 
         this.$_destroyEvents()
         this.$_attachEvents()

@@ -1,23 +1,24 @@
 <template>
     <transition :name="transition" :mode="mode">
-        <div 
+        <div
             v-if="hasElements"
-            v-show="!$_hidden" 
+            v-show="!$_hidden"
             v-bind="$_layoutWrapperAttributes">
 
             <div v-if="showCloseButton" class="vlPanelClose" v-html="closable" @click="close" />
-            
-            <div v-if="html" :is="{template: html}" />
-            <component 
-                v-for="(row,index) in elements" :key="componentKey(index)"
-                v-bind="$_attributes(row)" 
-                @closeModal="closeModal"
-                @closePanel="reset"
-                @confirmSubmit="confirmSubmit"
-                @touchedForm="$emit('touchedForm')"  
-                @success="handleSubmitSuccess"
-            />
 
+            <div :key="contentKey" :class="$_contentAnimClass" :style="$_contentAnimStyle">
+                <div v-if="html" :is="{template: html}" />
+                <component
+                    v-for="(row,index) in elements" :key="componentKey(index)"
+                    v-bind="$_attributes(row)"
+                    @closeModal="closeModal"
+                    @closePanel="reset"
+                    @confirmSubmit="confirmSubmit"
+                    @touchedForm="$emit('touchedForm')"
+                    @success="handleSubmitSuccess"
+                />
+            </div>
 
         </div>
     </transition>
@@ -33,6 +34,7 @@ export default {
             loaded: false,
             refreshParent: false,
             resetAfterSubmit: false,
+            contentKey: 0,
         }
     },
     computed:{
@@ -45,7 +47,7 @@ export default {
             return this.component.$_config('hidesOnLoad') // this.$_config(...) not working... ??
         },
         transition(){
-            return this.$_config('transition') || 'fadeIn' 
+            return this.$_config('transition') || 'fadeIn'
         },
         mode(){ return this.$_config('transitionMode') || (this.transition == 'fadeIn' ? 'out-in' : '')},
         closable(){ return this.$_config('closable')},
@@ -62,7 +64,17 @@ export default {
         },
         hasElements(){
             return this.elements && this.elements.length > 0
-        }
+        },
+        $_contentAnimClass(){
+            var name = this.transition
+            if (!name || name === 'none' || this.contentKey <= 1) return ''
+            return 'vlContentAnim-' + name
+        },
+        $_contentAnimStyle(){
+            var duration = this.$_config('transitionDuration')
+            if (!duration) return ''
+            return '--vl-content-duration: ' + duration + 'ms'
+        },
     },
     methods:{
         reset(){
@@ -82,9 +94,9 @@ export default {
             this.$emit('confirmSubmit')
         },
         loadPanel(elements){
-            
+
             //TODO: append or replace elements...
-            
+
             if(!_.isArray(elements) && !_.isObject(elements))
                 return //should be object or array. If not, it's dump most probably
 
@@ -115,7 +127,11 @@ export default {
         $_attachCustomEvents(){
             this.$_vlOn('vlFillPanel' + this.$_elementId(), (response, options) => {
 
-                this.reset()
+                var isContentSwap = this.hasElements
+
+                if (!isContentSwap) {
+                    this.reset()
+                }
 
                 this.loaded = true
                 this.refreshParent = options.refreshParent
@@ -124,15 +140,22 @@ export default {
                 if(options.included)
                     return this.includeObject(response) //emit and stop
 
-                this.$nextTick(() => {
+                var applyContent = () => {
+                    this.html = null
                     if(!_.isString(response)){
-
-                        this.elements = _.isArray(response) ? response : [response] //Array when getElements() is used, non-array when a single Element is returned
-
+                        this.elements = _.isArray(response) ? response : [response]
                     }else{
                         this.html = response
+                        this.elements = []
                     }
-                })
+                    this.contentKey++
+                }
+
+                if (isContentSwap) {
+                    applyContent()
+                } else {
+                    this.$nextTick(applyContent)
+                }
             })
         },
         $_destroyCustomEvents(){

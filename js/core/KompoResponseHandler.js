@@ -185,6 +185,14 @@ export default class KompoResponseHandler {
                 })
                 break
 
+            case 'multi':
+                // Execute multiple response actions sequentially
+                const actions = responseData.actions || []
+                actions.forEach(action => {
+                    KompoResponseHandler.handle(action, vueInstance)
+                })
+                break
+
             default:
                 console.warn('Unknown Kompo response type:', kompoResponseType)
         }
