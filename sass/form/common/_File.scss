@@ -16,5 +16,10 @@
 		.vlSingle{
 			color: var(--form-control-placeholder-color);
 		}
+		&.vlFocusedField .vlTaggableInput{
+			.vlSingle{
+				display: inline;
+			}
+		}
 	}
 }
