@@ -7,9 +7,9 @@
 
         <component v-if="showTopPagination" @browse="browseQueryFromPagination" v-bind="paginationAttributes(paginationClassT)" />
 
-        <!-- Filter Loading Bar (always visible when filtering) -->
+        <!-- Loading Bar (visible when filtering or browsing) -->
         <transition name="fade">
-            <div v-if="filterIsLoading" class="vlQuery__loading-bar">
+            <div v-if="filterIsLoading || isBrowsing" class="vlQuery__loading-bar">
                 <div class="vlQuery__loading-bar-progress"></div>
             </div>
         </transition>
