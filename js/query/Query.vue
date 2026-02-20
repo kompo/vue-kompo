@@ -585,7 +585,7 @@ export default {
         },
         $_fillRecursive(jsonFormData, options){
             this.filtersPlacement.forEach(placement => {
-                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData, options) )
+                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
             })
 
             if (options && options.nestedFields) {

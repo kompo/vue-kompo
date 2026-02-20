@@ -54,29 +54,28 @@ import Trigger from '../../form/mixins/Trigger'
 export default {
     mixins: [Trigger],
     data(){
-    	return {
-    		sortColumn: '',
-    		sortDirection: '',
-    		initialDirection: '',
+        return {
+            sortColumn: '',
+            sortDirection: '',
+            initialDirection: '',
             dropdownOpen: false,
             slicerSelected: [],
             filterValue: '',
             filterDebounce: null,
-    	}
+        }
     },
     created(){
-    	if(this.$_sortsQuery){
-	    	var sortSpecs = this.$_sortsQuery.split(':')
-	    	this.sortColumn = sortSpecs[0]
-	    	this.initialDirection = sortSpecs.length == 2 ? sortSpecs[1] : ''
-	    }
+        if(this.$_sortsQuery){
+            var sortSpecs = this.$_sortsQuery.split(':')
+            this.sortColumn = sortSpecs[0]
+            this.initialDirection = sortSpecs.length == 2 ? sortSpecs[1] : ''
+        }
     },
     computed: {
-        $_customClassArray() { 
+        $_customClassArray() {
             return [
-                //this.$_sortsQuery ? 'cursor-pointer' : null
                 this.hasInteraction ? 'vlThInteractive' : null
-            ] 
+            ]
         },
         hasSort(){ return !!this.$_sortsQuery },
         hasSlicer(){ return !!this.$_config('slicerName') },
@@ -88,18 +87,15 @@ export default {
                    (this.hasFilter && this.filterValue)
         },
         activeSort(){
-        	return this.$_sortsQuery && this.$_state('activeSort')
+            return this.$_sortsQuery && this.$_state('activeSort')
         },
         sortingDesc(){ return this.activeSort && this.sortDirection == 'DESC' },
         sortingAsc(){ return this.activeSort && this.sortDirection == 'ASC' },
-        thLabel(){
-            return this.$_label + '<i class="' + this.iconClass + '"></i>'
-        },
         iconClass(){
-        	return this.sortingDesc ? 'icon-down' : (this.sortingAsc ? 'icon-up' : '')
+            return this.sortingDesc ? 'icon-down' : (this.sortingAsc ? 'icon-up' : '')
         },
         $_sortValue(){
-        	return this.sortDirection ? (this.sortColumn+':'+this.sortDirection) : ''
+            return this.sortDirection ? (this.sortColumn+':'+this.sortDirection) : ''
         },
         slicerOptions(){ return this.$_config('slicerOptions') || {} },
         hasSlicerOptions(){ return Object.keys(this.slicerOptions).length > 0 },
@@ -114,13 +110,6 @@ export default {
         },
     },
     methods: {
-    	customBeforeSort(){
-            
-    	},
-        /*
-        customBeforeSort(){
-            // Sort direction is already set by applySort
-        },*/
         toggleDropdown(){
             if(!this.hasInteraction) return
             this.dropdownOpen = !this.dropdownOpen
@@ -135,6 +124,9 @@ export default {
                 this.sortDirection = direction
             }
             this.$_clickAction()
+        },
+        customBeforeSort(){
+            // Sort direction is already set by applySort
         },
         $_resetSortValue(){
             this.sortDirection = ''
