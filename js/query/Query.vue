@@ -583,11 +583,22 @@ export default {
                 render: item,
             }
         },
-        $_fillRecursive(jsonFormData){
+        $_fillRecursive(jsonFormData, options){
             this.filtersPlacement.forEach(placement => {
-                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
+                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData, options) )
+            })
+
+            if (options && options.nestedFields) {
+                this.cards.forEach(card => {
+                    if (card.render && card.render.elements) {
+                        card.render.elements.forEach(el => {
+                            if (el.$_fillRecursive) {
+                                el.$_fillRecursive(jsonFormData, options)
+                            }
+                        })
+                    }
+                })
             }
-            )
         },
         $_resetSort(emitterId){
             this.filtersPlacement.forEach(placement => 

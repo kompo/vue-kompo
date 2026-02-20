@@ -341,16 +341,37 @@ class KompoFieldHelper {
         this.nameOrId = nameOrId
         this._vueComponent = null
         this._element = null
+
+        return new Proxy(this, {
+            get(target, prop) {
+                if (typeof prop === 'symbol') return target[prop]
+                if (prop in target) return target[prop]
+                const vue = target.vueComponent
+                if (vue && prop in vue) {
+                    const val = vue[prop]
+                    return typeof val === 'function' ? val.bind(vue) : val
+                }
+                return undefined
+            }
+        })
     }
 
     get vueComponent() {
         if (this._vueComponent) return this._vueComponent
 
-        // Try to find Vue component by various methods
-        const el = this.element
-        if (el && el.__vue__) {
-            this._vueComponent = el.__vue__
+        // Try to find Vue component by various methods with parents included by max depth 5
+        // We normally are able at the first but for example checkboxes have the id in a child of the component
+        // So we need to be able to go up a few levels to find the component. We limit to 5 to avoid infinite loops in case of misconfiguration.
+        let el = this.element
+        for (let depth = 0; depth < 5; depth++) {
+            if (el && el.__vue__) {
+                this._vueComponent = el.__vue__
+                break
+            }
+            el = el ? el.parentElement : null
+            if (!el) break
         }
+
         return this._vueComponent
     }
 
@@ -392,7 +413,7 @@ class KompoFieldHelper {
     get value() {
         const vue = this.vueComponent
         if (vue) {
-            return vue.value !== undefined ? vue.value : vue.$_value
+            return vue.component.value !== undefined ? vue.component.value : null
         }
         const input = this.inputElement
         return input ? input.value : null
@@ -402,19 +423,22 @@ class KompoFieldHelper {
     set(value) {
         const vue = this.vueComponent
         if (vue) {
-            if (vue.$_fill) {
-                vue.$_fill(value)
-            } else if (vue.value !== undefined) {
-                vue.value = value
-            }
+            vue.component.value = value
             if (vue.$emit) {
                 vue.$emit('input', value)
-                vue.$emit('change', value)
+                vue.$emit('changed', value)
+            }
+
+            const changeEvent = new Event('change', { bubbles: true })
+            this.element?.dispatchEvent(changeEvent)
+
+            if (vue.$el) {
+                vue.$el.dispatchEvent(changeEvent)    
             }
         } else {
             const input = this.inputElement
             if (input) {
-                input.value = value
+                input.component.value = value
                 input.dispatchEvent(new Event('input', { bubbles: true }))
                 input.dispatchEvent(new Event('change', { bubbles: true }))
             }
@@ -545,6 +569,17 @@ class KompoFieldHelper {
         const el = this.element
         if (el) {
             el.scrollIntoView({ behavior: 'smooth', block: 'center', ...options })
+        }
+        return this
+    }
+
+    // Set value without triggering interactions (run/emit/axios) but still emit Vue's changed event
+    quietSet(value) {
+        const vue = this.vueComponent
+        if (vue) {
+            vue._silentChange = true
+            vue.component.value = value
+            vue.$emit('changed', value)
         }
         return this
     }
@@ -759,6 +794,29 @@ class KompoElementHelper {
         this.$k = kompoHelper
         this.id = id
         this._element = element
+
+        return new Proxy(this, {
+            get(target, prop) {
+                if (typeof prop === 'symbol') return target[prop]
+                if (prop in target) return target[prop]
+                const vue = target.vueComponent
+                if (vue && prop in vue) {
+                    const val = vue[prop]
+                    return typeof val === 'function' ? val.bind(vue) : val
+                }
+                return undefined
+            }
+        })
+    }
+
+    get vueComponent() {
+        let el = this.element
+        for (let depth = 0; depth < 5; depth++) {
+            if (el && el.__vue__) return el.__vue__
+            el = el ? el.parentElement : null
+            if (!el) break
+        }
+        return null
     }
 
     get element() {
@@ -1498,19 +1556,53 @@ function buildJsCtx(vueInstance, response = {}) {
         delete: (url, data = {}) => $k.fetch(url, data, 'DELETE'),
     }
 
+    // Current field/element (the one that triggered run())
+    const currentField = new KompoFieldHelper($k, vueInstance.$_elementId ? vueInstance.$_elementId() : null)
+    currentField._vueComponent = vueInstance
+
+    const currentEl = new KompoElementHelper($k, null, vueInstance.$el)
+
+    const field = new Proxy(
+        function(name) { return $k.field(name) },
+        {
+            get(target, prop) {
+                if (typeof prop === 'symbol') return target[prop]
+                if (prop === 'prototype' || prop === 'length' || prop === 'name') return target[prop]
+                return currentField[prop]
+            },
+            apply(target, thisArg, args) {
+                return target(...args)
+            }
+        }
+    )
+
+    const el = new Proxy(
+        function(id) { return $k.el(id) },
+        {
+            get(target, prop) {
+                if (typeof prop === 'symbol') return target[prop]
+                if (prop === 'prototype' || prop === 'length' || prop === 'name') return target[prop]
+                return currentEl[prop]
+            },
+            apply(target, thisArg, args) {
+                return target(...args)
+            }
+        }
+    )
+
     // Build rich context with destructurable helpers
     const ctx = {
         // The $k helper (full API)
         $k,
 
         // Destructurable shortcuts
-        field: (name) => $k.field(name),
+        field,
         fields: (...names) => $k.fields(...names),
         panel: (id) => $k.panel(id),
         form: $k.form,
         modal: (id) => $k.modal(id),
         query: (id) => $k.query(id),
-        el: (id) => $k.el(id),
+        el,
         find: (sel) => $k.find(sel),
         findAll: (sel) => $k.findAll(sel),
 
@@ -1549,7 +1641,7 @@ function buildJsCtx(vueInstance, response = {}) {
 
         // Legacy (backward compatibility)
         response: response,
-        value: vueInstance.value !== undefined ? vueInstance.value : vueInstance.$_value,
+        value: currentField.value,
         vue: vueInstance,
         kompoid: vueInstance.kompoid || vueInstance.$_elKompoId,
         config: vueInstance.$_config ? vueInstance.$_config() : {},

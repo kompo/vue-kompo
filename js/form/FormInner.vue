@@ -117,7 +117,7 @@ export default {
         },
         getJsonFormData(){
             var jsonFormData = {}
-            this.$_fillRecursive(jsonFormData)
+            this.$_fillRecursive(jsonFormData, { nestedFields: this.$_config('nestedFields') })
             return jsonFormData
         },
         setRedirecting(){
