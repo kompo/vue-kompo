@@ -232,11 +232,11 @@ export default {
                 key: placement+this.filtersKey
             }
         },
-        getJsonFormData(jsonFormData){
-            this.$_fillRecursive(jsonFormData)
+        getJsonFormData(jsonFormData, options){
+            this.$_fillRecursive(jsonFormData, options)
             return jsonFormData
         },
-        getJsonFormDataWithFilters(resetFilters){
+        getJsonFormDataWithFilters(resetFilters, options){
             if (resetFilters) {
                 return this.initialFilters
             }
@@ -257,12 +257,13 @@ export default {
                     {},
                     this.initialFilters,
                     selectionData
-                )
+                ),
+                options
             )
         },
-        preparedFormData(){
+        preparedFormData(options){
             var formData = new FormData(),
-                jsonFormData = this.getJsonFormDataWithFilters()
+                jsonFormData = this.getJsonFormDataWithFilters(null, options)
 
             for ( var key in jsonFormData ) {
                 if (_.isArray(jsonFormData[key])) {
@@ -585,7 +586,7 @@ export default {
         },
         $_fillRecursive(jsonFormData, options){
             this.filtersPlacement.forEach(placement => {
-                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
+                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData, options) )
             })
 
             if (options && options.nestedFields) {
@@ -599,7 +600,7 @@ export default {
             if (this.headers) {
                 this.headers.forEach(item => {
                     if (item && item.$_fillRecursive) {
-                        item.$_fillRecursive(jsonFormData)
+                        item.$_fillRecursive(jsonFormData, options)
                     }
                 })
             }

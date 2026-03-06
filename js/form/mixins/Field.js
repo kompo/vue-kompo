@@ -90,8 +90,11 @@ export default {
             return _.isNil(val) ? '' : val
         },
         $_fillRecursive(jsonFormData, options){
-            if(!this.$_hidden && !this.$_doesNotFill)
+            if(!this.$_hidden && !this.$_doesNotFill){
+                if(options && options.onlyDirty && this.$_pristine) return
+
                 this.$_fill(jsonFormData)
+            }
         },
         $_fill(jsonFormData){
             jsonFormData[this.$_name] = _.isNil(this.$_value) ? '' : this.$_value

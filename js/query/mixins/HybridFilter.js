@@ -159,7 +159,7 @@ export default {
         $_serverFilter(value) {
             const filterData = Object.assign({}, this.hybridSiblingData, { [this.hybridFilterName]: value })
 
-            this.$_kAxios.$_browseQuery(1, this.currentSort, filterData).then(r => {
+            this.$_kAxios.$_browseQuery(1, this.currentSort, filterData, { onlyDirty: true }).then(r => {
                 // Update with server results
                 this.hybridOriginalCards = r.data.data
                 Vue.set(this, 'cards', r.data.data)
