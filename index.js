@@ -1,5 +1,7 @@
 import {VueMasonryPlugin} from 'vue-masonry'
 import TurboClick from './js/core/TurboClick'
+import { registerJsFeature } from './js/element/mixins/HasJsFeatures'
+import { registerRunContextHelper } from './js/core/KompoHelper'
 
 require('./js/core/bootstrap')
 
@@ -63,8 +65,8 @@ const Kompo = {
 	    	vlUpdateElement(elementId, updates){
 	    		Kompo.events.$emit('vlUpdateElement'+elementId, updates)
 	    	},
-			vlHybridFilter(queryId, value, debounce, attribute, mode, name){
-				Kompo.events.$emit('vlHybridFilter'+queryId, value, debounce, attribute, mode, name)
+			vlHybridFilter(queryId, value, debounce, attribute, mode, name, siblingData){
+				Kompo.events.$emit('vlHybridFilter'+queryId, value, debounce, attribute, mode, name, siblingData)
 			},
 			vlJsInstantFilter(queryId, value, attribute){
 				Kompo.events.$emit('vlJsInstantFilter'+queryId, value, attribute)
@@ -183,10 +185,10 @@ const Kompo = {
 					if (!(el == event.target || el.contains(event.target)))
 					    vnode.context[binding.expression](event)
 				}
-				document.body.addEventListener('click', el.clickOutsideEvent, true)
+				document.body.addEventListener('click', el.clickOutsideEvent)
 			},
 			unbind: function (el) {
-				document.body.removeEventListener('click', el.clickOutsideEvent, true)
+				document.body.removeEventListener('click', el.clickOutsideEvent)
 			}
 		})
 
