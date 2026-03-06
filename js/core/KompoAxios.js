@@ -84,10 +84,16 @@ export default class KompoAxios{
     }
 
     /******* Elements *********/
-    $_browseQuery(page, sort, filterData = {}){
-        const formData = this.$_element.preparedFormData()
+    $_browseQuery(page, sort, filterData = {}, options = {}){
+        const formData = this.$_element.preparedFormData(options)
         for (const key in filterData) {
-            formData.append(key, filterData[key])
+            if (_.isArray(filterData[key])) {
+                filterData[key].forEach((item, k) => {
+                    formData.append(key+'['+k+']', item)
+                })
+            } else {
+                formData.append(key, filterData[key])
+            }
         }
 
         return this.$_axios({

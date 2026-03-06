@@ -33,10 +33,10 @@ export default {
             const mode = config.mode || 'hybrid'
             const name = config.name || null
 
-            // Collect sibling field values from parent form context
-            const siblingData = this.$_collectSiblingFormData()
+            // Collect non-pristine sibling field values from parent form context
+            const siblingData = this.$_collectDirtySiblingData()
 
-            // Emit to target query
+            // Emit to target query (may target multiple queries)
             if (Array.isArray(queryId)) {
                 queryId.forEach(id => {
                     this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, name, siblingData)
@@ -47,14 +47,17 @@ export default {
         },
 
         /**
-         * Walk up $parent chain to find a Form/Query ancestor with getJsonFormData,
-         * then collect all sibling field values so the server filter has full context.
+         * Walk up $parent chain to find nearest Form/Query ancestor,
+         * then collect only non-pristine (dirty) sibling field values
+         * using the existing $_fillRecursive system with onlyDirty option.
          */
-        $_collectSiblingFormData() {
+        $_collectDirtySiblingData() {
             let parent = this.$parent
             while (parent) {
-                if (typeof parent.getJsonFormData === 'function') {
-                    return parent.getJsonFormData()
+                if (typeof parent.$_fillRecursive === 'function') {
+                    const data = {}
+                    parent.$_fillRecursive(data, { onlyDirty: true })
+                    return data
                 }
                 parent = parent.$parent
             }
