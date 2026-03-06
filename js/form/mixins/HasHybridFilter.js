@@ -33,14 +33,32 @@ export default {
             const mode = config.mode || 'hybrid'
             const name = config.name || null
 
+            // Collect sibling field values from parent form context
+            const siblingData = this.$_collectSiblingFormData()
+
             // Emit to target query
             if (Array.isArray(queryId)) {
                 queryId.forEach(id => {
-                    this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, name)
+                    this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, name, siblingData)
                 })
             } else {
-                this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode, name)
+                this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode, name, siblingData)
             }
+        },
+
+        /**
+         * Walk up $parent chain to find a Form/Query ancestor with getJsonFormData,
+         * then collect all sibling field values so the server filter has full context.
+         */
+        $_collectSiblingFormData() {
+            let parent = this.$parent
+            while (parent) {
+                if (typeof parent.getJsonFormData === 'function') {
+                    return parent.getJsonFormData()
+                }
+                parent = parent.$parent
+            }
+            return {}
         },
         $_doJsInstantFilter(value) {
             const config = this.$_jsInstantFilterConfig
