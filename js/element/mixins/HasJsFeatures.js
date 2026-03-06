@@ -1,5 +1,3 @@
-import { KompoHelper } from '../../core/KompoHelper'
-
 /**
  * Mixin for declarative JS features: jsConditional, jsComputed, jsFilter
  * These allow PHP to define reactive behaviors without custom JS code
@@ -18,6 +16,7 @@ export default {
         $_jsConditional() { return this.$_config('jsConditional') },
         $_jsComputed() { return this.$_config('jsComputed') },
         $_jsFilter() { return this.$_config('jsFilter') },
+        $_jsClassConditional() { return this.$_config('jsClassConditional') },
 
         // Override hidden state to include conditional
         $_jsHidden() {
@@ -43,6 +42,9 @@ export default {
             }
             if (this.$_jsFilter) {
                 this.$_initJsFilter()
+            }
+            if (this.$_jsClassConditional) {
+                this.$_initJsClassConditional()
             }
         },
 
@@ -110,14 +112,31 @@ export default {
         },
 
         $_applyVisibility(hidden) {
-            if (this.$el) {
-                if (hidden) {
-                    this.$el.classList.add('vlHide')
-                    this.$el.style.display = 'none'
-                } else {
-                    this.$el.classList.remove('vlHide')
-                    this.$el.style.display = ''
-                }
+            if (!this.$el) return
+
+            const el = this.$el
+
+            // First call — set up transition style once
+            if (!el._vlTransitionReady) {
+                el.style.transition = 'opacity .15s ease'
+                el._vlTransitionReady = true
+            }
+
+            if (hidden) {
+                el.style.opacity = '0'
+                // After fade out, hide completely
+                clearTimeout(el._vlHideTimer)
+                el._vlHideTimer = setTimeout(() => {
+                    el.classList.add('vlHide')
+                    el.style.display = 'none'
+                }, 150)
+            } else {
+                clearTimeout(el._vlHideTimer)
+                el.classList.remove('vlHide')
+                el.style.display = ''
+                // Force reflow then fade in
+                void el.offsetHeight
+                el.style.opacity = '1'
             }
         },
 
@@ -131,6 +150,46 @@ export default {
                     this.$el.classList.add('kompo-disabled')
                 } else {
                     this.$el.classList.remove('kompo-disabled')
+                }
+            }
+        },
+
+        /**
+         * jsClassConditional: Add/remove CSS classes based on field value
+         * Config: { field: string, condition: string, classTrue: string, classFalse: string }
+         */
+        $_initJsClassConditional() {
+            const config = this.$_jsClassConditional
+            const { field, condition, classTrue, classFalse } = config
+
+            this.$_evaluateClassConditional(field, condition, classTrue, classFalse)
+
+            const cleanup = this.$_watchField(field, () => {
+                this.$_evaluateClassConditional(field, condition, classTrue, classFalse)
+            })
+
+            this.jsFeatureCleanup.push(cleanup)
+        },
+
+        $_evaluateClassConditional(fieldName, condition, classTrue, classFalse) {
+            const val = this.$_getFieldValue(fieldName)
+
+            let result = false
+            try {
+                result = eval(condition)
+            } catch (e) {
+                console.warn('jsClassConditional: Failed to evaluate condition:', condition, e)
+            }
+
+            if (this.$el) {
+                const addClasses = result ? classTrue : classFalse
+                const removeClasses = result ? classFalse : classTrue
+
+                if (removeClasses) {
+                    removeClasses.split(' ').forEach(c => c && this.$el.classList.remove(c))
+                }
+                if (addClasses) {
+                    addClasses.split(' ').forEach(c => c && this.$el.classList.add(c))
                 }
             }
         },
@@ -264,23 +323,47 @@ export default {
         /**
          * Helper: Get a field's current value by name
          */
-        $_getFieldValue(fieldName) {
-            // Try to find the field element
-            const fieldEl = document.querySelector(`[data-id="${fieldName}"]`) ||
-                           document.querySelector(`[name="${fieldName}"]`) ||
-                           document.getElementById(fieldName)
+        /**
+         * Find the Kompo Vue instance for a field by name.
+         * querySelector may land on an inner <input> (e.g. Select's search input).
+         * We walk up the DOM to find the owning Vue component with `component`.
+         */
+        $_findFieldVm(fieldName) {
+            const el = document.querySelector(`[data-id="${fieldName}"]`) ||
+                       document.querySelector(`[name="${fieldName}"]`) ||
+                       document.getElementById(fieldName)
 
-            if (!fieldEl) return null
+            if (!el) return null
 
-            // Check if it has a Vue instance
-            if (fieldEl.__vue__ && fieldEl.__vue__.value !== undefined) {
-                return fieldEl.__vue__.value
+            // Walk up to find a Vue instance with component.value (Kompo field)
+            let node = el
+            while (node) {
+                if (node.__vue__ && node.__vue__.component) {
+                    return node.__vue__
+                }
+                node = node.parentElement
             }
-            if (fieldEl.__vue__ && fieldEl.__vue__.$_value !== undefined) {
-                return fieldEl.__vue__.$_value
+
+            // Fallback: return __vue__ on the found element itself (non-Kompo)
+            return el.__vue__ || null
+        },
+
+        $_getFieldValue(fieldName) {
+            const vm = this.$_findFieldVm(fieldName)
+
+            if (vm) {
+                const raw = vm.component ? vm.component.value : (vm.$_value !== undefined ? vm.$_value : vm.value)
+
+                if (raw !== undefined) {
+                    return this.$_extractScalarValue(raw)
+                }
             }
 
             // Fall back to DOM
+            const fieldEl = document.querySelector(`[name="${fieldName}"]`) ||
+                            document.getElementById(fieldName)
+            if (!fieldEl) return null
+
             const input = fieldEl.querySelector('input, textarea, select') || fieldEl
             if (input.type === 'checkbox') {
                 return input.checked
@@ -289,25 +372,47 @@ export default {
         },
 
         /**
+         * Extract a scalar value from Kompo field values.
+         * Selects store [{value, label}] arrays - we need the scalar.
+         */
+        $_extractScalarValue(raw) {
+            if (Array.isArray(raw)) {
+                if (raw.length === 0) return null
+                // Kompo select option objects: [{value: "3", label: "..."}]
+                if (raw[0] && raw[0].value !== undefined) {
+                    return raw.length === 1 ? raw[0].value : raw.map(o => o.value)
+                }
+                return raw.length === 1 ? raw[0] : raw
+            }
+            return raw
+        },
+
+        /**
          * Helper: Watch a field for changes
          */
         $_watchField(fieldName, callback) {
-            const fieldEl = document.querySelector(`[data-id="${fieldName}"]`) ||
-                           document.querySelector(`[name="${fieldName}"]`) ||
-                           document.getElementById(fieldName)
+            const vm = this.$_findFieldVm(fieldName)
+
+            if (vm && vm.$watch) {
+                // Kompo fields: watch component.value (deep for selects with option objects)
+                if (vm.component) {
+                    const unwatch = vm.$watch('component.value', callback, { deep: true })
+                    return unwatch
+                }
+                // Generic Vue component
+                const unwatch = vm.$watch('value', callback)
+                return unwatch
+            }
+
+            // Fall back to DOM events
+            const fieldEl = document.querySelector(`[name="${fieldName}"]`) ||
+                            document.getElementById(fieldName)
 
             if (!fieldEl) {
                 console.warn('jsFeature: Field not found:', fieldName)
                 return () => {}
             }
 
-            // Try Vue watcher first
-            if (fieldEl.__vue__ && fieldEl.__vue__.$watch) {
-                const unwatch = fieldEl.__vue__.$watch('value', callback)
-                return unwatch
-            }
-
-            // Fall back to DOM events
             const input = fieldEl.querySelector('input, textarea, select') || fieldEl
             const handler = () => callback()
 
@@ -322,7 +427,16 @@ export default {
     },
 
     mounted() {
-        // Delay initialization to ensure all fields are rendered
+        // Immediately hide elements with jsShowWhen to prevent flash
+        // (don't wait for $nextTick or setTimeout — hide NOW)
+        const jc = this.$_jsConditional
+        if (jc && this.$el) {
+            if (jc.type === 'show' || jc.type === 'enable') {
+                this.$el.style.display = 'none'
+            }
+        }
+
+        // Delay full initialization to ensure all fields are rendered
         this.$nextTick(() => {
             setTimeout(() => {
                 this.$_initJsFeatures()

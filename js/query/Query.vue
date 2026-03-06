@@ -446,14 +446,14 @@ export default {
                 this.cards.splice(index, 1)
             })
 
-            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode, name) => {
+            this.$_vlOn('vlHybridFilter'+this.$_elKompoId, (value, debounce, attribute, mode, name, siblingData) => {
                 if (attribute) {
                     this.hybridFilterAttribute = attribute
                 }
                 if (!this.hybridOriginalCards) {
                     this.hybridOriginalCards = [...this.cards]
                 }
-                this.$_hybridFilter(value, debounce, mode, name)
+                this.$_hybridFilter(value, debounce, mode, name, siblingData)
             })
 
             this.$_vlOn('vlJsInstantFilter'+this.$_elKompoId, (value, attribute) => {
@@ -590,12 +590,8 @@ export default {
 
             if (options && options.nestedFields) {
                 this.cards.forEach(card => {
-                    if (card.render && card.render.elements) {
-                        card.render.elements.forEach(el => {
-                            if (el.$_fillRecursive) {
-                                el.$_fillRecursive(jsonFormData, options)
-                            }
-                        })
+                    if (card.render) {
+                        this.$_fillFromElement(card.render, jsonFormData, options)
                     }
                 })
             }
@@ -605,6 +601,28 @@ export default {
                     if (item && item.$_fillRecursive) {
                         item.$_fillRecursive(jsonFormData)
                     }
+                })
+            }
+        },
+        /**
+         * Recursively fill form data from a card's element data object.
+         * Uses a data-driven walk instead of injected $_fillRecursive because
+         * Card/TableRow components (BaseElement) inject a no-op $_fillRecursive
+         * that doesn't iterate into children.
+         */
+        $_fillFromElement(el, jsonFormData, options) {
+            if (!el) return
+
+            // Check if this is a field (has a name) and should fill
+            if (el.name && !(el.config && el.config.doesNotFill) && !(el.state && el.state.vlHidden)) {
+                var val = el.value
+                jsonFormData[el.name] = (val === null || val === undefined) ? '' : val
+            }
+
+            // Recurse into child elements
+            if (el.elements) {
+                el.elements.forEach(child => {
+                    this.$_fillFromElement(child, jsonFormData, options)
                 })
             }
         },

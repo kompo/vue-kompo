@@ -18,6 +18,7 @@ export default {
             hybridFilterAttribute: 'data-filter',
             hybridOriginalCards: null,
             hybridFilterName: null,
+            hybridSiblingData: {},
 
             // Loading states
             filterIsLoading: false,        // True when server request in progress
@@ -75,9 +76,10 @@ export default {
          * @param {number} debounce - Debounce ms for server request
          * @param {string} mode - 'hybrid' or 'server'
          */
-        $_hybridFilter(value, debounce = 300, mode = null, name = null) {
+        $_hybridFilter(value, debounce = 300, mode = null, name = null, siblingData = {}) {
             this.hybridFilterValue = value
             this.hybridFilterName = name
+            this.hybridSiblingData = siblingData || {}
 
             if (mode) {
                 this.filterMode = mode
@@ -155,7 +157,7 @@ export default {
          * Server-side filter request
          */
         $_serverFilter(value) {
-            const filterData = { [this.hybridFilterName]: value }
+            const filterData = Object.assign({}, this.hybridSiblingData, { [this.hybridFilterName]: value })
 
             this.$_kAxios.$_browseQuery(1, this.currentSort, filterData).then(r => {
                 // Update with server results
