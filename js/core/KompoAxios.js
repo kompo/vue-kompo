@@ -200,7 +200,12 @@ export default class KompoAxios{
             kompoInfo = this.$_element.kompoInfo
         }
 
-        return kompoInfo
+        // Guard against null/undefined — prevents sending garbage to server
+        if (!kompoInfo) {
+            console.error('[Kompo] Could not retrieve KompoInfo for element', this.$_element.$_elKompoId, 'with kompoid', this.$_element.kompoid)
+        }
+
+        return kompoInfo || ''
 
     }
     $_axiosWithErrorHandling(axiosRequest){
