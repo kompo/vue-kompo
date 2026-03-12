@@ -318,7 +318,13 @@ export default {
             this.isBrowsing = true
 
             this.currentPage = page || this.currentPage
-            this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
+
+            // Reuse stored hybrid filter data on pagination so external filters aren't lost
+            var filterData = this.hybridFilterName
+                ? Object.assign({}, this.hybridSiblingData, { [this.hybridFilterName]: this.hybridFilterValue })
+                : {}
+
+            this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort, filterData).then(r => {
 
                 this.loadItems(r.data, additive)
 
