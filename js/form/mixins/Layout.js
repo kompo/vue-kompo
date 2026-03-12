@@ -70,17 +70,6 @@ export default {
             if(!this.$_hidden)
                 this.elements.forEach( item => {
                     if (!item) return
-
-                    // For Komponent elements, find the actual Vue component instance
-                    // instead of using the injected function on the vkompo data object,
-                    // because inner component re-creation can overwrite the injection.
-                    if (item.vueComponent === 'Komponent') {
-                        var child = this.$children.find(c => c.vkompo === item)
-                        if (child && child.$_fillRecursive) {
-                            child.$_fillRecursive(jsonFormData, options)
-                            return
-                        }
-                    }
                     if (item.$_fillRecursive) item.$_fillRecursive(jsonFormData, options)
                 })
         },

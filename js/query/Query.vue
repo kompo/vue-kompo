@@ -135,6 +135,9 @@ export default {
         this.$_saveLiveKomponent()
     },
     mounted() {
+        // Re-stamp after child layout components (vl-Table, etc.) overwrite
+        // our $_fillRecursive on the shared vkompo during their created()
+        this.vkompo.$_fillRecursive = this.$_fillRecursive
 
         if (this.isScrollPagination && this.topPagination) {
             this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
@@ -142,6 +145,10 @@ export default {
 
         this.$_runOwnInteractions('load')
         this.$_filterOutInteractions('load')
+    },
+    updated() {
+        // Re-stamp when child layout is recreated (e.g. cardsKey change after addToQuery)
+        this.vkompo.$_fillRecursive = this.$_fillRecursive
     },
     computed: {
 
