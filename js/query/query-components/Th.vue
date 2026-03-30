@@ -6,7 +6,7 @@
     >
         <div class="vlThHeader" @click.stop="toggleDropdown">
             <span v-html="$_label"></span>
-            <svg v-if="hasInteraction" class="vlThDropdownIcon" :class="{ '!text-sortcolor text-level3 opacity-100': hasActiveFilter || dropdownOpen, open: dropdownOpen }" viewBox="0 0 16 16" fill="currentColor"><path d="M3.2 5.7a.7.7 0 011-.05L8 9.2l3.8-3.55a.7.7 0 01.95 1.03l-4.25 4a.7.7 0 01-.96 0l-4.25-4a.7.7 0 01-.05-1z"/></svg>
+            <svg v-if="hasInteraction && !sortDirection" class="vlThDropdownIcon" :class="{ '!text-sortcolor text-level3 opacity-100': hasActiveFilter || dropdownOpen, open: dropdownOpen }" viewBox="0 0 16 16" fill="currentColor"><path d="M3.2 5.7a.7.7 0 011-.05L8 9.2l3.8-3.55a.7.7 0 01.95 1.03l-4.25 4a.7.7 0 01-.96 0l-4.25-4a.7.7 0 01-.05-1z"/></svg>
         </div>
 
         <div v-if="dropdownOpen" class="vlThDropdown" @click.stop>
