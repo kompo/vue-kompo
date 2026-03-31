@@ -149,6 +149,24 @@ export default {
                         this.elements = []
                     }
                     this.contentKey++
+
+                    // Cache rendered size for lazy panels
+                    const elId = this.$_elementId()
+                    if (elId && elId.startsWith('lazy-p-')) {
+                        this.$nextTick(() => {
+                            if (this.$el) {
+                                const h = this.$el.offsetHeight
+                                const w = this.$el.offsetWidth
+                                if (h > 0) {
+                                    try { localStorage.setItem('kompo-lazy-size:' + elId, JSON.stringify({ h, w })) } catch(e) {}
+                                    this.$el.style.height = ''
+                                    this.$el.style.width = ''
+                                    this.$el.style.overflow = ''
+                                    this.$el.style.borderRadius = ''
+                                }
+                            }
+                        })
+                    }
                 }
 
                 if (isContentSwap) {
@@ -166,6 +184,24 @@ export default {
     },
     created() {
         this.elements = this.elements || [] //when called in Vue directly (not through a PHP Form)
+    },
+    mounted() {
+        // Apply cached size for lazy panels to prevent layout shift
+        const elId = this.$_elementId()
+        if (elId && elId.startsWith('lazy-p-')) {
+            try {
+                const saved = localStorage.getItem('kompo-lazy-size:' + elId)
+                if (saved) {
+                    const { h, w } = JSON.parse(saved)
+                    if (h && this.$el) {
+                        this.$el.style.height = h + 'px'
+                        if (w) this.$el.style.width = w + 'px'
+                        this.$el.style.overflow = 'hidden'
+                        this.$el.style.borderRadius = '0.5rem'
+                    }
+                }
+            } catch(e) {}
+        }
     }
 }
 </script>

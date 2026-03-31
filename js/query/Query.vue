@@ -135,6 +135,9 @@ export default {
         this.$_saveLiveKomponent()
     },
     mounted() {
+        // Re-stamp after child layout components (vl-Table, etc.) overwrite
+        // our $_fillRecursive on the shared vkompo during their created()
+        this.vkompo.$_fillRecursive = this.$_fillRecursive
 
         if (this.isScrollPagination && this.topPagination) {
             this.$refs.vlQueryWrapper.scrollTop = this.$refs.vlQueryWrapper.scrollHeight
@@ -142,6 +145,10 @@ export default {
 
         this.$_runOwnInteractions('load')
         this.$_filterOutInteractions('load')
+    },
+    updated() {
+        // Re-stamp when child layout is recreated (e.g. cardsKey change after addToQuery)
+        this.vkompo.$_fillRecursive = this.$_fillRecursive
     },
     computed: {
 
@@ -232,11 +239,11 @@ export default {
                 key: placement+this.filtersKey
             }
         },
-        getJsonFormData(jsonFormData){
-            this.$_fillRecursive(jsonFormData)
+        getJsonFormData(jsonFormData, options){
+            this.$_fillRecursive(jsonFormData, options)
             return jsonFormData
         },
-        getJsonFormDataWithFilters(resetFilters){
+        getJsonFormDataWithFilters(resetFilters, options){
             if (resetFilters) {
                 return this.initialFilters
             }
@@ -257,12 +264,13 @@ export default {
                     {},
                     this.initialFilters,
                     selectionData
-                )
+                ),
+                options
             )
         },
-        preparedFormData(){
+        preparedFormData(options){
             var formData = new FormData(),
-                jsonFormData = this.getJsonFormDataWithFilters()
+                jsonFormData = this.getJsonFormDataWithFilters(null, options)
 
             for ( var key in jsonFormData ) {
                 if (_.isArray(jsonFormData[key])) {
@@ -317,7 +325,13 @@ export default {
             this.isBrowsing = true
 
             this.currentPage = page || this.currentPage
-            this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort).then(r => {
+
+            // Reuse stored hybrid filter data on pagination so external filters aren't lost
+            var filterData = this.hybridFilterName
+                ? Object.assign({}, this.hybridSiblingData, { [this.hybridFilterName]: this.hybridFilterValue })
+                : {}
+
+            this.$_kAxios.$_browseQuery(this.currentPage, this.currentSort, filterData).then(r => {
 
                 this.loadItems(r.data, additive)
 
@@ -585,7 +599,7 @@ export default {
         },
         $_fillRecursive(jsonFormData, options){
             this.filtersPlacement.forEach(placement => {
-                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData) )
+                this.filters[placement].forEach( item => item.$_fillRecursive(jsonFormData, options) )
             })
 
             if (options && options.nestedFields) {
@@ -599,7 +613,7 @@ export default {
             if (this.headers) {
                 this.headers.forEach(item => {
                     if (item && item.$_fillRecursive) {
-                        item.$_fillRecursive(jsonFormData)
+                        item.$_fillRecursive(jsonFormData, options)
                     }
                 })
             }

@@ -84,10 +84,16 @@ export default class KompoAxios{
     }
 
     /******* Elements *********/
-    $_browseQuery(page, sort, filterData = {}){
-        const formData = this.$_element.preparedFormData()
+    $_browseQuery(page, sort, filterData = {}, options = {}){
+        const formData = this.$_element.preparedFormData(options)
         for (const key in filterData) {
-            formData.append(key, filterData[key])
+            if (_.isArray(filterData[key])) {
+                filterData[key].forEach((item, k) => {
+                    formData.append(key+'['+k+']', item)
+                })
+            } else {
+                formData.append(key, filterData[key])
+            }
         }
 
         return this.$_axios({
@@ -194,7 +200,12 @@ export default class KompoAxios{
             kompoInfo = this.$_element.kompoInfo
         }
 
-        return kompoInfo
+        // Guard against null/undefined — prevents sending garbage to server
+        if (!kompoInfo) {
+            console.error('[Kompo] Could not retrieve KompoInfo for element', this.$_element.$_elKompoId, 'with kompoid', this.$_element.kompoid)
+        }
+
+        return kompoInfo || ''
 
     }
     $_axiosWithErrorHandling(axiosRequest){
