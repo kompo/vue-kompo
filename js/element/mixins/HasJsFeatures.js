@@ -68,15 +68,26 @@ export default {
             const config = this.$_jsConditional
             const { type, field, condition } = config
 
-            // Initial evaluation
+            // Initial evaluation (run first, before any reactive changes)
             this.$_evaluateConditional(field, condition, type)
 
-            // Watch for changes using DOM events
+            // Watch for changes
             const cleanup = this.$_watchField(field, () => {
                 this.$_evaluateConditional(field, condition, type)
             })
-
             this.jsFeatureCleanup.push(cleanup)
+
+            // NOW clean PHP's display:none and vlHide from reactive data so that
+            // future Vue re-renders (focus/blur state changes) don't reapply them.
+            if (type === 'show' || type === 'hide' || type === 'enable') {
+                const style = (this.component.style || '')
+                    .replace(/display\s*:\s*none\s*;?/gi, '').trim()
+                const cls = typeof this.component.class === 'string'
+                    ? this.component.class.replace(/\bvlHide\b/g, '').trim().replace(/\s+/g, ' ')
+                    : this.component.class
+
+                this.component = Object.assign({}, this.component, { style, class: cls })
+            }
         },
 
         $_evaluateConditional(fieldName, condition, type) {
@@ -101,6 +112,8 @@ export default {
                     this.$_applyVisibility(result)
                     break
                 case 'enable':
+                    this.jsConditionalHidden = !result
+                    this.$_applyVisibility(!result)
                     this.jsConditionalDisabled = !result
                     this.$_applyDisabled(!result)
                     break
