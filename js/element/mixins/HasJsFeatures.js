@@ -68,6 +68,13 @@ export default {
             const config = this.$_jsConditional
             const { type, field, condition } = config
 
+            // PHP adds vlHide/display:none for jsShowWhen/jsEnableWhen to avoid
+            // flash before JS runs. Remove it from both live and source data so
+            // later focus/state renders cannot reapply the initial hidden state.
+            if (type === 'show' || type === 'hide' || type === 'enable') {
+                this.$_clearStaticConditionalVisibility()
+            }
+
             // Initial evaluation (run first, before any reactive changes)
             this.$_evaluateConditional(field, condition, type)
 
@@ -76,18 +83,6 @@ export default {
                 this.$_evaluateConditional(field, condition, type)
             })
             this.jsFeatureCleanup.push(cleanup)
-
-            // NOW clean PHP's display:none and vlHide from reactive data so that
-            // future Vue re-renders (focus/blur state changes) don't reapply them.
-            if (type === 'show' || type === 'hide' || type === 'enable') {
-                const style = (this.component.style || '')
-                    .replace(/display\s*:\s*none\s*;?/gi, '').trim()
-                const cls = typeof this.component.class === 'string'
-                    ? this.component.class.replace(/\bvlHide\b/g, '').trim().replace(/\s+/g, ' ')
-                    : this.component.class
-
-                this.component = Object.assign({}, this.component, { style, class: cls })
-            }
         },
 
         $_evaluateConditional(fieldName, condition, type) {
@@ -144,6 +139,7 @@ export default {
                     el.style.display = 'none'
                 }, 150)
             } else {
+                this.$_clearStaticConditionalVisibility()
                 clearTimeout(el._vlHideTimer)
                 el.classList.remove('vlHide')
                 el.style.display = ''
@@ -151,6 +147,28 @@ export default {
                 void el.offsetHeight
                 el.style.opacity = '1'
             }
+        },
+
+        $_clearStaticConditionalVisibility() {
+            const clean = (component) => {
+                if (!component) return {}
+
+                const style = (component.style || '')
+                    .replace(/display\s*:\s*none\s*;?/gi, '').trim()
+                const cls = typeof component.class === 'string'
+                    ? component.class.replace(/\bvlHide\b/g, '').trim().replace(/\s+/g, ' ')
+                    : component.class
+
+                component.style = style
+                component.class = cls
+
+                return { style, class: cls }
+            }
+
+            const cleaned = clean(this.component)
+            clean(this.vkompo)
+
+            this.component = Object.assign({}, this.component, cleaned)
         },
 
         $_applyDisabled(disabled) {

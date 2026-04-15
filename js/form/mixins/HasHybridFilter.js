@@ -33,35 +33,73 @@ export default {
             const mode = config.mode || 'hybrid'
             const name = config.name || null
 
-            // Collect non-pristine sibling field values from parent form context
-            const siblingData = this.$_collectDirtySiblingData()
-
             // Emit to target query (may target multiple queries)
             if (Array.isArray(queryId)) {
                 queryId.forEach(id => {
-                    this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, name, siblingData)
+                    const targetsOwnQuery = this.$_targetsOwnQuery(id)
+                    const siblingData = this.$_collectDirtySiblingData(id)
+                    const filterName = targetsOwnQuery ? null : name
+                    const activeFilterData = targetsOwnQuery ? {} : this.$_currentHybridFilterData()
+                    this.$kompo.vlHybridFilter(id, value, debounce, attribute, mode, filterName, siblingData, activeFilterData)
                 })
             } else {
-                this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode, name, siblingData)
+                const targetsOwnQuery = this.$_targetsOwnQuery(queryId)
+                const siblingData = this.$_collectDirtySiblingData(queryId)
+                const filterName = targetsOwnQuery ? null : name
+                const activeFilterData = targetsOwnQuery ? {} : this.$_currentHybridFilterData()
+                this.$kompo.vlHybridFilter(queryId, value, debounce, attribute, mode, filterName, siblingData, activeFilterData)
             }
         },
 
         /**
-         * Walk up $parent chain to find nearest Form/Query ancestor,
-         * then collect only non-pristine (dirty) sibling field values
-         * using the existing $_fillRecursive system with onlyDirty option.
+         * Same-query filters are already collected by the target Query before
+         * browsing. For cross-query filters, collect dirty values from the
+         * nearest owning Form/Query so filters outside the literal layout
+         * sibling group still travel with the request.
          */
-        $_collectDirtySiblingData() {
+        $_collectDirtySiblingData(targetQueryId = null) {
+            if (this.$_targetsOwnQuery(targetQueryId)) {
+                return {}
+            }
+
+            const parent = this.$_hybridFilterDataParent()
+            if (!parent || typeof parent.$_fillRecursive !== 'function') {
+                return {}
+            }
+
+            const data = {}
+            parent.$_fillRecursive(data, { onlyDirty: true })
+
+            return data
+        },
+        $_targetsOwnQuery(targetQueryId) {
+            return targetQueryId !== null &&
+                targetQueryId !== undefined &&
+                String(targetQueryId) === String(this.kompoid)
+        },
+        $_hybridFilterDataParent() {
             let parent = this.$parent
             while (parent) {
-                if (typeof parent.$_fillRecursive === 'function') {
-                    const data = {}
-                    parent.$_fillRecursive(data, { onlyDirty: true })
-                    return data
+                if (this.$_isHybridFilterDataParent(parent)) {
+                    return parent
                 }
                 parent = parent.$parent
             }
-            return {}
+
+            return null
+        },
+        $_isHybridFilterDataParent(parent) {
+            return typeof parent.getJsonFormDataWithFilters === 'function' ||
+                typeof parent.getJsonFormData === 'function'
+        },
+        $_currentHybridFilterData() {
+            const data = {}
+
+            if (typeof this.$_fill === 'function') {
+                this.$_fill(data)
+            }
+
+            return data
         },
         $_doJsInstantFilter(value) {
             const config = this.$_jsInstantFilterConfig
