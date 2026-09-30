@@ -19,6 +19,7 @@ export default {
             hybridOriginalCards: null,
             hybridFilterName: null,
             hybridSiblingData: {},
+            hybridActiveFilterData: {},
 
             // Loading states
             filterIsLoading: false,        // True when server request in progress
@@ -76,10 +77,11 @@ export default {
          * @param {number} debounce - Debounce ms for server request
          * @param {string} mode - 'hybrid' or 'server'
          */
-        $_hybridFilter(value, debounce = 300, mode = null, name = null, siblingData = {}) {
+        $_hybridFilter(value, debounce = 300, mode = null, name = null, siblingData = {}, activeFilterData = {}) {
             this.hybridFilterValue = value
             this.hybridFilterName = name
             this.hybridSiblingData = siblingData || {}
+            this.hybridActiveFilterData = activeFilterData || {}
 
             if (mode) {
                 this.filterMode = mode
@@ -157,7 +159,7 @@ export default {
          * Server-side filter request
          */
         $_serverFilter(value) {
-            const filterData = Object.assign({}, this.hybridSiblingData, { [this.hybridFilterName]: value })
+            const filterData = this.$_hybridFilterData(value)
 
             this.$_kAxios.$_browseQuery(1, this.currentSort, filterData, { onlyDirty: true }).then(r => {
                 // Update with server results
@@ -170,6 +172,17 @@ export default {
                 console.error('Hybrid filter server error:', e)
                 this.filterIsLoading = false
             })
+        },
+
+        $_hybridFilterData(value = this.hybridFilterValue) {
+            const activeFilterData = this.hybridActiveFilterData || {}
+            const filterData = Object.assign({}, this.hybridSiblingData || {}, activeFilterData)
+
+            if (this.hybridFilterName && !Object.keys(activeFilterData).length && !Object.prototype.hasOwnProperty.call(filterData, this.hybridFilterName)) {
+                filterData[this.hybridFilterName] = value
+            }
+
+            return filterData
         },
 
         /**

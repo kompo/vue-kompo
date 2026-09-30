@@ -68,14 +68,20 @@ export default {
             const config = this.$_jsConditional
             const { type, field, condition } = config
 
-            // Initial evaluation
+            // PHP adds vlHide/display:none for jsShowWhen/jsEnableWhen to avoid
+            // flash before JS runs. Remove it from both live and source data so
+            // later focus/state renders cannot reapply the initial hidden state.
+            if (type === 'show' || type === 'hide' || type === 'enable') {
+                this.$_clearStaticConditionalVisibility()
+            }
+
+            // Initial evaluation (run first, before any reactive changes)
             this.$_evaluateConditional(field, condition, type)
 
-            // Watch for changes using DOM events
+            // Watch for changes
             const cleanup = this.$_watchField(field, () => {
                 this.$_evaluateConditional(field, condition, type)
             })
-
             this.jsFeatureCleanup.push(cleanup)
         },
 
@@ -101,6 +107,8 @@ export default {
                     this.$_applyVisibility(result)
                     break
                 case 'enable':
+                    this.jsConditionalHidden = !result
+                    this.$_applyVisibility(!result)
                     this.jsConditionalDisabled = !result
                     this.$_applyDisabled(!result)
                     break
@@ -131,6 +139,7 @@ export default {
                     el.style.display = 'none'
                 }, 150)
             } else {
+                this.$_clearStaticConditionalVisibility()
                 clearTimeout(el._vlHideTimer)
                 el.classList.remove('vlHide')
                 el.style.display = ''
@@ -138,6 +147,28 @@ export default {
                 void el.offsetHeight
                 el.style.opacity = '1'
             }
+        },
+
+        $_clearStaticConditionalVisibility() {
+            const clean = (component) => {
+                if (!component) return {}
+
+                const style = (component.style || '')
+                    .replace(/display\s*:\s*none\s*;?/gi, '').trim()
+                const cls = typeof component.class === 'string'
+                    ? component.class.replace(/\bvlHide\b/g, '').trim().replace(/\s+/g, ' ')
+                    : component.class
+
+                component.style = style
+                component.class = cls
+
+                return { style, class: cls }
+            }
+
+            const cleaned = clean(this.component)
+            clean(this.vkompo)
+
+            this.component = Object.assign({}, this.component, cleaned)
         },
 
         $_applyDisabled(disabled) {
