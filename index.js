@@ -65,8 +65,8 @@ const Kompo = {
 	    	vlUpdateElement(elementId, updates){
 	    		Kompo.events.$emit('vlUpdateElement'+elementId, updates)
 	    	},
-			vlHybridFilter(queryId, value, debounce, attribute, mode, name, siblingData){
-				Kompo.events.$emit('vlHybridFilter'+queryId, value, debounce, attribute, mode, name, siblingData)
+			vlHybridFilter(queryId, value, debounce, attribute, mode, name, siblingData, activeFilterData){
+				Kompo.events.$emit('vlHybridFilter'+queryId, value, debounce, attribute, mode, name, siblingData, activeFilterData)
 			},
 			vlJsInstantFilter(queryId, value, attribute){
 				Kompo.events.$emit('vlJsInstantFilter'+queryId, value, attribute)
