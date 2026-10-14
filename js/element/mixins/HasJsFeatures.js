@@ -165,8 +165,13 @@ export default {
                 return { style, class: cls }
             }
 
+            const current = this.component || {}
+            const before = { style: current.style || '', class: current.class }
             const cleaned = clean(this.component)
             clean(this.vkompo)
+
+            // Reassigning fires deep watchers on component.value: two fields conditioned on each other would loop forever
+            if (cleaned.style === before.style && cleaned.class === before.class) return
 
             this.component = Object.assign({}, this.component, cleaned)
         },
